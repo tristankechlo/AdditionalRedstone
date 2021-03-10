@@ -1,0 +1,28 @@
+modLoader="javafml"
+loaderVersion="[34,)"
+license="CC BY-NC-ND 4.0"
+showAsResourcePack=false
+
+[[mods]]
+modId="additionalredstone"
+version="1.16.5 - 1.0.0"
+displayName="Additional Redstene"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/additional-redstone"
+#logoFile="examplemod.png"
+#credits="Thanks for this example mod goes to Java"
+authors="Buecher_wurm"
+description='''additional redstone'''
+
+[[dependencies.toolleveling]]
+    modId="forge"
+    mandatory=true
+    versionRange="[34,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.toolleveling]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.4,1.16.5]"
+    ordering="NONE"
+    side="BOTH"
