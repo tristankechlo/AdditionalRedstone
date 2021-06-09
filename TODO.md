@@ -1,0 +1,6 @@
+ - item textures
+ - jei integration
+ - circuit maker
+     - gui
+     - shift clicking items
+     - render items in block

@@ -1,0 +1,10 @@
+{
+	"variants" : {
+		"powered=false" : {
+			"model" : "additionalredstone:block/timer"
+		},
+		"powered=true" : {
+			"model" : "additionalredstone:block/timer_powered"
+		}
+	}
+}

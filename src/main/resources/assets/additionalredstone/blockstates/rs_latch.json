@@ -1,0 +1,34 @@
+{
+	"variants" : {
+		"facing=east,powered=false" : {
+			"model" : "additionalredstone:block/rs_latch",
+			"y" : 270
+		},
+		"facing=east,powered=true" : {
+			"model" : "additionalredstone:block/rs_latch_powered",
+			"y" : 270
+		},
+		"facing=north,powered=false" : {
+			"model" : "additionalredstone:block/rs_latch",
+			"y" : 180
+		},
+		"facing=north,powered=true" : {
+			"model" : "additionalredstone:block/rs_latch_powered",
+			"y" : 180
+		},
+		"facing=south,powered=false" : {
+			"model" : "additionalredstone:block/rs_latch"
+		},
+		"facing=south,powered=true" : {
+			"model" : "additionalredstone:block/rs_latch_powered"
+		},
+		"facing=west,powered=false" : {
+			"model" : "additionalredstone:block/rs_latch",
+			"y" : 90
+		},
+		"facing=west,powered=true" : {
+			"model" : "additionalredstone:block/rs_latch_powered",
+			"y" : 90
+		}
+	}
+}

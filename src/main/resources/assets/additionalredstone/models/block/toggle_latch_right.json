@@ -1,0 +1,91 @@
+{
+	"ambientocclusion": false,
+	"textures": {
+		"base": "minecraft:block/smooth_stone",
+		"lit": "minecraft:block/redstone_torch",
+		"unlit": "minecraft:block/redstone_torch_off",
+		"particle": "additionalredstone:block/toggle_latch",
+		"top": "additionalredstone:block/toggle_latch",
+		"lever": "minecraft:block/lever",
+		"lever_base": "minecraft:block/cobblestone"
+	},
+	"elements": [
+		{
+			"name": "base",
+			"from": [0, 0, 0],
+			"to": [16, 2, 16],
+			"faces": {
+				"north": {"uv": [0, 14, 16, 16], "texture": "#base", "cullface": "north"},
+				"east": {"uv": [0, 14, 16, 16], "texture": "#base", "cullface": "east"},
+				"south": {"uv": [0, 14, 16, 16], "texture": "#base", "cullface": "south"},
+				"west": {"uv": [0, 14, 16, 16], "texture": "#base", "cullface": "west"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#top"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#base", "cullface": "down"}
+			}
+		},
+		{
+			"name": "on1",
+			"from": [11, 7, 5],
+			"to": [13, 7, 7],
+			"faces": {
+				"up": {"uv": [9, 6, 7, 8], "texture": "#lit"}
+			}
+		},
+		{
+			"name": "on2",
+			"from": [11, 2, 4],
+			"to": [13, 8, 8],
+			"faces": {
+				"east": {"uv": [10, 5, 6, 11], "texture": "#lit"},
+				"west": {"uv": [10, 5, 6, 11], "texture": "#lit"}
+			}
+		},
+		{
+			"name": "on3",
+			"from": [10, 2, 5],
+			"to": [14, 8, 7],
+			"faces": {
+				"north": {"uv": [10, 5, 6, 11], "texture": "#lit"},
+				"south": {"uv": [10, 5, 6, 11], "texture": "#lit"}
+			}
+		},
+		{
+			"name": "off",
+			"from": [3, 2, 5],
+			"to": [5, 7, 7],
+			"faces": {
+				"north": {"uv": [9, 6, 7, 11], "texture": "#unlit"},
+				"east": {"uv": [9, 6, 7, 11], "texture": "#unlit"},
+				"south": {"uv": [9, 6, 7, 11], "texture": "#unlit"},
+				"west": {"uv": [9, 6, 7, 11], "texture": "#unlit"},
+				"up": {"uv": [9, 6, 7, 8], "texture": "#unlit"},
+				"down": {"uv": [9, 13, 7, 15], "texture": "#unlit"}
+			}
+		},
+		{
+			"name": "leverBase",
+			"from": [5, 2, 10],
+			"to": [11, 4, 13],
+			"faces": {
+				"north": {"uv": [0, 0, 6, 2], "texture": "#lever_base"},
+				"east": {"uv": [0, 0, 3, 2], "texture": "#lever_base"},
+				"south": {"uv": [0, 0, 6, 2], "texture": "#lever_base"},
+				"west": {"uv": [0, 0, 3, 2], "texture": "#lever_base"},
+				"up": {"uv": [0, 0, 6, 3], "texture": "#lever_base"}
+			}
+		},
+		{
+			"name": "lever",
+			"from": [8, 3, 10.5],
+			"to": [10, 8, 12.5],
+			"rotation": {"angle": -22.5, "axis": "z", "origin": [9, 3, 11.5]},
+			"faces": {
+				"north": {"uv": [7, 6, 9, 12], "texture": "#lever"},
+				"east": {"uv": [7, 6, 9, 12], "texture": "#lever"},
+				"south": {"uv": [7, 6, 9, 12], "texture": "#lever"},
+				"west": {"uv": [7, 6, 9, 12], "texture": "#lever"},
+				"up": {"uv": [7, 6, 9, 8], "texture": "#lever"}
+			}
+		}
+	]
+}

@@ -1,0 +1,72 @@
+{
+	"ambientocclusion": false,
+	"textures": {
+		"body": "minecraft:block/smooth_stone",
+		"top": "additionalredstone:block/not_gate_input",
+		"torch": "minecraft:block/redstone_torch_off",
+		"particle": "additionalredstone:block/not_gate_input"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 2, 16],
+			"faces": {
+				"north": {"uv": [0, 14, 16, 16], "texture": "#body", "cullface": "north"},
+				"east": {"uv": [0, 14, 16, 16], "texture": "#body", "cullface": "east"},
+				"south": {"uv": [0, 14, 16, 16], "texture": "#body", "cullface": "south"},
+				"west": {"uv": [0, 14, 16, 16], "texture": "#body", "cullface": "west"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#top"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#body", "cullface": "down"}
+			}
+		},
+		{
+			"from": [7, 2, 2],
+			"to": [9, 7, 4],
+			"faces": {
+				"north": {"uv": [7, 6, 9, 11], "texture": "#torch"},
+				"east": {"uv": [7, 6, 9, 11], "texture": "#torch"},
+				"south": {"uv": [7, 6, 9, 11], "texture": "#torch"},
+				"west": {"uv": [7, 6, 9, 11], "texture": "#torch"},
+				"up": {"uv": [7, 6, 9, 8], "texture": "#torch"},
+				"down": {"uv": [7, 13, 9, 15], "texture": "#torch"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [23, -44, 0],
+			"translation": [0, 3.25, 0.75],
+			"scale": [0.375, 0.375, 0.375]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [23, 45, 0],
+			"translation": [0, 3.25, 0.75],
+			"scale": [0.375, 0.375, 0.375]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 45, 0],
+			"translation": [0, 3.75, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, 225, 0],
+			"translation": [0, 3.75, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"ground": {
+			"translation": [0, 3, 0],
+			"scale": [0.25, 0.25, 0.25]
+		},
+		"gui": {
+			"rotation": [30, 225, 0],
+			"translation": [0, 1.75, 0],
+			"scale": [0.625, 0.625, 0.625]
+		},
+		"head": {
+			"translation": [0, 14, 0]
+		},
+		"fixed": {
+			"scale": [0.5, 0.5, 0.5]
+		}
+	}
+}

@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
@@ -23,7 +23,7 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.markers', 'REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
 
             mods {
@@ -35,7 +35,7 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.markers', 'REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
 
             mods {
@@ -47,7 +47,7 @@ minecraft {
 
         data {
             workingDirectory project.file('run')
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.markers', 'REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
 
             args '--mod', 'additionalredstone', '--all', '--output', file('src/generated/resources/')
@@ -63,10 +63,30 @@ minecraft {
 
 repositories {
     maven { url 'https://maven.blamejared.com' }
+    
+    // location of the maven that hosts JEI files
+  	maven {
+    	name = "Progwml6 maven"
+    	url = "https://dvs1.progwml6.com/files/maven/"
+  	}
+  	maven {
+    	name = "ModMaven"
+    	url = "https://modmaven.k-4u.nl"
+  	}
+  	
+    maven { url "https://maven.tehnut.info" }
 }
 
 dependencies {    
     minecraft "net.minecraftforge:forge:${forge_version}"
+
+	//JEI
+ 	compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
+  	runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
+  	
+  	//HWYLA
+    compileOnly fg.deobf("mcp.mobius.waila:Hwyla:${hwyla_version}:api")
+    runtimeOnly fg.deobf("mcp.mobius.waila:Hwyla:${hwyla_version}")
 }
 
 jar {

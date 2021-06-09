@@ -1,0 +1,6 @@
+{
+	"parent" : "additionalredstone:block/base_gate",
+	"textures" : {
+		"symbol" : "additionalredstone:block/nor_gate"
+	}
+}

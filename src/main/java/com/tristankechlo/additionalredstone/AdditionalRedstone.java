@@ -3,8 +3,17 @@ package com.tristankechlo.additionalredstone;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.tristankechlo.additionalredstone.client.ClientSetup;
+import com.tristankechlo.additionalredstone.init.ModBlocks;
+import com.tristankechlo.additionalredstone.init.ModContainer;
+import com.tristankechlo.additionalredstone.init.ModItems;
+import com.tristankechlo.additionalredstone.init.ModTileEntities;
+import com.tristankechlo.additionalredstone.network.PacketHandler;
+
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(AdditionalRedstone.MOD_ID)
 public class AdditionalRedstone {
@@ -13,16 +22,18 @@ public class AdditionalRedstone {
 	public static final String MOD_ID = "additionalredstone";
 
 	public AdditionalRedstone() {
-//    	ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ImprovedVanillaConfig.spec);
-//
-//		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-//		ModItems.ITEMS.register(modEventBus);
-//		ModBlocks.BLOCKS.register(modEventBus);
-//		ModSounds.SOUNDS.register(modEventBus);
-//		ModParticle.PARTICLES.register(modEventBus);
-//		ModEntityTypes.ENTITY_TYPES.register(modEventBus);
+		PacketHandler.registerPackets();
+
+		ModItems.ITEMS.register(modEventBus);
+		ModBlocks.BLOCKS.register(modEventBus);
+		ModTileEntities.TILE_ENTITIES.register(modEventBus);
+		ModContainer.CONTAINER_TYPES.register(modEventBus);
+
+		modEventBus.addListener(ClientSetup::init);
 
 		MinecraftForge.EVENT_BUS.register(this);
 	}
+
 }

@@ -1,0 +1,22 @@
+{
+	"type" : "minecraft:crafting_shaped",
+	"pattern" : [
+		"#X#",
+		"SSS"
+	],
+	"key" : {
+		"#" : {
+			"tag" : "forge:dusts/redstone"
+		},
+		"X" : {
+			"item" : "minecraft:clock"
+		},
+		"S" : {
+			"item" : "minecraft:stone"
+		}
+	},
+	"result" : {
+		"item" : "additionalredstone:timer",
+		"count" : 1
+	}
+}

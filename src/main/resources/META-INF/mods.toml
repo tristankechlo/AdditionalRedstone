@@ -6,7 +6,7 @@ showAsResourcePack=false
 [[mods]]
 modId="additionalredstone"
 version="1.16.5 - 1.0.0"
-displayName="Additional Redstene"
+displayName="Additional Redstone"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/additional-redstone"
 #logoFile="examplemod.png"
 #credits="Thanks for this example mod goes to Java"

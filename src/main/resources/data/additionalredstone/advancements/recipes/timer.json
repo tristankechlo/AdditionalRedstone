@@ -1,0 +1,43 @@
+{
+	"parent" : "minecraft:recipes/root",
+	"rewards" : {
+		"recipes" : [
+			"additionalredstone:timer"
+		]
+	},
+	"criteria" : {
+		"has_redstone" : {
+			"trigger" : "minecraft:inventory_changed",
+			"conditions" : {
+				"items" : [
+					{
+						"tag" : "forge:dusts/redstone"
+					}
+				]
+			}
+		},
+		"has_clock" : {
+			"trigger" : "minecraft:inventory_changed",
+			"conditions" : {
+				"items" : [
+					{
+						"item" : "minecraft:clock"
+					}
+				]
+			}
+		},
+		"has_the_recipe" : {
+			"trigger" : "minecraft:recipe_unlocked",
+			"conditions" : {
+				"recipe" : "additionalredstone:timer"
+			}
+		}
+	},
+	"requirements" : [
+		 [
+			"has_redstone",
+			"has_clock",
+			"has_the_recipe"
+		]
+	]
+}

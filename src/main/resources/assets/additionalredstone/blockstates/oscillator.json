@@ -1,0 +1,10 @@
+{
+	"variants" : {
+		"powered=false" : {
+			"model" : "additionalredstone:block/oscillator"
+		},
+		"powered=true" : {
+			"model" : "additionalredstone:block/oscillator_powered"
+		}
+	}
+}

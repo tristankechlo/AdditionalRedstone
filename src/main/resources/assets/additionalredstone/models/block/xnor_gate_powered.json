@@ -1,0 +1,6 @@
+{
+	"parent" : "additionalredstone:block/base_gate_powered",
+	"textures" : {
+		"symbol" : "additionalredstone:block/xnor_gate"
+	}
+}

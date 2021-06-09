@@ -1,0 +1,45 @@
+{
+	"multipart" : [
+		{
+			"apply" : {
+				"model" : "additionalredstone:block/base_circuit"
+			}
+		},
+		{
+			"when" : {
+				"output" : "0"
+			},
+			"apply" : {
+				"model" : "additionalredstone:block/sequencer",
+				"y" : 0
+			}
+		},
+		{
+			"when" : {
+				"output" : "1"
+			},
+			"apply" : {
+				"model" : "additionalredstone:block/sequencer",
+				"y" : 90
+			}
+		},
+		{
+			"when" : {
+				"output" : "2"
+			},
+			"apply" : {
+				"model" : "additionalredstone:block/sequencer",
+				"y" : 180
+			}
+		},
+		{
+			"when" : {
+				"output" : "3"
+			},
+			"apply" : {
+				"model" : "additionalredstone:block/sequencer",
+				"y" : 270
+			}
+		}
+	]
+}

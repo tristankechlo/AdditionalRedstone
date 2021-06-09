@@ -1,0 +1,6 @@
+{
+	"parent" : "additionalredstone:block/base_gate",
+	"textures" : {
+		"top" : "additionalredstone:block/1_input"
+	}
+}

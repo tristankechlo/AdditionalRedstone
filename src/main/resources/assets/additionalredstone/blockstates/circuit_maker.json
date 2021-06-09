@@ -1,0 +1,19 @@
+{
+	"variants" : {
+		"facing=east" : {
+			"model" : "additionalredstone:block/circuit_maker",
+			"y" : 90
+		},
+		"facing=north" : {
+			"model" : "additionalredstone:block/circuit_maker"
+		},
+		"facing=south" : {
+			"model" : "additionalredstone:block/circuit_maker",
+			"y" : 180
+		},
+		"facing=west" : {
+			"model" : "additionalredstone:block/circuit_maker",
+			"y" : 270
+		}
+	}
+}

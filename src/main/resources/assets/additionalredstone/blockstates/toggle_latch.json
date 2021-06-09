@@ -1,0 +1,34 @@
+{
+	"variants" : {
+		"facing=east,outputside=left" : {
+			"model" : "additionalredstone:block/toggle_latch_left",
+			"y" : 270
+		},
+		"facing=east,outputside=right" : {
+			"model" : "additionalredstone:block/toggle_latch_right",
+			"y" : 270
+		},
+		"facing=north,outputside=left" : {
+			"model" : "additionalredstone:block/toggle_latch_left",
+			"y" : 180
+		},
+		"facing=north,outputside=right" : {
+			"model" : "additionalredstone:block/toggle_latch_right",
+			"y" : 180
+		},
+		"facing=south,outputside=left" : {
+			"model" : "additionalredstone:block/toggle_latch_left"
+		},
+		"facing=south,outputside=right" : {
+			"model" : "additionalredstone:block/toggle_latch_right"
+		},
+		"facing=west,outputside=left" : {
+			"model" : "additionalredstone:block/toggle_latch_left",
+			"y" : 90
+		},
+		"facing=west,outputside=right" : {
+			"model" : "additionalredstone:block/toggle_latch_right",
+			"y" : 90
+		}
+	}
+}
