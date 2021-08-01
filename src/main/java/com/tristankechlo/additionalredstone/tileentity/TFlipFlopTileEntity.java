@@ -31,40 +31,40 @@ public class TFlipFlopTileEntity extends TileEntity {
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT nbt) {
-		super.read(state, nbt);
+	public void load(BlockState state, CompoundNBT nbt) {
+		super.load(state, nbt);
 		this.previousInput = nbt.getBoolean("PreviousInput");
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT compound) {
+	public CompoundNBT save(CompoundNBT compound) {
 		compound.putBoolean("PreviousInput", this.previousInput);
-		return super.write(compound);
+		return super.save(compound);
 	}
 
 	@Override
 	public SUpdateTileEntityPacket getUpdatePacket() {
 		CompoundNBT nbt = new CompoundNBT();
-		write(nbt);
-		return new SUpdateTileEntityPacket(this.getPos(), 42, nbt);
+		save(nbt);
+		return new SUpdateTileEntityPacket(this.getBlockPos(), 42, nbt);
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-		BlockState blockState = world.getBlockState(pos);
-		this.read(blockState, pkt.getNbtCompound());
+		BlockState blockState = level.getBlockState(worldPosition);
+		this.load(blockState, pkt.getTag());
 	}
 
 	@Override
 	public CompoundNBT getUpdateTag() {
 		CompoundNBT nbt = new CompoundNBT();
-		write(nbt);
+		save(nbt);
 		return nbt;
 	}
 
 	@Override
 	public void handleUpdateTag(BlockState state, CompoundNBT tag) {
-		this.read(state, tag);
+		this.load(state, tag);
 	}
 
 }

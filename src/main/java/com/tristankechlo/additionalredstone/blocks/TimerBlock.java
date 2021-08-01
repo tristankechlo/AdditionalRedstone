@@ -30,14 +30,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class TimerBlock extends Block {
 
-	private static final VoxelShape SHAPE = VoxelShapes.combineAndSimplify(
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D),
-			Block.makeCuboidShape(4.0D, 2.0D, 4.0D, 12.0D, 3.0D, 12.0D), IBooleanFunction.OR);
+	private static final VoxelShape SHAPE = VoxelShapes.join(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D),
+			Block.box(4.0D, 2.0D, 4.0D, 12.0D, 3.0D, 12.0D), IBooleanFunction.OR);
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
 	public TimerBlock() {
-		super(Properties.from(Blocks.REPEATER));
-		this.setDefaultState(this.stateContainer.getBaseState().with(POWERED, Boolean.valueOf(false)));
+		super(Properties.copy(Blocks.REPEATER));
+		this.registerDefaultState(this.stateDefinition.any().setValue(POWERED, Boolean.valueOf(false)));
 	}
 
 	@Override
@@ -46,33 +45,33 @@ public class TimerBlock extends Block {
 	}
 
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		return hasSolidSideOnTop(worldIn, pos.down());
+	public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+		return canSupportRigidBlock(worldIn, pos.below());
 	}
 
 	@Override
 	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos,
 			boolean isMoving) {
-		if (!state.isValidPosition(worldIn, pos)) {
-			TileEntity tileentity = state.hasTileEntity() ? worldIn.getTileEntity(pos) : null;
-			spawnDrops(state, worldIn, pos, tileentity);
+		if (!state.canSurvive(worldIn, pos)) {
+			TileEntity tileentity = state.hasTileEntity() ? worldIn.getBlockEntity(pos) : null;
+			dropResources(state, worldIn, pos, tileentity);
 			worldIn.removeBlock(pos, false);
 			for (Direction direction : Direction.values()) {
-				worldIn.notifyNeighborsOfStateChange(pos.offset(direction), this);
+				worldIn.updateNeighborsAt(pos.relative(direction), this);
 			}
 		}
 	}
 
 	@Override
-	public boolean canProvidePower(BlockState state) {
+	public boolean isSignalSource(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player,
-			Hand handIn, BlockRayTraceResult hit) {
-		TileEntity tile = worldIn.getTileEntity(pos);
-		if (tile instanceof TimerTileEntity && worldIn.isRemote) {
+	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn,
+			BlockRayTraceResult hit) {
+		TileEntity tile = worldIn.getBlockEntity(pos);
+		if (tile instanceof TimerTileEntity && worldIn.isClientSide) {
 			TimerTileEntity timer = (TimerTileEntity) tile;
 			int powerUp = timer.getPowerUpTime();
 			int powerDown = timer.getPowerDownTime();
@@ -84,25 +83,25 @@ public class TimerBlock extends Block {
 
 	@OnlyIn(Dist.CLIENT)
 	private void openTimerScreen(int powerUp, int powerDown, int interval, BlockPos pos) {
-		Minecraft.getInstance().displayGuiScreen(new TimerScreen(powerUp, powerDown, interval, pos));
+		Minecraft.getInstance().setScreen(new TimerScreen(powerUp, powerDown, interval, pos));
 	}
 
 	public static void setPowered(BlockState state, World world, BlockPos pos, boolean powered) {
-		world.setBlockState(pos, state.with(POWERED, Boolean.valueOf(powered)), 3);
+		world.setBlock(pos, state.setValue(POWERED, Boolean.valueOf(powered)), 3);
 	}
 
 	@Override
-	public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
-		return blockState.get(POWERED) ? 15 : 0;
+	public int getSignal(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+		return blockState.getValue(POWERED) ? 15 : 0;
 	}
 
 	@Override
-	public BlockRenderType getRenderType(BlockState state) {
+	public BlockRenderType getRenderShape(BlockState state) {
 		return BlockRenderType.MODEL;
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(POWERED);
 	}
 

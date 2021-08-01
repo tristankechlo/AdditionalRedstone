@@ -29,7 +29,7 @@ public enum Circuits {
 	public Item getItem() {
 		return this.stack.getItem();
 	}
-	
+
 	public ItemStack getItemStack() {
 		return this.stack;
 	}

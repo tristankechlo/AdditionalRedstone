@@ -27,7 +27,7 @@ public class TimerTileEntity extends TileEntity implements ITickableTileEntity {
 
 	@Override
 	public void tick() {
-		if (this.world != null && !this.world.isRemote && world.getGameTime() % this.interval == 0) {
+		if (this.level != null && !this.level.isClientSide && level.getGameTime() % this.interval == 0) {
 			if (powerUpTime == powerDownTime) {
 				if (this.powered) {
 					this.updatePower(false);
@@ -44,7 +44,7 @@ public class TimerTileEntity extends TileEntity implements ITickableTileEntity {
 	}
 
 	private boolean isInTargetTime() {
-		int time = (int) (world.getDayTime() % maxTime);
+		int time = (int) (level.getDayTime() % maxTime);
 		if (this.powerUpTime < powerDownTime) {
 			if (time >= this.powerUpTime && time <= this.powerDownTime) {
 				return true;
@@ -62,13 +62,13 @@ public class TimerTileEntity extends TileEntity implements ITickableTileEntity {
 		Block block = blockstate.getBlock();
 		if (block instanceof TimerBlock) {
 			this.powered = powered;
-			TimerBlock.setPowered(blockstate, this.world, this.pos, powered);
+			TimerBlock.setPowered(blockstate, this.level, this.worldPosition, powered);
 		}
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT nbt) {
-		super.read(state, nbt);
+	public void load(BlockState state, CompoundNBT nbt) {
+		super.load(state, nbt);
 		this.powerUpTime = nbt.getInt("PowerUpTime");
 		this.powerDownTime = nbt.getInt("PowerDownTime");
 		this.powered = nbt.getBoolean("Powered");
@@ -76,37 +76,37 @@ public class TimerTileEntity extends TileEntity implements ITickableTileEntity {
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT nbt) {
+	public CompoundNBT save(CompoundNBT nbt) {
 		nbt.putInt("PowerUpTime", this.powerUpTime);
 		nbt.putInt("PowerDownTime", this.powerDownTime);
 		nbt.putBoolean("Powered", this.powered);
 		nbt.putInt("Interval", this.interval);
-		return super.write(nbt);
+		return super.save(nbt);
 	}
 
 	@Override
 	public SUpdateTileEntityPacket getUpdatePacket() {
 		CompoundNBT nbt = new CompoundNBT();
-		write(nbt);
-		return new SUpdateTileEntityPacket(this.getPos(), 42, nbt);
+		save(nbt);
+		return new SUpdateTileEntityPacket(this.getBlockPos(), 42, nbt);
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-		BlockState blockState = world.getBlockState(pos);
-		this.read(blockState, pkt.getNbtCompound());
+		BlockState blockState = level.getBlockState(worldPosition);
+		this.load(blockState, pkt.getTag());
 	}
 
 	@Override
 	public CompoundNBT getUpdateTag() {
 		CompoundNBT nbt = new CompoundNBT();
-		write(nbt);
+		save(nbt);
 		return nbt;
 	}
 
 	@Override
 	public void handleUpdateTag(BlockState state, CompoundNBT tag) {
-		this.read(state, tag);
+		this.load(state, tag);
 	}
 
 	public int getPowerUpTime() {

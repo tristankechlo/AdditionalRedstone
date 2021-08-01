@@ -16,15 +16,18 @@ public class ModTileEntities {
 	public static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = DeferredRegister
 			.create(ForgeRegistries.TILE_ENTITIES, AdditionalRedstone.MOD_ID);
 
-	public static final RegistryObject<TileEntityType<OscillatorTileEntity>> OSCILLATOR_TILE_ENTITY = 
-			TILE_ENTITIES.register("oscillator", () -> TileEntityType.Builder.create(OscillatorTileEntity::new, ModBlocks.OSCILLATOR_BLOCK.get()).build(null));
+	public static final RegistryObject<TileEntityType<OscillatorTileEntity>> OSCILLATOR_TILE_ENTITY = TILE_ENTITIES
+			.register("oscillator", () -> TileEntityType.Builder
+					.of(OscillatorTileEntity::new, ModBlocks.OSCILLATOR_BLOCK.get()).build(null));
 
-	public static final RegistryObject<TileEntityType<TimerTileEntity>> TIMER_TILE_ENTITY = 
-			TILE_ENTITIES.register("timer", () -> TileEntityType.Builder.create(TimerTileEntity::new, ModBlocks.TIMER_BLOCK.get()).build(null));
+	public static final RegistryObject<TileEntityType<TimerTileEntity>> TIMER_TILE_ENTITY = TILE_ENTITIES.register(
+			"timer", () -> TileEntityType.Builder.of(TimerTileEntity::new, ModBlocks.TIMER_BLOCK.get()).build(null));
 
-	public static final RegistryObject<TileEntityType<SequencerTileEntity>> SEQUENCER_TILE_ENTITY = 
-			TILE_ENTITIES.register("sequencer", () -> TileEntityType.Builder.create(SequencerTileEntity::new, ModBlocks.SEQUENCER_BLOCK.get()).build(null));
+	public static final RegistryObject<TileEntityType<SequencerTileEntity>> SEQUENCER_TILE_ENTITY = TILE_ENTITIES
+			.register("sequencer", () -> TileEntityType.Builder
+					.of(SequencerTileEntity::new, ModBlocks.SEQUENCER_BLOCK.get()).build(null));
 
-	public static final RegistryObject<TileEntityType<TFlipFlopTileEntity>> T_FLIP_FLOP_TILE_ENTITY = 
-			TILE_ENTITIES.register("t_flip_flop", () -> TileEntityType.Builder.create(TFlipFlopTileEntity::new, ModBlocks.T_FLIP_FLOP_BLOCK.get()).build(null));
+	public static final RegistryObject<TileEntityType<TFlipFlopTileEntity>> T_FLIP_FLOP_TILE_ENTITY = TILE_ENTITIES
+			.register("t_flip_flop", () -> TileEntityType.Builder
+					.of(TFlipFlopTileEntity::new, ModBlocks.T_FLIP_FLOP_BLOCK.get()).build(null));
 }

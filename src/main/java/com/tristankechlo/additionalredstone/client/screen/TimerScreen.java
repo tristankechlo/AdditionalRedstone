@@ -70,14 +70,14 @@ public class TimerScreen extends Screen {
 		this.children.add(this.powerUpWidget);
 		this.children.add(this.powerDownWidget);
 		this.children.add(this.intervalWidget);
-		this.powerUpWidget.setMaxStringLength(5);
-		this.powerDownWidget.setMaxStringLength(5);
-		this.intervalWidget.setMaxStringLength(5);
-		this.setFocusedDefault(this.powerUpWidget);
-		this.powerUpWidget.setFocused2(true);
-		this.powerUpWidget.setText(String.valueOf(this.powerUpTime));
-		this.powerDownWidget.setText(String.valueOf(this.powerDownTime));
-		this.intervalWidget.setText(String.valueOf(this.interval));
+		this.powerUpWidget.setMaxLength(5);
+		this.powerDownWidget.setMaxLength(5);
+		this.intervalWidget.setMaxLength(5);
+		this.setInitialFocus(this.powerUpWidget);
+		this.powerUpWidget.setFocus(true);
+		this.powerUpWidget.setValue(String.valueOf(this.powerUpTime));
+		this.powerDownWidget.setValue(String.valueOf(this.powerDownTime));
+		this.intervalWidget.setValue(String.valueOf(this.interval));
 
 		this.saveButton = new Button(this.width / 2 - 110, 160, 100, 20,
 				new TranslationTextComponent("screen.additionalredstone.save"), (b) -> {
@@ -99,11 +99,11 @@ public class TimerScreen extends Screen {
 			return;
 		}
 		PacketHandler.INSTANCE.sendToServer(new SetTimerValues(powerUp, powerDown, interval, pos));
-		this.closeScreen();
+		this.onClose();
 	}
 
 	private void cancel() {
-		this.closeScreen();
+		this.onClose();
 	}
 
 	@Override
@@ -129,22 +129,22 @@ public class TimerScreen extends Screen {
 				Utils.TEXT_COLOR_SCREEN);
 
 		if (this.powerUpError) {
-			this.minecraft.getTextureManager().bindTexture(ERROR);
+			this.minecraft.getTextureManager().bind(ERROR);
 			this.blit(matrixStack, this.width / 2 + 140, 61, 1, 1, 18, 18);
 		}
 		if (this.powerDownError) {
-			this.minecraft.getTextureManager().bindTexture(ERROR);
+			this.minecraft.getTextureManager().bind(ERROR);
 			this.blit(matrixStack, this.width / 2 + 140, 91, 1, 1, 18, 18);
 		}
 		if (this.intervalError) {
-			this.minecraft.getTextureManager().bindTexture(ERROR);
+			this.minecraft.getTextureManager().bind(ERROR);
 			this.blit(matrixStack, this.width / 2 + 140, 121, 1, 1, 18, 18);
 		}
 	}
 
 	private int getPowerUpTime() {
 		int powerUp = 0;
-		String text = this.powerUpWidget.getText();
+		String text = this.powerUpWidget.getValue();
 		if (text.equalsIgnoreCase("24:00")) {
 			text = "00:00";
 		}
@@ -167,7 +167,7 @@ public class TimerScreen extends Screen {
 
 	private int getPowerDownTime() {
 		int powerDown = 0;
-		String text = this.powerDownWidget.getText();
+		String text = this.powerDownWidget.getValue();
 		if (text.equalsIgnoreCase("24:00")) {
 			text = "00:00";
 		}
@@ -191,7 +191,7 @@ public class TimerScreen extends Screen {
 	private int getInterval() {
 		int interval = 0;
 		try {
-			interval = Integer.valueOf(this.intervalWidget.getText());
+			interval = Integer.valueOf(this.intervalWidget.getValue());
 			this.intervalError = false;
 		} catch (Exception e) {
 			this.intervalError = true;

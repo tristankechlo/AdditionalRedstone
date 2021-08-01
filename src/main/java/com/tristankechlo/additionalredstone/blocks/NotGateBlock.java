@@ -12,10 +12,10 @@ import net.minecraft.world.World;
 public class NotGateBlock extends BaseDiodeBlock {
 
 	@Override
-	protected boolean shouldBePowered(World worldIn, BlockPos pos, BlockState state) {
-		return this.calculateInputStrength(worldIn, pos, state) <= 0;
+	protected boolean shouldTurnOn(World worldIn, BlockPos pos, BlockState state) {
+		return this.getInputSignal(worldIn, pos, state) <= 0;
 	}
-	
+
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return RedstoneDiodeBlock.SHAPE;
@@ -23,8 +23,8 @@ public class NotGateBlock extends BaseDiodeBlock {
 
 	@Override
 	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		Direction front = state.get(HORIZONTAL_FACING);
-		Direction back = state.get(HORIZONTAL_FACING).getOpposite();
+		Direction front = state.getValue(FACING);
+		Direction back = state.getValue(FACING).getOpposite();
 		return side == front || side == back;
 	}
 

@@ -54,10 +54,10 @@ public class SequencerScreen extends Screen {
 		this.intervalWidget = new TextFieldWidget(this.font, this.width / 2 + 32, 60, 98, 20,
 				new StringTextComponent("sequencer_interval"));
 		this.children.add(this.intervalWidget);
-		this.intervalWidget.setMaxStringLength(10);
-		this.setFocusedDefault(this.intervalWidget);
-		this.intervalWidget.setFocused2(true);
-		this.intervalWidget.setText(String.valueOf(this.interval));
+		this.intervalWidget.setMaxLength(10);
+		this.setInitialFocus(this.intervalWidget);
+		this.intervalWidget.setFocus(true);
+		this.intervalWidget.setValue(String.valueOf(this.interval));
 
 		this.saveButton = new Button(this.width / 2 - 110, 150, 100, 20,
 				new TranslationTextComponent("screen.additionalredstone.save"), (b) -> {
@@ -74,7 +74,7 @@ public class SequencerScreen extends Screen {
 	private void save() {
 		int interval = 0;
 		try {
-			interval = Integer.valueOf(this.intervalWidget.getText());
+			interval = Integer.valueOf(this.intervalWidget.getValue());
 			this.intervalError = false;
 		} catch (Exception e) {
 			this.intervalError = true;
@@ -83,11 +83,11 @@ public class SequencerScreen extends Screen {
 			return;
 		}
 		PacketHandler.INSTANCE.sendToServer(new SetSequencerValues(interval, pos));
-		this.closeScreen();
+		this.onClose();
 	}
 
 	private void cancel() {
-		this.closeScreen();
+		this.onClose();
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class SequencerScreen extends Screen {
 				Utils.TEXT_COLOR_SCREEN);
 
 		if (this.intervalError) {
-			this.minecraft.getTextureManager().bindTexture(ERROR);
+			this.minecraft.getTextureManager().bind(ERROR);
 			this.blit(matrixStack, this.width / 2 + 140, 61, 1, 1, 18, 18);
 		}
 

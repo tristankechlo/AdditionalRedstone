@@ -44,17 +44,17 @@ public class SetOscillatorValues {
 			if (player == null) {
 				return;
 			}
-			ServerWorld world = player.getServerWorld();
-			if (world == null || !world.isBlockLoaded(msg.pos)) {
+			ServerWorld world = player.getLevel();
+			if (world == null || !world.hasChunkAt(msg.pos)) {
 				return;
 			}
-			TileEntity entity = world.getTileEntity(msg.pos);
+			TileEntity entity = world.getBlockEntity(msg.pos);
 
 			if (entity != null && (entity instanceof OscillatorTileEntity)) {
 				OscillatorTileEntity oscillator = (OscillatorTileEntity) entity;
 				oscillator.setConfiguration(Math.abs(msg.ticksOn), Math.abs(msg.ticksOff));
-				world.notifyBlockUpdate(msg.pos, world.getBlockState(msg.pos), world.getBlockState(msg.pos), 3);
-				oscillator.markDirty();
+				world.sendBlockUpdated(msg.pos, world.getBlockState(msg.pos), world.getBlockState(msg.pos), 3);
+				oscillator.setChanged();
 			}
 
 		});

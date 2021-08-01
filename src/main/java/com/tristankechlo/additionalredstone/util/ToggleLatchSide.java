@@ -3,7 +3,9 @@ package com.tristankechlo.additionalredstone.util;
 import net.minecraft.util.IStringSerializable;
 
 public enum ToggleLatchSide implements IStringSerializable {
-	LEFT("left"), RIGHT("right");
+
+	LEFT("left"),
+	RIGHT("right");
 
 	private final String name;
 
@@ -17,7 +19,7 @@ public enum ToggleLatchSide implements IStringSerializable {
 	}
 
 	@Override
-	public String getString() {
+	public String getSerializedName() {
 		return this.name;
 	}
 

@@ -17,43 +17,43 @@ public class TFlipFlopBlock extends BaseDiodeBlock {
 
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-		boolean inputPowered = this.calculateInputStrength(worldIn, pos, state) > 0;
+		boolean inputPowered = this.getInputSignal(worldIn, pos, state) > 0;
 		if (inputPowered) {
-			worldIn.setBlockState(pos, state.cycleValue(POWERED), 2);
+			worldIn.setBlock(pos, state.cycle(POWERED), 2);
 		}
-		this.notifyNeighbors(worldIn, pos, state);
+		this.updateNeighborsInFront(worldIn, pos, state);
 	}
 
 	@Override
-	protected void updateState(World worldIn, BlockPos pos, BlockState state) {
-		TileEntity tileentity = worldIn.getTileEntity(pos);
+	protected void checkTickOnNeighbor(World worldIn, BlockPos pos, BlockState state) {
+		TileEntity tileentity = worldIn.getBlockEntity(pos);
 		boolean change = false;
 		if (tileentity instanceof TFlipFlopTileEntity) {
-			boolean input = this.calculateInputStrength(worldIn, pos, state) > 0;
+			boolean input = this.getInputSignal(worldIn, pos, state) > 0;
 			change = ((TFlipFlopTileEntity) tileentity).shouldBePowered(input);
 		}
-		if (change && !worldIn.getPendingBlockTicks().isTickPending(pos, this)) {
+		if (change && !worldIn.getBlockTicks().willTickThisTick(pos, this)) {
 			TickPriority tickpriority = TickPriority.HIGH;
-			if (this.isFacingTowardsRepeater(worldIn, pos, state)) {
+			if (this.shouldPrioritize(worldIn, pos, state)) {
 				tickpriority = TickPriority.EXTREMELY_HIGH;
 			}
-			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.getDelay(state), tickpriority);
+			worldIn.getBlockTicks().scheduleTick(pos, this, this.getDelay(state), tickpriority);
 		}
 	}
 
 	@Override
-	protected boolean shouldBePowered(World worldIn, BlockPos pos, BlockState state) {
-		boolean inputPowered = this.calculateInputStrength(worldIn, pos, state) > 0;
+	protected boolean shouldTurnOn(World worldIn, BlockPos pos, BlockState state) {
+		boolean inputPowered = this.getInputSignal(worldIn, pos, state) > 0;
 		if (inputPowered) {
-			return !state.get(POWERED);
+			return !state.getValue(POWERED);
 		}
-		return state.get(POWERED);
+		return state.getValue(POWERED);
 	}
 
 	@Override
 	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		Direction direction1 = state.get(HORIZONTAL_FACING);
-		Direction direction2 = state.get(HORIZONTAL_FACING).getOpposite();
+		Direction direction1 = state.getValue(FACING);
+		Direction direction2 = state.getValue(FACING).getOpposite();
 		return side == direction1 || side == direction2;
 	}
 

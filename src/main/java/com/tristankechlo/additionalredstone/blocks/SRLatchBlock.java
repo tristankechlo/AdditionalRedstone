@@ -14,40 +14,40 @@ public class SRLatchBlock extends BaseDiodeBlock {
 
 	@Override
 	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		return side != state.get(HORIZONTAL_FACING).getOpposite();
+		return side != state.getValue(FACING).getOpposite();
 	}
 
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-		boolean isPowered = state.get(POWERED);
-		boolean shouldBeOn = this.shouldBePowered(worldIn, pos, state);
+		boolean isPowered = state.getValue(POWERED);
+		boolean shouldBeOn = this.shouldTurnOn(worldIn, pos, state);
 
 		if (isPowered && !shouldBeOn) {
-			worldIn.setBlockState(pos, state.with(POWERED, Boolean.FALSE), 2);
-			this.notifyNeighbors(worldIn, pos, state);
+			worldIn.setBlock(pos, state.setValue(POWERED, Boolean.FALSE), 2);
+			this.updateNeighborsInFront(worldIn, pos, state);
 			return;
 		} else if (!isPowered && shouldBeOn) {
-			worldIn.setBlockState(pos, state.with(POWERED, Boolean.TRUE), 2);
-			this.notifyNeighbors(worldIn, pos, state);
+			worldIn.setBlock(pos, state.setValue(POWERED, Boolean.TRUE), 2);
+			this.updateNeighborsInFront(worldIn, pos, state);
 			return;
 		}
 	}
 
 	@Override
-	protected void updateState(World worldIn, BlockPos pos, BlockState state) {
-		if (!worldIn.getPendingBlockTicks().isTickPending(pos, this)) {
+	protected void checkTickOnNeighbor(World worldIn, BlockPos pos, BlockState state) {
+		if (!worldIn.getBlockTicks().willTickThisTick(pos, this)) {
 			TickPriority tickpriority = TickPriority.HIGH;
-			if (this.isFacingTowardsRepeater(worldIn, pos, state)) {
+			if (this.shouldPrioritize(worldIn, pos, state)) {
 				tickpriority = TickPriority.EXTREMELY_HIGH;
 			}
-			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.getDelay(state), tickpriority);
+			worldIn.getBlockTicks().scheduleTick(pos, this, this.getDelay(state), tickpriority);
 		}
 	}
 
 	@Override
-	protected boolean shouldBePowered(World worldIn, BlockPos pos, BlockState state) {
-		Direction set = state.get(HORIZONTAL_FACING).rotateY();
-		Direction reset = state.get(HORIZONTAL_FACING).rotateYCCW();
+	protected boolean shouldTurnOn(World worldIn, BlockPos pos, BlockState state) {
+		Direction set = state.getValue(FACING).getClockWise();
+		Direction reset = state.getValue(FACING).getCounterClockWise();
 		boolean setPowered = this.getRedstonePowerForSide(worldIn, pos, set) > 0;
 		boolean resetPowered = this.getRedstonePowerForSide(worldIn, pos, reset) > 0;
 		if (setPowered) {
@@ -55,7 +55,7 @@ public class SRLatchBlock extends BaseDiodeBlock {
 		} else if (resetPowered) {
 			return false;
 		}
-		return state.get(POWERED);
+		return state.getValue(POWERED);
 	}
 
 	@Override

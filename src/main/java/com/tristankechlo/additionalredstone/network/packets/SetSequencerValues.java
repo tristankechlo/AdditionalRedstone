@@ -40,17 +40,17 @@ public class SetSequencerValues {
 			if (player == null) {
 				return;
 			}
-			ServerWorld world = player.getServerWorld();
-			if (world == null || !world.isBlockLoaded(msg.pos)) {
+			ServerWorld world = player.getLevel();
+			if (world == null || !world.hasChunkAt(msg.pos)) {
 				return;
 			}
-			TileEntity entity = world.getTileEntity(msg.pos);
+			TileEntity entity = world.getBlockEntity(msg.pos);
 
 			if (entity != null && (entity instanceof SequencerTileEntity)) {
 				SequencerTileEntity sequencer = (SequencerTileEntity) entity;
 				sequencer.setConfiguration(Math.abs(msg.interval));
-				world.notifyBlockUpdate(msg.pos, world.getBlockState(msg.pos), world.getBlockState(msg.pos), 3);
-				sequencer.markDirty();
+				world.sendBlockUpdated(msg.pos, world.getBlockState(msg.pos), world.getBlockState(msg.pos), 3);
+				sequencer.setChanged();
 			}
 
 		});

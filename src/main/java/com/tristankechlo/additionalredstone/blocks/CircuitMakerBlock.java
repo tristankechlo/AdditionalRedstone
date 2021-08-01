@@ -35,30 +35,30 @@ import net.minecraftforge.common.ToolType;
 
 public class CircuitMakerBlock extends HorizontalBlock {
 
-	private static final ITextComponent CONTAINER_NAME = new TranslationTextComponent("container.additionalredstone.circuit_maker");
-	private static final VoxelShape SHAPE = VoxelShapes.combineAndSimplify(
-			Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D),
-			Block.makeCuboidShape(2.5D, 2.0D, 2.5D, 13.5D, 12.0D, 13.5D), IBooleanFunction.OR);
+	private static final ITextComponent CONTAINER_NAME = new TranslationTextComponent(
+			"container.additionalredstone.circuit_maker");
+	private static final VoxelShape SHAPE = VoxelShapes.join(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D),
+			Block.box(2.5D, 2.0D, 2.5D, 13.5D, 12.0D, 13.5D), IBooleanFunction.OR);
 
 	public CircuitMakerBlock() {
-		super(Properties.create(Material.IRON, MaterialColor.GRAY).sound(SoundType.METAL).hardnessAndResistance(5F, 6F)
-				.harvestLevel(2).harvestTool(ToolType.PICKAXE).setRequiresTool().notSolid());
+		super(Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).strength(5F, 6F)
+				.harvestLevel(2).harvestTool(ToolType.PICKAXE).requiresCorrectToolForDrops().noOcclusion());
 	}
 
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		return hasSolidSideOnTop(worldIn, pos.down());
+	public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+		return canSupportRigidBlock(worldIn, pos.below());
 	}
 
 	@Override
 	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos,
 			boolean isMoving) {
-		if (!state.isValidPosition(worldIn, pos)) {
-			TileEntity tileentity = state.hasTileEntity() ? worldIn.getTileEntity(pos) : null;
-			spawnDrops(state, worldIn, pos, tileentity);
+		if (!state.canSurvive(worldIn, pos)) {
+			TileEntity tileentity = state.hasTileEntity() ? worldIn.getBlockEntity(pos) : null;
+			dropResources(state, worldIn, pos, tileentity);
 			worldIn.removeBlock(pos, false);
 			for (Direction direction : Direction.values()) {
-				worldIn.notifyNeighborsOfStateChange(pos.offset(direction), this);
+				worldIn.updateNeighborsAt(pos.relative(direction), this);
 			}
 		}
 	}
@@ -69,13 +69,13 @@ public class CircuitMakerBlock extends HorizontalBlock {
 	}
 
 	@Override
-	public VoxelShape getRayTraceShape(BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context) {
+	public VoxelShape getVisualShape(BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context) {
 		return VoxelShapes.empty();
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public float getShadeBrightness(BlockState state, IBlockReader worldIn, BlockPos pos) {
 		return 1.0F;
 	}
 
@@ -85,30 +85,30 @@ public class CircuitMakerBlock extends HorizontalBlock {
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player,
-			Hand handIn, BlockRayTraceResult hit) {
-		if (worldIn.isRemote) {
+	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn,
+			BlockRayTraceResult hit) {
+		if (worldIn.isClientSide) {
 			return ActionResultType.SUCCESS;
 		} else {
-			player.openContainer(state.getContainer(worldIn, pos));
+			player.openMenu(state.getMenuProvider(worldIn, pos));
 			return ActionResultType.CONSUME;
 		}
 	}
 
 	@Override
-	public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos) {
+	public INamedContainerProvider getMenuProvider(BlockState state, World worldIn, BlockPos pos) {
 		return new SimpleNamedContainerProvider((id, playerInv, player) -> {
-			return new CircuitMakerContainer(id, playerInv, IWorldPosCallable.of(worldIn, pos));
+			return new CircuitMakerContainer(id, playerInv, IWorldPosCallable.create(worldIn, pos));
 		}, CONTAINER_NAME);
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return this.getDefaultState().with(HORIZONTAL_FACING, context.getPlacementHorizontalFacing().getOpposite());
+		return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(HORIZONTAL_FACING);
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+		builder.add(FACING);
 	}
 }

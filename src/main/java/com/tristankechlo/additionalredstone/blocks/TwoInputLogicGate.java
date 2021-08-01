@@ -17,9 +17,9 @@ public class TwoInputLogicGate extends BaseDiodeBlock {
 	}
 
 	@Override
-	protected boolean shouldBePowered(World worldIn, BlockPos pos, BlockState state) {
-		Direction left = state.get(HORIZONTAL_FACING).rotateY();
-		Direction right = state.get(HORIZONTAL_FACING).rotateYCCW();
+	protected boolean shouldTurnOn(World worldIn, BlockPos pos, BlockState state) {
+		Direction left = state.getValue(FACING).getClockWise();
+		Direction right = state.getValue(FACING).getCounterClockWise();
 		boolean i = this.getRedstonePowerForSide(worldIn, pos, left) > 0;
 		boolean j = this.getRedstonePowerForSide(worldIn, pos, right) > 0;
 		return logic.apply(i, j);
@@ -27,7 +27,7 @@ public class TwoInputLogicGate extends BaseDiodeBlock {
 
 	@Override
 	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		return state.get(HORIZONTAL_FACING) != side;
+		return state.getValue(FACING) != side;
 	}
 
 }

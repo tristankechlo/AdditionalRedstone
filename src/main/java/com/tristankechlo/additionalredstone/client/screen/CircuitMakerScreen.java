@@ -40,13 +40,13 @@ public class CircuitMakerScreen extends ContainerScreen<CircuitMakerContainer> {
 
 	public CircuitMakerScreen(CircuitMakerContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
 		super(screenContainer, inv, titleIn);
-		this.xSize = 192;
-		this.ySize = 167;
-		this.titleY -= 1;
-		this.titleX -= 3;
-		this.playerInventoryTitleX -= 2;
-		this.playerInventoryTitleY += 2;
-		container.setInventoryChangeListener(this::onInventoryChange);
+		this.imageWidth = 192;
+		this.imageHeight = 167;
+		this.titleLabelY -= 1;
+		this.titleLabelX -= 3;
+		this.inventoryLabelX -= 2;
+		this.inventoryLabelY += 2;
+		menu.setInventoryChangeListener(this::onInventoryChange);
 	}
 
 	@Override
@@ -57,18 +57,18 @@ public class CircuitMakerScreen extends ContainerScreen<CircuitMakerContainer> {
 	@Override
 	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
-		this.renderHoveredTooltip(matrixStack, mouseX, mouseY);
+		this.renderTooltip(matrixStack, mouseX, mouseY);
 	}
 
 	@Override
 	@SuppressWarnings("deprecation")
-	protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
+	protected void renderBg(MatrixStack matrixStack, float partialTicks, int x, int y) {
 		this.renderBackground(matrixStack);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.minecraft.getTextureManager().bindTexture(BACKGROUND_TEXTURE);
-		int i = this.guiLeft;
-		int j = this.guiTop;
-		this.blit(matrixStack, i, j, 0, 0, this.xSize, this.ySize);
+		this.minecraft.getTextureManager().bind(BACKGROUND_TEXTURE);
+		int i = this.leftPos;
+		int j = this.topPos;
+		this.blit(matrixStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
 
 		// render scrollbar
 		int k = (int) (41.0F * this.sliderProgress);
@@ -76,8 +76,8 @@ public class CircuitMakerScreen extends ContainerScreen<CircuitMakerContainer> {
 
 		// render buttons with items
 		if (this.hasItemsInInputSlot) {
-			int l = this.guiLeft + 68;
-			int i1 = this.guiTop + 15;
+			int l = this.leftPos + 68;
+			int i1 = this.topPos + 15;
 			int j1 = this.recipeIndexOffset + 12;
 			this.renderButtons(matrixStack, x, y, l, i1, j1);
 			this.renderCraftableItems(l, i1, j1);
@@ -87,40 +87,41 @@ public class CircuitMakerScreen extends ContainerScreen<CircuitMakerContainer> {
 		if (this.renderInputHelp) {
 			this.renderInputHelp(matrixStack, x, y);
 		} else {
-			int xx = this.guiLeft - 25;
-			int yy = this.guiTop;
-			this.minecraft.getTextureManager().bindTexture(ICONS);
+			int xx = this.leftPos - 25;
+			int yy = this.topPos;
+			this.minecraft.getTextureManager().bind(ICONS);
 			this.blit(matrixStack, xx, yy, 50, 0, 25, 25);
 			if (x >= xx && x < xx + 25 && y >= yy && y < yy + 25) {
-				ITextComponent helpText = new TranslationTextComponent("screen.additionalredstone.circuit_maker.show_recipe");
+				ITextComponent helpText = new TranslationTextComponent(
+						"screen.additionalredstone.circuit_maker.show_recipe");
 				this.renderTooltip(matrixStack, helpText, x, y);
 			}
 		}
 	}
 
 	private void renderInputHelp(MatrixStack matrixStack, int mouseX, int mouseY) {
-		this.minecraft.getTextureManager().bindTexture(BACKGROUND_TEXTURE);
-		this.blit(matrixStack, this.guiLeft - 72, this.guiTop, 18, 167, 72, 52);
+		this.minecraft.getTextureManager().bind(BACKGROUND_TEXTURE);
+		this.blit(matrixStack, this.leftPos - 72, this.topPos, 18, 167, 72, 52);
 		final ItemRenderer renderer = this.minecraft.getItemRenderer();
 		for (int i = 0; i < 3; i++) {
-			int x = this.guiLeft - 64 + (i * 20);
-			int y = this.guiTop + 8;
-			renderer.renderItemIntoGUI(STACKS[i], x, y);
+			int x = this.leftPos - 64 + (i * 20);
+			int y = this.topPos + 8;
+			renderer.renderGuiItem(STACKS[i], x, y);
 			if (mouseX >= x && mouseX < x + 16 && mouseY >= y && mouseY < y + 16) {
 				this.renderTooltip(matrixStack, STACKS[i], mouseX, mouseY);
 			}
 		}
 		for (int i = 0; i < 3; i++) {
-			int x = this.guiLeft - 64 + (i * 20);
-			int y = this.guiTop + 28;
-			renderer.renderItemIntoGUI(STACKS[3], x, y);
+			int x = this.leftPos - 64 + (i * 20);
+			int y = this.topPos + 28;
+			renderer.renderGuiItem(STACKS[3], x, y);
 			if (mouseX >= x && mouseX < x + 16 && mouseY >= y && mouseY < y + 16) {
 				this.renderTooltip(matrixStack, STACKS[3], mouseX, mouseY);
 			}
 		}
-		int xx = this.guiLeft - 97;
-		int yy = this.guiTop;
-		this.minecraft.getTextureManager().bindTexture(ICONS);
+		int xx = this.leftPos - 97;
+		int yy = this.topPos;
+		this.minecraft.getTextureManager().bind(ICONS);
 		this.blit(matrixStack, xx, yy, 25, 0, 25, 25);
 		this.blit(matrixStack, xx + 3, yy + 4, 1, 1, 18, 18);
 		if (mouseX >= xx && mouseX < xx + 25 && mouseY >= yy && mouseY < yy + 25) {
@@ -130,13 +131,13 @@ public class CircuitMakerScreen extends ContainerScreen<CircuitMakerContainer> {
 	}
 
 	@Override
-	protected void renderHoveredTooltip(MatrixStack matrixStack, int x, int y) {
-		super.renderHoveredTooltip(matrixStack, x, y);
+	protected void renderTooltip(MatrixStack matrixStack, int x, int y) {
+		super.renderTooltip(matrixStack, x, y);
 
 		// render tooltips for items in the buttons
 		if (this.hasItemsInInputSlot) {
-			int i = this.guiLeft + 68;
-			int j = this.guiTop + 15;
+			int i = this.leftPos + 68;
+			int j = this.topPos + 15;
 			int k = this.recipeIndexOffset + 12;
 			Circuits[] list = Circuits.values();
 			for (int l = this.recipeIndexOffset; l < k && l < Circuits.SIZE; ++l) {
@@ -156,8 +157,8 @@ public class CircuitMakerScreen extends ContainerScreen<CircuitMakerContainer> {
 			int k = p1 + j % buttonsPerRow * buttonSize;
 			int l = j / buttonsPerRow;
 			int i1 = p2 + l * buttonSize + 2;
-			int j1 = this.ySize;
-			if (i == this.container.getSelectedRecipe() - 1) {
+			int j1 = this.imageHeight;
+			if (i == this.menu.getSelectedRecipe() - 1) {
 				j1 += buttonSize;
 			} else if (x >= k && y >= i1 && x < k + buttonSize && y < i1 + buttonSize) {
 				j1 += (2 * buttonSize);
@@ -173,7 +174,7 @@ public class CircuitMakerScreen extends ContainerScreen<CircuitMakerContainer> {
 			int k = left + j % buttonsPerRow * buttonSize + 1;
 			int l = j / buttonsPerRow;
 			int i1 = top + l * buttonSize + 1;
-			this.minecraft.getItemRenderer().renderItemAndEffectIntoGUI(list[i].getItemStack(), k, i1);
+			this.minecraft.getItemRenderer().renderAndDecorateItem(list[i].getItemStack(), k, i1);
 		}
 	}
 
@@ -181,8 +182,8 @@ public class CircuitMakerScreen extends ContainerScreen<CircuitMakerContainer> {
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		this.clickedOnSroll = false;
 		if (this.hasItemsInInputSlot) {
-			int i = this.guiLeft + 68;
-			int j = this.guiTop + 15;
+			int i = this.leftPos + 68;
+			int j = this.topPos + 15;
 			int k = this.recipeIndexOffset + 12;
 
 			for (int l = this.recipeIndexOffset; l < k; ++l) {
@@ -191,34 +192,36 @@ public class CircuitMakerScreen extends ContainerScreen<CircuitMakerContainer> {
 				double d1 = mouseY - (double) (j + i1 / buttonsPerRow * buttonSize);
 				double buttonSize2 = (double) this.buttonSize;
 				if (d0 >= 0.0D && d1 >= 0.0D && d0 < buttonSize2 && d1 < buttonSize2
-						&& this.container.enchantItem(this.minecraft.player, l + 1)) {
-					Minecraft.getInstance().getSoundHandler()
-							.play(SimpleSound.master(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
-					this.minecraft.playerController.sendEnchantPacket((this.container).windowId, l + 1);
+						&& this.menu.clickMenuButton(this.minecraft.player, l + 1)) {
+					Minecraft.getInstance().getSoundManager()
+							.play(SimpleSound.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
+					this.minecraft.gameMode.handleInventoryButtonClick((this.menu).containerId, l + 1);
 					return true;
 				}
 			}
 			// scroll bar start
-			i = this.guiLeft + 152;
-			j = this.guiTop + 14;
+			i = this.leftPos + 152;
+			j = this.topPos + 14;
 			if (mouseX >= (double) i && mouseX < (double) (i + 12) && mouseY >= (double) j
 					&& mouseY < (double) (j + 54)) {
 				this.clickedOnSroll = true;
 			}
 		}
-		if(!this.renderInputHelp) {
-			int x = this.guiLeft - 25;
-			int y = this.guiTop;
+		if (!this.renderInputHelp) {
+			int x = this.leftPos - 25;
+			int y = this.topPos;
 			if (mouseX >= x && mouseX < x + 25 && mouseY >= y && mouseY < y + 25) {
 				this.renderInputHelp = true;
-				Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
+				Minecraft.getInstance().getSoundManager()
+						.play(SimpleSound.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
 			}
 		} else {
-			int x = this.guiLeft - 97;
-			int y = this.guiTop;
+			int x = this.leftPos - 97;
+			int y = this.topPos;
 			if (mouseX >= x && mouseX < x + 25 && mouseY >= y && mouseY < y + 25) {
 				this.renderInputHelp = false;
-				Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
+				Minecraft.getInstance().getSoundManager()
+						.play(SimpleSound.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
 			}
 		}
 		return super.mouseClicked(mouseX, mouseY, button);
@@ -227,7 +230,7 @@ public class CircuitMakerScreen extends ContainerScreen<CircuitMakerContainer> {
 	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
 		if (this.clickedOnSroll && this.canScroll()) {
-			int i = this.guiTop + 14;
+			int i = this.topPos + 14;
 			int j = i + 54;
 			this.sliderProgress = ((float) mouseY - (float) i - 7.5F) / ((float) (j - i) - 15.0F);
 			this.sliderProgress = MathHelper.clamp(this.sliderProgress, 0.0F, 1.0F);
@@ -258,7 +261,7 @@ public class CircuitMakerScreen extends ContainerScreen<CircuitMakerContainer> {
 	}
 
 	private void onInventoryChange() {
-		this.hasItemsInInputSlot = this.container.hasEnoughItemsInSlots();
+		this.hasItemsInInputSlot = this.menu.hasEnoughItemsInSlots();
 		if (!this.hasItemsInInputSlot) {
 			this.sliderProgress = 0.0F;
 			this.recipeIndexOffset = 0;

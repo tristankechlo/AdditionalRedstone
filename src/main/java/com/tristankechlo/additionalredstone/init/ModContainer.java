@@ -14,6 +14,6 @@ public class ModContainer {
 	public static final DeferredRegister<ContainerType<?>> CONTAINER_TYPES = DeferredRegister
 			.create(ForgeRegistries.CONTAINERS, AdditionalRedstone.MOD_ID);
 
-	public static final RegistryObject<ContainerType<CircuitMakerContainer>> CIRCUIT_MAKER_CONTAINER = 
-			CONTAINER_TYPES.register("circuit_maker", () -> IForgeContainerType.create(CircuitMakerContainer::new));
+	public static final RegistryObject<ContainerType<CircuitMakerContainer>> CIRCUIT_MAKER_CONTAINER = CONTAINER_TYPES
+			.register("circuit_maker", () -> IForgeContainerType.create(CircuitMakerContainer::new));
 }

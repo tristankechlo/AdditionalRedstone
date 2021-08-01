@@ -38,18 +38,18 @@ import net.minecraftforge.event.ForgeEventFactory;
 
 public class ToggleLatchBlock extends HorizontalBlock {
 
-	protected static final VoxelShape SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D);
+	protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D);
 	public static final EnumProperty<ToggleLatchSide> POWERED_SIDE = EnumProperty.create("outputside",
 			ToggleLatchSide.class);
 
 	public ToggleLatchBlock() {
-		super(Properties.from(Blocks.REPEATER));
-		this.setDefaultState(this.getDefaultDiodeState());
+		super(Properties.copy(Blocks.REPEATER));
+		this.registerDefaultState(this.getDefaultDiodeState());
 	}
 
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		return hasSolidSideOnTop(worldIn, pos.down());
+	public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+		return canSupportRigidBlock(worldIn, pos.below());
 	}
 
 	@Override
@@ -61,15 +61,15 @@ public class ToggleLatchBlock extends HorizontalBlock {
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 		boolean inputPowered = this.calculateInputStrength(worldIn, pos, state) > 0;
 		if (inputPowered) {
-			worldIn.setBlockState(pos, state.cycleValue(POWERED_SIDE), 2);
+			worldIn.setBlock(pos, state.cycle(POWERED_SIDE), 2);
 			this.notifyNeighbors(worldIn, pos, state);
 		}
 	}
 
 	private void updateState(World worldIn, BlockPos pos, BlockState state) {
-		if (!worldIn.getPendingBlockTicks().isTickPending(pos, this)) {
+		if (!worldIn.getBlockTicks().willTickThisTick(pos, this)) {
 			TickPriority tickpriority = TickPriority.HIGH;
-			worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.getDelay(state), tickpriority);
+			worldIn.getBlockTicks().scheduleTick(pos, this, this.getDelay(state), tickpriority);
 		}
 	}
 
@@ -77,103 +77,103 @@ public class ToggleLatchBlock extends HorizontalBlock {
 	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos,
 			boolean isMoving) {
 		// only allow blockupdates to have an effect when they are on the input side
-		Direction inputDirection = state.get(HORIZONTAL_FACING);
-		BlockPos inputPos = pos.offset(inputDirection);
+		Direction inputDirection = state.getValue(FACING);
+		BlockPos inputPos = pos.relative(inputDirection);
 		if (!inputPos.equals(fromPos)) {
 			return;
 		}
-		if (state.isValidPosition(worldIn, pos)) {
+		if (state.canSurvive(worldIn, pos)) {
 			this.updateState(worldIn, pos, state);
 		} else {
-			spawnDrops(state, worldIn, pos, null);
+			dropResources(state, worldIn, pos, null);
 			worldIn.removeBlock(pos, false);
 			for (Direction direction : Direction.values()) {
-				worldIn.notifyNeighborsOfStateChange(pos.offset(direction), this);
+				worldIn.updateNeighborsAt(pos.relative(direction), this);
 			}
 		}
 	}
 
 	@Override
 	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		return side != state.get(HORIZONTAL_FACING);
+		return side != state.getValue(FACING);
 	}
 
 	@Override
-	public boolean canProvidePower(BlockState state) {
+	public boolean isSignalSource(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player,
-			Hand handIn, BlockRayTraceResult hit) {
-		if (!player.abilities.allowEdit) {
+	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn,
+			BlockRayTraceResult hit) {
+		if (!player.abilities.mayBuild) {
 			return ActionResultType.PASS;
 		} else {
-			worldIn.setBlockState(pos, state.cycleValue(POWERED_SIDE), 3);
+			worldIn.setBlock(pos, state.cycle(POWERED_SIDE), 3);
 			this.playSound(player, worldIn, pos, true);
-			return ActionResultType.func_233537_a_(worldIn.isRemote);
+			return ActionResultType.sidedSuccess(worldIn.isClientSide);
 		}
 	}
 
 	private void playSound(@Nullable PlayerEntity playerIn, IWorld worldIn, BlockPos pos, boolean hitByArrow) {
-		worldIn.playSound(playerIn, pos, SoundEvents.BLOCK_WOODEN_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.6F);
+		worldIn.playSound(playerIn, pos, SoundEvents.WOODEN_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.6F);
 	}
 
 	@Override
-	public int getStrongPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
-		return this.getWeakPower(blockState, blockAccess, pos, side);
+	public int getDirectSignal(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+		return this.getSignal(blockState, blockAccess, pos, side);
 	}
 
 	@Override
-	public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
-		Direction right = blockState.get(HORIZONTAL_FACING).rotateY();
-		Direction left = blockState.get(HORIZONTAL_FACING).rotateYCCW();
-		if (side == left && blockState.get(POWERED_SIDE) == ToggleLatchSide.LEFT) {
+	public int getSignal(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+		Direction right = blockState.getValue(FACING).getClockWise();
+		Direction left = blockState.getValue(FACING).getCounterClockWise();
+		if (side == left && blockState.getValue(POWERED_SIDE) == ToggleLatchSide.LEFT) {
 			return 15;
-		} else if (side == right && blockState.get(POWERED_SIDE) == ToggleLatchSide.RIGHT) {
+		} else if (side == right && blockState.getValue(POWERED_SIDE) == ToggleLatchSide.RIGHT) {
 			return 15;
 		}
 		return 0;
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder) {
-		builder.add(HORIZONTAL_FACING, POWERED_SIDE);
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
+		builder.add(FACING, POWERED_SIDE);
 	}
 
 	private BlockState getDefaultDiodeState() {
-		return this.stateContainer.getBaseState().with(HORIZONTAL_FACING, Direction.NORTH).with(POWERED_SIDE,
+		return this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED_SIDE,
 				ToggleLatchSide.LEFT);
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		Direction direction = ctx.getPlacementHorizontalFacing().getOpposite();
-		return this.getDefaultState().with(HORIZONTAL_FACING, direction).with(POWERED_SIDE, ToggleLatchSide.LEFT);
+		Direction direction = ctx.getHorizontalDirection().getOpposite();
+		return this.defaultBlockState().setValue(FACING, direction).setValue(POWERED_SIDE, ToggleLatchSide.LEFT);
 	}
 
 	private void notifyNeighbors(World worldIn, BlockPos pos, BlockState state) {
-		ToggleLatchSide side = state.get(POWERED_SIDE);
+		ToggleLatchSide side = state.getValue(POWERED_SIDE);
 		if (side == ToggleLatchSide.LEFT) {
-			Direction direction = state.get(HORIZONTAL_FACING).rotateY();
-			BlockPos blockpos = pos.offset(direction);
+			Direction direction = state.getValue(FACING).getClockWise();
+			BlockPos blockpos = pos.relative(direction);
 			if (ForgeEventFactory
 					.onNeighborNotify(worldIn, pos, worldIn.getBlockState(pos), EnumSet.of(direction), false)
 					.isCanceled()) {
 				return;
 			}
 			worldIn.neighborChanged(blockpos, this, pos);
-			worldIn.notifyNeighborsOfStateExcept(blockpos, this, direction.getOpposite());
+			worldIn.updateNeighborsAtExceptFromFacing(blockpos, this, direction.getOpposite());
 		} else if (side == ToggleLatchSide.RIGHT) {
-			Direction direction = state.get(HORIZONTAL_FACING).rotateYCCW();
-			BlockPos blockpos = pos.offset(direction);
+			Direction direction = state.getValue(FACING).getCounterClockWise();
+			BlockPos blockpos = pos.relative(direction);
 			if (ForgeEventFactory
 					.onNeighborNotify(worldIn, pos, worldIn.getBlockState(pos), EnumSet.of(direction), false)
 					.isCanceled()) {
 				return;
 			}
 			worldIn.neighborChanged(blockpos, this, pos);
-			worldIn.notifyNeighborsOfStateExcept(blockpos, this, direction.getOpposite());
+			worldIn.updateNeighborsAtExceptFromFacing(blockpos, this, direction.getOpposite());
 		}
 	}
 
@@ -184,7 +184,7 @@ public class ToggleLatchBlock extends HorizontalBlock {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
-		ToggleLatchSide side = stateIn.get(POWERED_SIDE);
+		ToggleLatchSide side = stateIn.getValue(POWERED_SIDE);
 		if (side == ToggleLatchSide.LEFT) {
 			this.spawnParticle(stateIn, worldIn, pos, rand, true);
 		} else if (side == ToggleLatchSide.RIGHT) {
@@ -195,25 +195,25 @@ public class ToggleLatchBlock extends HorizontalBlock {
 	@OnlyIn(Dist.CLIENT)
 	public void spawnParticle(BlockState state, World world, BlockPos pos, Random rand, boolean left) {
 		double xOff = left ? 0.25D : 0.75D;
-		Direction direction = state.get(HORIZONTAL_FACING);
+		Direction direction = state.getValue(FACING);
 		double x = (double) pos.getX() + xOff + (rand.nextDouble() - 0.5D) * 0.2D;
 		double y = (double) pos.getY() + 0.4D + (rand.nextDouble() - 0.5D) * 0.2D;
 		double z = (double) pos.getZ() + 0.65D + (rand.nextDouble() - 0.5D) * 0.2D;
 		float f = -5.0F / 16.0F;
-		double xOffset = (double) (f * (float) direction.getXOffset());
-		double zOffset = (double) (f * (float) direction.getZOffset());
-		world.addParticle(RedstoneParticleData.REDSTONE_DUST, x + xOffset, y, z + zOffset, 0.0D, 0.0D, 0.0D);
+		double xOffset = (double) (f * (float) direction.getStepX());
+		double zOffset = (double) (f * (float) direction.getStepZ());
+		world.addParticle(RedstoneParticleData.REDSTONE, x + xOffset, y, z + zOffset, 0.0D, 0.0D, 0.0D);
 	}
 
 	private int calculateInputStrength(World worldIn, BlockPos pos, BlockState state) {
-		Direction direction = state.get(HORIZONTAL_FACING);
-		BlockPos blockpos = pos.offset(direction);
-		int i = worldIn.getRedstonePower(blockpos, direction);
+		Direction direction = state.getValue(FACING);
+		BlockPos blockpos = pos.relative(direction);
+		int i = worldIn.getSignal(blockpos, direction);
 		if (i >= 15) {
 			return i;
 		} else {
 			BlockState blockstate = worldIn.getBlockState(blockpos);
-			return Math.max(i, blockstate.matchesBlock(Blocks.REDSTONE_WIRE) ? blockstate.get(RedstoneWireBlock.POWER) : 0);
+			return Math.max(i, blockstate.is(Blocks.REDSTONE_WIRE) ? blockstate.getValue(RedstoneWireBlock.POWER) : 0);
 		}
 	}
 

@@ -24,7 +24,7 @@ public class OscillatorTileEntity extends TileEntity implements ITickableTileEnt
 
 	@Override
 	public void tick() {
-		if (this.world != null && !this.world.isRemote) {
+		if (this.level != null && !this.level.isClientSide) {
 			if (this.ticksOn <= 0) {
 				this.ticksOn = 0;
 				if (this.powered) {
@@ -62,13 +62,13 @@ public class OscillatorTileEntity extends TileEntity implements ITickableTileEnt
 		Block block = blockstate.getBlock();
 		if (block instanceof OscillatorBlock) {
 			this.powered = powered;
-			OscillatorBlock.setPowered(blockstate, this.world, this.pos, powered);
+			OscillatorBlock.setPowered(blockstate, this.level, this.worldPosition, powered);
 		}
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT nbt) {
-		super.read(state, nbt);
+	public void load(BlockState state, CompoundNBT nbt) {
+		super.load(state, nbt);
 		this.tickCounter = nbt.getInt("TickCounter");
 		this.powered = nbt.getBoolean("Powered");
 		this.ticksOn = nbt.getInt("TicksOn");
@@ -76,37 +76,37 @@ public class OscillatorTileEntity extends TileEntity implements ITickableTileEnt
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT nbt) {
+	public CompoundNBT save(CompoundNBT nbt) {
 		nbt.putInt("TickCounter", this.tickCounter);
 		nbt.putBoolean("Powered", this.powered);
 		nbt.putInt("TicksOn", this.ticksOn);
 		nbt.putInt("TicksOff", this.ticksOff);
-		return super.write(nbt);
+		return super.save(nbt);
 	}
 
 	@Override
 	public SUpdateTileEntityPacket getUpdatePacket() {
 		CompoundNBT nbt = new CompoundNBT();
-		write(nbt);
-		return new SUpdateTileEntityPacket(this.getPos(), 42, nbt);
+		save(nbt);
+		return new SUpdateTileEntityPacket(this.getBlockPos(), 42, nbt);
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-		BlockState blockState = world.getBlockState(pos);
-		this.read(blockState, pkt.getNbtCompound());
+		BlockState blockState = level.getBlockState(worldPosition);
+		this.load(blockState, pkt.getTag());
 	}
 
 	@Override
 	public CompoundNBT getUpdateTag() {
 		CompoundNBT nbt = new CompoundNBT();
-		write(nbt);
+		save(nbt);
 		return nbt;
 	}
 
 	@Override
 	public void handleUpdateTag(BlockState state, CompoundNBT tag) {
-		this.read(state, tag);
+		this.load(state, tag);
 	}
 
 	public int getTicksOn() {
