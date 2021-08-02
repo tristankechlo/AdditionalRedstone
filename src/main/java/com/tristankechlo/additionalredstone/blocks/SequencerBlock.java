@@ -1,37 +1,42 @@
 package com.tristankechlo.additionalredstone.blocks;
 
+import java.util.Random;
+
 import javax.annotation.Nullable;
 
+import com.tristankechlo.additionalredstone.blockentity.SequencerBlockEntity;
 import com.tristankechlo.additionalredstone.client.screen.SequencerScreen;
-import com.tristankechlo.additionalredstone.tileentity.SequencerTileEntity;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class SequencerBlock extends Block {
+public class SequencerBlock extends Block implements EntityBlock {
 
 	public static final IntegerProperty POWERED_SIDE = IntegerProperty.create("output", 0, 3);
 	protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D);
@@ -42,28 +47,28 @@ public class SequencerBlock extends Block {
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn,
-			BlockRayTraceResult hit) {
+	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
+			BlockHitResult hit) {
 		if (player.isShiftKeyDown()) {
-			if (!player.abilities.mayBuild) {
-				return ActionResultType.PASS;
+			if (!player.getAbilities().mayBuild) {
+				return InteractionResult.PASS;
 			} else {
 				worldIn.setBlock(pos, state.cycle(POWERED_SIDE), 3);
 				this.playSound(player, worldIn, pos, true);
-				return ActionResultType.sidedSuccess(worldIn.isClientSide);
+				return InteractionResult.sidedSuccess(worldIn.isClientSide);
 			}
 		}
-		TileEntity tile = worldIn.getBlockEntity(pos);
-		if (tile instanceof SequencerTileEntity && worldIn.isClientSide) {
-			SequencerTileEntity sequencer = (SequencerTileEntity) tile;
+		BlockEntity tile = worldIn.getBlockEntity(pos);
+		if (tile instanceof SequencerBlockEntity && worldIn.isClientSide) {
+			SequencerBlockEntity sequencer = (SequencerBlockEntity) tile;
 			int interval = sequencer.getInterval();
 			this.openSequencerScreen(interval, pos);
 		}
-		return ActionResultType.sidedSuccess(worldIn.isClientSide);
+		return InteractionResult.sidedSuccess(worldIn.isClientSide);
 	}
 
-	private void playSound(@Nullable PlayerEntity playerIn, IWorld worldIn, BlockPos pos, boolean hitByArrow) {
-		worldIn.playSound(playerIn, pos, SoundEvents.WOODEN_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.6F);
+	private void playSound(@Nullable Player playerIn, LevelAccessor worldIn, BlockPos pos, boolean hitByArrow) {
+		worldIn.playSound(playerIn, pos, SoundEvents.WOODEN_BUTTON_CLICK_OFF, SoundSource.BLOCKS, 0.3F, 0.6F);
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -71,22 +76,22 @@ public class SequencerBlock extends Block {
 		Minecraft.getInstance().setScreen(new SequencerScreen(interval, pos));
 	}
 
-	public static void update(BlockState state, World world, BlockPos pos) {
+	public static void update(BlockState state, Level world, BlockPos pos) {
 		world.setBlock(pos, state.cycle(POWERED_SIDE), 3);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 		return SHAPE;
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+	public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
 		return canSupportRigidBlock(worldIn, pos.below());
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
 		int direction = ctx.getHorizontalDirection().getOpposite().get2DDataValue();
 		return this.defaultBlockState().setValue(POWERED_SIDE, direction);
 	}
@@ -102,25 +107,25 @@ public class SequencerBlock extends Block {
 	}
 
 	@Override
-	public int getDirectSignal(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+	public int getDirectSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
 		return this.getSignal(blockState, blockAccess, pos, side);
 	}
 
 	@Override
-	public int getSignal(BlockState state, IBlockReader blockAccess, BlockPos pos, Direction side) {
+	public int getSignal(BlockState state, BlockGetter blockAccess, BlockPos pos, Direction side) {
 		return side.get2DDataValue() == state.getValue(POWERED_SIDE) ? 15 : 0;
 	}
 
 	@Override
-	public BlockRenderType getRenderShape(BlockState state) {
-		return BlockRenderType.MODEL;
+	public RenderShape getRenderShape(BlockState state) {
+		return RenderShape.MODEL;
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos,
+	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos fromPos,
 			boolean isMoving) {
 		if (!state.canSurvive(world, pos)) {
-			TileEntity tileentity = state.hasTileEntity() ? world.getBlockEntity(pos) : null;
+			BlockEntity tileentity = state.hasBlockEntity() ? world.getBlockEntity(pos) : null;
 			dropResources(state, world, pos, tileentity);
 			world.removeBlock(pos, false);
 			for (Direction direction : Direction.values()) {
@@ -130,12 +135,21 @@ public class SequencerBlock extends Block {
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return true;
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return new SequencerBlockEntity(pos, state);
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new SequencerTileEntity();
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random p_60465_) {
+		BlockEntity blockEntity = level.getBlockEntity(pos);
+		if (blockEntity instanceof SequencerBlockEntity) {
+			((SequencerBlockEntity) blockEntity).tick();
+		}
 	}
+	
+	@Override
+	public PushReaction getPistonPushReaction(BlockState p_60584_) {
+		return PushReaction.DESTROY;
+	}
+
 }

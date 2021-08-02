@@ -4,25 +4,25 @@ import com.tristankechlo.additionalredstone.init.ModBlocks;
 import com.tristankechlo.additionalredstone.init.ModContainer;
 import com.tristankechlo.additionalredstone.util.Circuits;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.IWorldPosCallable;
-import net.minecraft.util.IntReferenceHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.DataSlot;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class CircuitMakerContainer extends Container {
+public class CircuitMakerContainer extends AbstractContainerMenu {
 
-	private final IWorldPosCallable worldPos;
-	private final IntReferenceHolder selectedRecipe = IntReferenceHolder.standalone();
+	private final ContainerLevelAccess worldPos;
+	private final DataSlot selectedRecipe = DataSlot.standalone();
 	private Runnable changeListener = () -> {};
 	private final Slot slotStoneSlab1;
 	private final Slot slotStoneSlab2;
@@ -31,7 +31,7 @@ public class CircuitMakerContainer extends Container {
 	private final Slot slotRedstone;
 	private final Slot slotQuartz;
 	private final Slot slotOutput;
-	private final IInventory inputInventory = new Inventory(6) {
+	private final Container inputInventory = new SimpleContainer(6) {
 		@Override
 		public void setChanged() {
 			super.setChanged();
@@ -39,7 +39,7 @@ public class CircuitMakerContainer extends Container {
 			CircuitMakerContainer.this.changeListener.run();
 		}
 	};
-	private final IInventory outputInventory = new Inventory(1) {
+	private final Container outputInventory = new SimpleContainer(1) {
 		@Override
 		public void setChanged() {
 			super.setChanged();
@@ -47,11 +47,11 @@ public class CircuitMakerContainer extends Container {
 		}
 	};
 
-	public CircuitMakerContainer(int id, PlayerInventory playerInventory, PacketBuffer buffer) {
-		this(id, playerInventory, IWorldPosCallable.NULL);
+	public CircuitMakerContainer(int id, Inventory playerInventory, FriendlyByteBuf buffer) {
+		this(id, playerInventory, ContainerLevelAccess.NULL);
 	}
 
-	public CircuitMakerContainer(int id, PlayerInventory playerInventory, final IWorldPosCallable worldCallable) {
+	public CircuitMakerContainer(int id, Inventory playerInventory, final ContainerLevelAccess worldCallable) {
 		super(ModContainer.CIRCUIT_MAKER_CONTAINER.get(), id);
 		this.worldPos = worldCallable;
 
@@ -99,7 +99,7 @@ public class CircuitMakerContainer extends Container {
 			}
 
 			@Override
-			public ItemStack onTake(PlayerEntity thePlayer, ItemStack stack) {
+			public void onTake(Player thePlayer, ItemStack stack) {
 				CircuitMakerContainer.this.slotStoneSlab1.remove(1);
 				CircuitMakerContainer.this.slotStoneSlab2.remove(1);
 				CircuitMakerContainer.this.slotStoneSlab3.remove(1);
@@ -114,7 +114,7 @@ public class CircuitMakerContainer extends Container {
 						|| !CircuitMakerContainer.this.slotRedstone.hasItem()) {
 					CircuitMakerContainer.this.selectedRecipe.set(0);
 				}
-				return super.onTake(thePlayer, stack);
+				super.onTake(thePlayer, stack);
 			}
 		});
 
@@ -133,7 +133,7 @@ public class CircuitMakerContainer extends Container {
 	}
 
 	@Override
-	public boolean stillValid(PlayerEntity playerIn) {
+	public boolean stillValid(Player playerIn) {
 		return stillValid(this.worldPos, playerIn, ModBlocks.CIRCUIT_MAKER_BLOCK.get());
 	}
 
@@ -148,7 +148,7 @@ public class CircuitMakerContainer extends Container {
 	}
 
 	@Override
-	public boolean clickMenuButton(PlayerEntity playerIn, int id) {
+	public boolean clickMenuButton(Player playerIn, int id) {
 		if (id > 0 && id <= Circuits.SIZE) {
 			this.selectedRecipe.set(id);
 			this.createOutputStack();
@@ -159,15 +159,15 @@ public class CircuitMakerContainer extends Container {
 	}
 
 	@Override
-	public void removed(PlayerEntity playerIn) {
+	public void removed(Player playerIn) {
 		super.removed(playerIn);
 		this.worldPos.execute((world, pos) -> {
-			this.clearContainer(playerIn, playerIn.level, this.inputInventory);
+			this.clearContainer(playerIn, this.inputInventory);
 		});
 	}
 
 	@Override
-	public void slotsChanged(IInventory inventoryIn) {
+	public void slotsChanged(Container inventoryIn) {
 		ItemStack baseStack1 = this.slotStoneSlab1.getItem();
 		ItemStack baseStack2 = this.slotStoneSlab2.getItem();
 		ItemStack baseStack3 = this.slotStoneSlab3.getItem();
@@ -186,7 +186,7 @@ public class CircuitMakerContainer extends Container {
 	}
 
 	@Override
-	public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
+	public ItemStack quickMoveStack(Player playerIn, int index) {
 		ItemStack itemstack = ItemStack.EMPTY;
 		Slot slot = this.slots.get(index);
 		if (slot != null && slot.hasItem()) {

@@ -2,32 +2,33 @@ package com.tristankechlo.additionalredstone.client.screen;
 
 import java.time.LocalTime;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
+import com.tristankechlo.additionalredstone.blockentity.TimerBlockEntity;
 import com.tristankechlo.additionalredstone.network.PacketHandler;
 import com.tristankechlo.additionalredstone.network.packets.SetTimerValues;
-import com.tristankechlo.additionalredstone.tileentity.TimerTileEntity;
 import com.tristankechlo.additionalredstone.util.Utils;
 
-import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 public class TimerScreen extends Screen {
 
-	private static final ITextComponent TITLE = new TranslationTextComponent("screen.additionalredstone.oscillator");
+	private static final Component TITLE = new TranslatableComponent("screen.additionalredstone.oscillator");
 	private static final ResourceLocation ERROR = new ResourceLocation(AdditionalRedstone.MOD_ID,
 			"textures/other/icons.png");
-	private TextFieldWidget powerUpWidget;
-	private TextFieldWidget powerDownWidget;
-	private TextFieldWidget intervalWidget;
+	private EditBox powerUpWidget;
+	private EditBox powerDownWidget;
+	private EditBox intervalWidget;
 	private Button saveButton;
 	private Button cancelButton;
 	private BlockPos pos;
@@ -61,15 +62,15 @@ public class TimerScreen extends Screen {
 	@Override
 	protected void init() {
 		super.init();
-		this.powerUpWidget = new TextFieldWidget(this.font, this.width / 2 + 32, 60, 98, 20,
-				new StringTextComponent("timer_power_up"));
-		this.powerDownWidget = new TextFieldWidget(this.font, this.width / 2 + 32, 90, 98, 20,
-				new StringTextComponent("timer_power_down"));
-		this.intervalWidget = new TextFieldWidget(this.font, this.width / 2 + 32, 120, 98, 20,
-				new StringTextComponent("timer_interval"));
-		this.children.add(this.powerUpWidget);
-		this.children.add(this.powerDownWidget);
-		this.children.add(this.intervalWidget);
+		this.powerUpWidget = new EditBox(this.font, this.width / 2 + 32, 60, 98, 20,
+				new TextComponent("timer_power_up"));
+		this.powerDownWidget = new EditBox(this.font, this.width / 2 + 32, 90, 98, 20,
+				new TextComponent("timer_power_down"));
+		this.intervalWidget = new EditBox(this.font, this.width / 2 + 32, 120, 98, 20,
+				new TextComponent("timer_interval"));
+		this.addWidget(this.powerUpWidget);
+		this.addWidget(this.powerDownWidget);
+		this.addWidget(this.intervalWidget);
 		this.powerUpWidget.setMaxLength(5);
 		this.powerDownWidget.setMaxLength(5);
 		this.intervalWidget.setMaxLength(5);
@@ -80,15 +81,15 @@ public class TimerScreen extends Screen {
 		this.intervalWidget.setValue(String.valueOf(this.interval));
 
 		this.saveButton = new Button(this.width / 2 - 110, 160, 100, 20,
-				new TranslationTextComponent("screen.additionalredstone.save"), (b) -> {
+				new TranslatableComponent("screen.additionalredstone.save"), (b) -> {
 					this.save();
 				});
 		this.cancelButton = new Button(this.width / 2 + 10, 160, 100, 20,
-				new TranslationTextComponent("screen.additionalredstone.cancel"), (b) -> {
+				new TranslatableComponent("screen.additionalredstone.cancel"), (b) -> {
 					this.cancel();
 				});
-		this.addButton(saveButton);
-		this.addButton(cancelButton);
+		this.addWidget(saveButton);
+		this.addWidget(cancelButton);
 	}
 
 	private void save() {
@@ -107,7 +108,7 @@ public class TimerScreen extends Screen {
 	}
 
 	@Override
-	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		this.renderBackground(matrixStack);
 		this.powerUpWidget.render(matrixStack, mouseX, mouseY, partialTicks);
 		this.powerDownWidget.render(matrixStack, mouseX, mouseY, partialTicks);
@@ -115,29 +116,29 @@ public class TimerScreen extends Screen {
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
 
 		drawCenteredString(matrixStack, this.font,
-				new TranslationTextComponent("screen.additionalredstone.timer.description"), this.width / 2, 30,
+				new TranslatableComponent("screen.additionalredstone.timer.description"), this.width / 2, 30,
 				Utils.TEXT_COLOR_SCREEN);
 
-		AbstractGui.drawString(matrixStack, this.font,
-				new TranslationTextComponent("screen.additionalredstone.timer.power.on"), this.width / 2 - 130, 65,
+		GuiComponent.drawString(matrixStack, this.font,
+				new TranslatableComponent("screen.additionalredstone.timer.power.on"), this.width / 2 - 130, 65,
 				Utils.TEXT_COLOR_SCREEN);
-		AbstractGui.drawString(matrixStack, this.font,
-				new TranslationTextComponent("screen.additionalredstone.timer.power.off"), this.width / 2 - 130, 95,
+		GuiComponent.drawString(matrixStack, this.font,
+				new TranslatableComponent("screen.additionalredstone.timer.power.off"), this.width / 2 - 130, 95,
 				Utils.TEXT_COLOR_SCREEN);
-		AbstractGui.drawString(matrixStack, this.font,
-				new TranslationTextComponent("screen.additionalredstone.timer.interval"), this.width / 2 - 130, 125,
+		GuiComponent.drawString(matrixStack, this.font,
+				new TranslatableComponent("screen.additionalredstone.timer.interval"), this.width / 2 - 130, 125,
 				Utils.TEXT_COLOR_SCREEN);
 
 		if (this.powerUpError) {
-			this.minecraft.getTextureManager().bind(ERROR);
+			RenderSystem.setShaderTexture(0, ERROR);
 			this.blit(matrixStack, this.width / 2 + 140, 61, 1, 1, 18, 18);
 		}
 		if (this.powerDownError) {
-			this.minecraft.getTextureManager().bind(ERROR);
+			RenderSystem.setShaderTexture(0, ERROR);
 			this.blit(matrixStack, this.width / 2 + 140, 91, 1, 1, 18, 18);
 		}
 		if (this.intervalError) {
-			this.minecraft.getTextureManager().bind(ERROR);
+			RenderSystem.setShaderTexture(0, ERROR);
 			this.blit(matrixStack, this.width / 2 + 140, 121, 1, 1, 18, 18);
 		}
 	}
@@ -162,7 +163,7 @@ public class TimerScreen extends Screen {
 				this.powerUpError = true;
 			}
 		}
-		return MathHelper.clamp(powerUp, TimerTileEntity.minTime, TimerTileEntity.maxTime);
+		return Mth.clamp(powerUp, TimerBlockEntity.minTime, TimerBlockEntity.maxTime);
 	}
 
 	private int getPowerDownTime() {
@@ -185,7 +186,7 @@ public class TimerScreen extends Screen {
 				this.powerDownError = true;
 			}
 		}
-		return MathHelper.clamp(powerDown, TimerTileEntity.minTime, TimerTileEntity.maxTime);
+		return Mth.clamp(powerDown, TimerBlockEntity.minTime, TimerBlockEntity.maxTime);
 	}
 
 	private int getInterval() {
@@ -196,7 +197,7 @@ public class TimerScreen extends Screen {
 		} catch (Exception e) {
 			this.intervalError = true;
 		}
-		return MathHelper.clamp(interval, 1, 1000);
+		return Mth.clamp(interval, 1, 1000);
 	}
 
 }

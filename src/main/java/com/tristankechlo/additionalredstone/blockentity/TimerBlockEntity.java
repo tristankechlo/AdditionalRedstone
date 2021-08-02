@@ -1,18 +1,18 @@
-package com.tristankechlo.additionalredstone.tileentity;
+package com.tristankechlo.additionalredstone.blockentity;
 
 import com.tristankechlo.additionalredstone.blocks.TimerBlock;
-import com.tristankechlo.additionalredstone.init.ModTileEntities;
+import com.tristankechlo.additionalredstone.init.ModBlockEntities;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
-public class TimerTileEntity extends TileEntity implements ITickableTileEntity {
+public class TimerBlockEntity extends BlockEntity {
 
 	private int powerUpTime = 0;
 	private int powerDownTime = 2000;
@@ -21,11 +21,10 @@ public class TimerTileEntity extends TileEntity implements ITickableTileEntity {
 	public static final int minTime = 0;
 	public static final int maxTime = 24000;
 
-	public TimerTileEntity() {
-		super(ModTileEntities.TIMER_TILE_ENTITY.get());
+	public TimerBlockEntity(BlockPos pos, BlockState state) {
+		super(ModBlockEntities.TIMER_TILE_ENTITY.get(), pos, state);
 	}
 
-	@Override
 	public void tick() {
 		if (this.level != null && !this.level.isClientSide && level.getGameTime() % this.interval == 0) {
 			if (powerUpTime == powerDownTime) {
@@ -67,8 +66,8 @@ public class TimerTileEntity extends TileEntity implements ITickableTileEntity {
 	}
 
 	@Override
-	public void load(BlockState state, CompoundNBT nbt) {
-		super.load(state, nbt);
+	public void load(CompoundTag nbt) {
+		super.load(nbt);
 		this.powerUpTime = nbt.getInt("PowerUpTime");
 		this.powerDownTime = nbt.getInt("PowerDownTime");
 		this.powered = nbt.getBoolean("Powered");
@@ -76,7 +75,7 @@ public class TimerTileEntity extends TileEntity implements ITickableTileEntity {
 	}
 
 	@Override
-	public CompoundNBT save(CompoundNBT nbt) {
+	public CompoundTag save(CompoundTag nbt) {
 		nbt.putInt("PowerUpTime", this.powerUpTime);
 		nbt.putInt("PowerDownTime", this.powerDownTime);
 		nbt.putBoolean("Powered", this.powered);
@@ -85,28 +84,27 @@ public class TimerTileEntity extends TileEntity implements ITickableTileEntity {
 	}
 
 	@Override
-	public SUpdateTileEntityPacket getUpdatePacket() {
-		CompoundNBT nbt = new CompoundNBT();
+	public ClientboundBlockEntityDataPacket getUpdatePacket() {
+		CompoundTag nbt = new CompoundTag();
 		save(nbt);
-		return new SUpdateTileEntityPacket(this.getBlockPos(), 42, nbt);
+		return new ClientboundBlockEntityDataPacket(this.getBlockPos(), 42, nbt);
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-		BlockState blockState = level.getBlockState(worldPosition);
-		this.load(blockState, pkt.getTag());
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+		this.load(pkt.getTag());
 	}
 
 	@Override
-	public CompoundNBT getUpdateTag() {
-		CompoundNBT nbt = new CompoundNBT();
+	public CompoundTag getUpdateTag() {
+		CompoundTag nbt = new CompoundTag();
 		save(nbt);
 		return nbt;
 	}
 
 	@Override
-	public void handleUpdateTag(BlockState state, CompoundNBT tag) {
-		this.load(state, tag);
+	public void handleUpdateTag(CompoundTag tag) {
+		this.load(tag);
 	}
 
 	public int getPowerUpTime() {
@@ -122,9 +120,9 @@ public class TimerTileEntity extends TileEntity implements ITickableTileEntity {
 	}
 
 	public void setConfiguration(int powerUp, int powerDown, int interval) {
-		this.powerUpTime = MathHelper.clamp(powerUp, minTime, maxTime);
-		this.powerDownTime = MathHelper.clamp(powerDown, minTime, maxTime);
-		this.interval = MathHelper.clamp(interval, 1, 1000);
+		this.powerUpTime = Mth.clamp(powerUp, minTime, maxTime);
+		this.powerDownTime = Mth.clamp(powerDown, minTime, maxTime);
+		this.interval = Mth.clamp(interval, 1, 1000);
 	}
 
 }

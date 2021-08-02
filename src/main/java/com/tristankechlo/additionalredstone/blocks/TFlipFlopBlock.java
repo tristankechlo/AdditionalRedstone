@@ -2,21 +2,21 @@ package com.tristankechlo.additionalredstone.blocks;
 
 import java.util.Random;
 
-import com.tristankechlo.additionalredstone.tileentity.TFlipFlopTileEntity;
+import com.tristankechlo.additionalredstone.blockentity.TFlipFlopBlockEntity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.TickPriority;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.TickPriority;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.PushReaction;
 
-public class TFlipFlopBlock extends BaseDiodeBlock {
+public class TFlipFlopBlock extends BaseDiodeBlock implements EntityBlock {
 
 	@Override
-	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
+	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand) {
 		boolean inputPowered = this.getInputSignal(worldIn, pos, state) > 0;
 		if (inputPowered) {
 			worldIn.setBlock(pos, state.cycle(POWERED), 2);
@@ -25,12 +25,12 @@ public class TFlipFlopBlock extends BaseDiodeBlock {
 	}
 
 	@Override
-	protected void checkTickOnNeighbor(World worldIn, BlockPos pos, BlockState state) {
-		TileEntity tileentity = worldIn.getBlockEntity(pos);
+	protected void checkTickOnNeighbor(Level worldIn, BlockPos pos, BlockState state) {
+		BlockEntity tileentity = worldIn.getBlockEntity(pos);
 		boolean change = false;
-		if (tileentity instanceof TFlipFlopTileEntity) {
+		if (tileentity instanceof TFlipFlopBlockEntity) {
 			boolean input = this.getInputSignal(worldIn, pos, state) > 0;
-			change = ((TFlipFlopTileEntity) tileentity).shouldBePowered(input);
+			change = ((TFlipFlopBlockEntity) tileentity).shouldBePowered(input);
 		}
 		if (change && !worldIn.getBlockTicks().willTickThisTick(pos, this)) {
 			TickPriority tickpriority = TickPriority.HIGH;
@@ -42,7 +42,7 @@ public class TFlipFlopBlock extends BaseDiodeBlock {
 	}
 
 	@Override
-	protected boolean shouldTurnOn(World worldIn, BlockPos pos, BlockState state) {
+	protected boolean shouldTurnOn(Level worldIn, BlockPos pos, BlockState state) {
 		boolean inputPowered = this.getInputSignal(worldIn, pos, state) > 0;
 		if (inputPowered) {
 			return !state.getValue(POWERED);
@@ -50,26 +50,27 @@ public class TFlipFlopBlock extends BaseDiodeBlock {
 		return state.getValue(POWERED);
 	}
 
-	@Override
-	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		Direction direction1 = state.getValue(FACING);
-		Direction direction2 = state.getValue(FACING).getOpposite();
-		return side == direction1 || side == direction2;
-	}
-
-	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return true;
-	}
-
-	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new TFlipFlopTileEntity();
-	}
+// TODO connection check
+//	@Override
+//	public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
+//		Direction direction1 = state.getValue(FACING);
+//		Direction direction2 = state.getValue(FACING).getOpposite();
+//		return side == direction1 || side == direction2;
+//	}
 
 	@Override
 	protected int getDelay(BlockState state) {
 		return 0;
+	}
+
+	@Override
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return new TFlipFlopBlockEntity(pos, state);
+	}
+
+	@Override
+	public PushReaction getPistonPushReaction(BlockState p_60584_) {
+		return PushReaction.DESTROY;
 	}
 
 }

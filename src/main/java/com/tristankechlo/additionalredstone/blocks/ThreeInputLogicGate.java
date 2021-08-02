@@ -2,10 +2,10 @@ package com.tristankechlo.additionalredstone.blocks;
 
 import com.tristankechlo.additionalredstone.util.TriFunction;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 public class ThreeInputLogicGate extends BaseDiodeBlock {
 
@@ -16,7 +16,7 @@ public class ThreeInputLogicGate extends BaseDiodeBlock {
 	}
 
 	@Override
-	protected boolean shouldTurnOn(World worldIn, BlockPos pos, BlockState state) {
+	protected boolean shouldTurnOn(Level worldIn, BlockPos pos, BlockState state) {
 		Direction input = state.getValue(FACING);
 		Direction left = state.getValue(FACING).getClockWise();
 		Direction right = state.getValue(FACING).getCounterClockWise();

@@ -1,11 +1,11 @@
 package com.tristankechlo.additionalredstone.init;
 
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 
 public class ModItemGroups {
 
-	public static final ItemGroup GENERAL = new ItemGroup("additionalredstone.main") {
+	public static final CreativeModeTab GENERAL = new CreativeModeTab("additionalredstone.main") {
 
 		@Override
 		public ItemStack makeIcon() {

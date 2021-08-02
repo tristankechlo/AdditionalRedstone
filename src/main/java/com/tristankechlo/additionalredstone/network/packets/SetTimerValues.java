@@ -2,14 +2,14 @@ package com.tristankechlo.additionalredstone.network.packets;
 
 import java.util.function.Supplier;
 
-import com.tristankechlo.additionalredstone.tileentity.TimerTileEntity;
+import com.tristankechlo.additionalredstone.blockentity.TimerBlockEntity;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class SetTimerValues {
 
@@ -25,14 +25,14 @@ public class SetTimerValues {
 		this.pos = pos;
 	}
 
-	public static void encode(SetTimerValues msg, PacketBuffer buffer) {
+	public static void encode(SetTimerValues msg, FriendlyByteBuf buffer) {
 		buffer.writeInt(msg.powerUpTime);
 		buffer.writeInt(msg.powerDownTime);
 		buffer.writeInt(msg.interval);
 		buffer.writeBlockPos(msg.pos);
 	}
 
-	public static SetTimerValues decode(PacketBuffer buffer) {
+	public static SetTimerValues decode(FriendlyByteBuf buffer) {
 		int ticksOn = buffer.readInt();
 		int ticksOff = buffer.readInt();
 		int interval = buffer.readInt();
@@ -44,18 +44,18 @@ public class SetTimerValues {
 	public static void handle(SetTimerValues msg, Supplier<NetworkEvent.Context> context) {
 		context.get().enqueueWork(() -> {
 
-			ServerPlayerEntity player = context.get().getSender();
+			ServerPlayer player = context.get().getSender();
 			if (player == null) {
 				return;
 			}
-			ServerWorld world = player.getLevel();
+			ServerLevel world = player.getLevel();
 			if (world == null || !world.hasChunkAt(msg.pos)) {
 				return;
 			}
-			TileEntity entity = world.getBlockEntity(msg.pos);
+			BlockEntity entity = world.getBlockEntity(msg.pos);
 
-			if (entity != null && (entity instanceof TimerTileEntity)) {
-				TimerTileEntity timer = (TimerTileEntity) entity;
+			if (entity != null && (entity instanceof TimerBlockEntity)) {
+				TimerBlockEntity timer = (TimerBlockEntity) entity;
 				timer.setConfiguration(msg.powerUpTime, msg.powerDownTime, msg.interval);
 				world.sendBlockUpdated(msg.pos, world.getBlockState(msg.pos), world.getBlockState(msg.pos), 3);
 				timer.setChanged();

@@ -1,31 +1,31 @@
 package com.tristankechlo.additionalredstone.blocks;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.RedstoneDiodeBlock;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.DiodeBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class NotGateBlock extends BaseDiodeBlock {
 
 	@Override
-	protected boolean shouldTurnOn(World worldIn, BlockPos pos, BlockState state) {
+	protected boolean shouldTurnOn(Level worldIn, BlockPos pos, BlockState state) {
 		return this.getInputSignal(worldIn, pos, state) <= 0;
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return RedstoneDiodeBlock.SHAPE;
+	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+		return DiodeBlock.SHAPE;
 	}
 
-	@Override
-	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		Direction front = state.getValue(FACING);
-		Direction back = state.getValue(FACING).getOpposite();
-		return side == front || side == back;
-	}
+// TODO connection check
+//	@Override
+//	public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
+//		Direction front = state.getValue(FACING);
+//		Direction back = state.getValue(FACING).getOpposite();
+//		return side == front || side == back;
+//	}
 
 }

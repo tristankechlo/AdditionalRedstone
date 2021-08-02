@@ -2,11 +2,11 @@ package com.tristankechlo.additionalredstone.blocks;
 
 import java.util.function.BiFunction;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.PushReaction;
 
 public class TwoInputLogicGate extends BaseDiodeBlock {
 
@@ -17,7 +17,7 @@ public class TwoInputLogicGate extends BaseDiodeBlock {
 	}
 
 	@Override
-	protected boolean shouldTurnOn(World worldIn, BlockPos pos, BlockState state) {
+	protected boolean shouldTurnOn(Level worldIn, BlockPos pos, BlockState state) {
 		Direction left = state.getValue(FACING).getClockWise();
 		Direction right = state.getValue(FACING).getCounterClockWise();
 		boolean i = this.getRedstonePowerForSide(worldIn, pos, left) > 0;
@@ -25,9 +25,15 @@ public class TwoInputLogicGate extends BaseDiodeBlock {
 		return logic.apply(i, j);
 	}
 
+// TODO connection check
+//	@Override
+//	public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
+//		return state.getValue(FACING) != side;
+//	}
+
 	@Override
-	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		return state.getValue(FACING) != side;
+	public PushReaction getPistonPushReaction(BlockState p_60584_) {
+		return PushReaction.DESTROY;
 	}
 
 }

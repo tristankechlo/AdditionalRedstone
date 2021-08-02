@@ -1,31 +1,32 @@
 package com.tristankechlo.additionalredstone.client.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.network.PacketHandler;
 import com.tristankechlo.additionalredstone.network.packets.SetOscillatorValues;
 import com.tristankechlo.additionalredstone.util.Utils;
 
-import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class OscillatorScreen extends Screen {
 
-	private static final ITextComponent TITLE = new TranslationTextComponent("screen.additionalredstone.oscillator");
+	private static final Component TITLE = new TranslatableComponent("screen.additionalredstone.oscillator");
 	private static final ResourceLocation ICONS = new ResourceLocation(AdditionalRedstone.MOD_ID,
 			"textures/other/icons.png");
-	private TextFieldWidget ticksOnWidget;
-	private TextFieldWidget ticksOffWidget;
+	private EditBox ticksOnWidget;
+	private EditBox ticksOffWidget;
 	private Button saveButton;
 	private Button cancelButton;
 	private BlockPos pos;
@@ -56,12 +57,12 @@ public class OscillatorScreen extends Screen {
 	@Override
 	protected void init() {
 		super.init();
-		this.ticksOnWidget = new TextFieldWidget(this.font, this.width / 2 + 32, 60, 98, 20,
-				new StringTextComponent("oscillator_ticks_on"));
-		this.ticksOffWidget = new TextFieldWidget(this.font, this.width / 2 + 32, 90, 98, 20,
-				new StringTextComponent("oscillator_ticks_off"));
-		this.children.add(this.ticksOnWidget);
-		this.children.add(this.ticksOffWidget);
+		this.ticksOnWidget = new EditBox(this.font, this.width / 2 + 32, 60, 98, 20,
+				new TextComponent("oscillator_ticks_on"));
+		this.ticksOffWidget = new EditBox(this.font, this.width / 2 + 32, 90, 98, 20,
+				new TextComponent("oscillator_ticks_off"));
+		this.addWidget(this.ticksOnWidget);
+		this.addWidget(this.ticksOffWidget);
 		this.ticksOnWidget.setMaxLength(10);
 		this.ticksOffWidget.setMaxLength(10);
 		this.setInitialFocus(this.ticksOnWidget);
@@ -70,15 +71,15 @@ public class OscillatorScreen extends Screen {
 		this.ticksOffWidget.setValue(String.valueOf(this.ticksOff));
 
 		this.saveButton = new Button(this.width / 2 - 110, 150, 100, 20,
-				new TranslationTextComponent("screen.additionalredstone.save"), (b) -> {
+				new TranslatableComponent("screen.additionalredstone.save"), (b) -> {
 					this.save();
 				});
 		this.cancelButton = new Button(this.width / 2 + 10, 150, 100, 20,
-				new TranslationTextComponent("screen.additionalredstone.cancel"), (b) -> {
+				new TranslatableComponent("screen.additionalredstone.cancel"), (b) -> {
 					this.cancel();
 				});
-		this.addButton(saveButton);
-		this.addButton(cancelButton);
+		this.addWidget(saveButton);
+		this.addWidget(cancelButton);
 	}
 
 	private void save() {
@@ -108,29 +109,29 @@ public class OscillatorScreen extends Screen {
 	}
 
 	@Override
-	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		this.renderBackground(matrixStack);
 		this.ticksOnWidget.render(matrixStack, mouseX, mouseY, partialTicks);
 		this.ticksOffWidget.render(matrixStack, mouseX, mouseY, partialTicks);
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
 
 		drawCenteredString(matrixStack, this.font,
-				new TranslationTextComponent("screen.additionalredstone.oscillator.description"), this.width / 2, 30,
+				new TranslatableComponent("screen.additionalredstone.oscillator.description"), this.width / 2, 30,
 				Utils.TEXT_COLOR_SCREEN);
 
-		AbstractGui.drawString(matrixStack, this.font,
-				new TranslationTextComponent("screen.additionalredstone.oscillator.ticks.on"), this.width / 2 - 130, 65,
+		GuiComponent.drawString(matrixStack, this.font,
+				new TranslatableComponent("screen.additionalredstone.oscillator.ticks.on"), this.width / 2 - 130, 65,
 				Utils.TEXT_COLOR_SCREEN);
-		AbstractGui.drawString(matrixStack, this.font,
-				new TranslationTextComponent("screen.additionalredstone.oscillator.ticks.off"), this.width / 2 - 130,
-				95, Utils.TEXT_COLOR_SCREEN);
+		GuiComponent.drawString(matrixStack, this.font,
+				new TranslatableComponent("screen.additionalredstone.oscillator.ticks.off"), this.width / 2 - 130, 95,
+				Utils.TEXT_COLOR_SCREEN);
 
 		if (this.ticksOnError) {
-			this.minecraft.getTextureManager().bind(ICONS);
+			RenderSystem.setShaderTexture(0, ICONS);
 			this.blit(matrixStack, this.width / 2 + 140, 61, 1, 1, 18, 18);
 		}
 		if (this.ticksOffError) {
-			this.minecraft.getTextureManager().bind(ICONS);
+			RenderSystem.setShaderTexture(0, ICONS);
 			this.blit(matrixStack, this.width / 2 + 140, 91, 1, 1, 18, 18);
 		}
 

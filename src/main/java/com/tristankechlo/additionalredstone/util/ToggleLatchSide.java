@@ -1,8 +1,8 @@
 package com.tristankechlo.additionalredstone.util;
 
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.StringRepresentable;
 
-public enum ToggleLatchSide implements IStringSerializable {
+public enum ToggleLatchSide implements StringRepresentable {
 
 	LEFT("left"),
 	RIGHT("right");

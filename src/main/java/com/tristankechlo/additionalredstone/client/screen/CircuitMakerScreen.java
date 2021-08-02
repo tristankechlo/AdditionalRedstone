@@ -1,28 +1,28 @@
 package com.tristankechlo.additionalredstone.client.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.container.CircuitMakerContainer;
 import com.tristankechlo.additionalredstone.util.Circuits;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SimpleSound;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class CircuitMakerScreen extends ContainerScreen<CircuitMakerContainer> {
+public class CircuitMakerScreen extends AbstractContainerScreen<CircuitMakerContainer> {
 
 	private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(AdditionalRedstone.MOD_ID,
 			"textures/gui/container/circuit_maker.png");
@@ -38,7 +38,7 @@ public class CircuitMakerScreen extends ContainerScreen<CircuitMakerContainer> {
 	private int buttonSize = 18;
 	private boolean renderInputHelp = false;
 
-	public CircuitMakerScreen(CircuitMakerContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
+	public CircuitMakerScreen(CircuitMakerContainer screenContainer, Inventory inv, Component titleIn) {
 		super(screenContainer, inv, titleIn);
 		this.imageWidth = 192;
 		this.imageHeight = 167;
@@ -55,17 +55,16 @@ public class CircuitMakerScreen extends ContainerScreen<CircuitMakerContainer> {
 	}
 
 	@Override
-	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
 		this.renderTooltip(matrixStack, mouseX, mouseY);
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
-	protected void renderBg(MatrixStack matrixStack, float partialTicks, int x, int y) {
+	protected void renderBg(PoseStack matrixStack, float partialTicks, int x, int y) {
 		this.renderBackground(matrixStack);
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.minecraft.getTextureManager().bind(BACKGROUND_TEXTURE);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
 		int i = this.leftPos;
 		int j = this.topPos;
 		this.blit(matrixStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
@@ -89,18 +88,17 @@ public class CircuitMakerScreen extends ContainerScreen<CircuitMakerContainer> {
 		} else {
 			int xx = this.leftPos - 25;
 			int yy = this.topPos;
-			this.minecraft.getTextureManager().bind(ICONS);
+			RenderSystem.setShaderTexture(0, ICONS);
 			this.blit(matrixStack, xx, yy, 50, 0, 25, 25);
 			if (x >= xx && x < xx + 25 && y >= yy && y < yy + 25) {
-				ITextComponent helpText = new TranslationTextComponent(
-						"screen.additionalredstone.circuit_maker.show_recipe");
+				Component helpText = new TranslatableComponent("screen.additionalredstone.circuit_maker.show_recipe");
 				this.renderTooltip(matrixStack, helpText, x, y);
 			}
 		}
 	}
 
-	private void renderInputHelp(MatrixStack matrixStack, int mouseX, int mouseY) {
-		this.minecraft.getTextureManager().bind(BACKGROUND_TEXTURE);
+	private void renderInputHelp(PoseStack matrixStack, int mouseX, int mouseY) {
+		RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
 		this.blit(matrixStack, this.leftPos - 72, this.topPos, 18, 167, 72, 52);
 		final ItemRenderer renderer = this.minecraft.getItemRenderer();
 		for (int i = 0; i < 3; i++) {
@@ -121,17 +119,17 @@ public class CircuitMakerScreen extends ContainerScreen<CircuitMakerContainer> {
 		}
 		int xx = this.leftPos - 97;
 		int yy = this.topPos;
-		this.minecraft.getTextureManager().bind(ICONS);
+		RenderSystem.setShaderTexture(0, ICONS);
 		this.blit(matrixStack, xx, yy, 25, 0, 25, 25);
 		this.blit(matrixStack, xx + 3, yy + 4, 1, 1, 18, 18);
 		if (mouseX >= xx && mouseX < xx + 25 && mouseY >= yy && mouseY < yy + 25) {
-			ITextComponent helpText = new TranslationTextComponent("screen.additionalredstone.close");
+			Component helpText = new TranslatableComponent("screen.additionalredstone.close");
 			this.renderTooltip(matrixStack, helpText, mouseX, mouseY);
 		}
 	}
 
 	@Override
-	protected void renderTooltip(MatrixStack matrixStack, int x, int y) {
+	protected void renderTooltip(PoseStack matrixStack, int x, int y) {
 		super.renderTooltip(matrixStack, x, y);
 
 		// render tooltips for items in the buttons
@@ -151,7 +149,7 @@ public class CircuitMakerScreen extends ContainerScreen<CircuitMakerContainer> {
 		}
 	}
 
-	private void renderButtons(MatrixStack matrixStack, int x, int y, int p1, int p2, int p3) {
+	private void renderButtons(PoseStack matrixStack, int x, int y, int p1, int p2, int p3) {
 		for (int i = this.recipeIndexOffset; i < p3 && i < Circuits.SIZE; ++i) {
 			int j = i - this.recipeIndexOffset;
 			int k = p1 + j % buttonsPerRow * buttonSize;
@@ -194,7 +192,7 @@ public class CircuitMakerScreen extends ContainerScreen<CircuitMakerContainer> {
 				if (d0 >= 0.0D && d1 >= 0.0D && d0 < buttonSize2 && d1 < buttonSize2
 						&& this.menu.clickMenuButton(this.minecraft.player, l + 1)) {
 					Minecraft.getInstance().getSoundManager()
-							.play(SimpleSound.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
+							.play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
 					this.minecraft.gameMode.handleInventoryButtonClick((this.menu).containerId, l + 1);
 					return true;
 				}
@@ -213,7 +211,7 @@ public class CircuitMakerScreen extends ContainerScreen<CircuitMakerContainer> {
 			if (mouseX >= x && mouseX < x + 25 && mouseY >= y && mouseY < y + 25) {
 				this.renderInputHelp = true;
 				Minecraft.getInstance().getSoundManager()
-						.play(SimpleSound.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
+						.play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
 			}
 		} else {
 			int x = this.leftPos - 97;
@@ -221,7 +219,7 @@ public class CircuitMakerScreen extends ContainerScreen<CircuitMakerContainer> {
 			if (mouseX >= x && mouseX < x + 25 && mouseY >= y && mouseY < y + 25) {
 				this.renderInputHelp = false;
 				Minecraft.getInstance().getSoundManager()
-						.play(SimpleSound.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
+						.play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
 			}
 		}
 		return super.mouseClicked(mouseX, mouseY, button);
@@ -233,7 +231,7 @@ public class CircuitMakerScreen extends ContainerScreen<CircuitMakerContainer> {
 			int i = this.topPos + 14;
 			int j = i + 54;
 			this.sliderProgress = ((float) mouseY - (float) i - 7.5F) / ((float) (j - i) - 15.0F);
-			this.sliderProgress = MathHelper.clamp(this.sliderProgress, 0.0F, 1.0F);
+			this.sliderProgress = Mth.clamp(this.sliderProgress, 0.0F, 1.0F);
 			this.recipeIndexOffset = (int) ((double) (this.sliderProgress * (float) this.getHiddenRows()) + 0.5D) * 4;
 			return true;
 		} else {
@@ -246,7 +244,7 @@ public class CircuitMakerScreen extends ContainerScreen<CircuitMakerContainer> {
 		if (this.canScroll()) {
 			int i = this.getHiddenRows();
 			this.sliderProgress = (float) ((double) this.sliderProgress - delta / (double) i);
-			this.sliderProgress = MathHelper.clamp(this.sliderProgress, 0.0F, 1.0F);
+			this.sliderProgress = Mth.clamp(this.sliderProgress, 0.0F, 1.0F);
 			this.recipeIndexOffset = (int) ((double) (this.sliderProgress * (float) i) + 0.5D) * 4;
 		}
 		return true;

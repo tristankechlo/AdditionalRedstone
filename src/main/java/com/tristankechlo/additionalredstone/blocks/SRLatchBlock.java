@@ -2,23 +2,23 @@ package com.tristankechlo.additionalredstone.blocks;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.TickPriority;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.TickPriority;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class SRLatchBlock extends BaseDiodeBlock {
 
-	@Override
-	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		return side != state.getValue(FACING).getOpposite();
-	}
+// TODO connection check
+//	@Override
+//	public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
+//		return side != state.getValue(FACING).getOpposite();
+//	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
+	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand) {
 		boolean isPowered = state.getValue(POWERED);
 		boolean shouldBeOn = this.shouldTurnOn(worldIn, pos, state);
 
@@ -34,7 +34,7 @@ public class SRLatchBlock extends BaseDiodeBlock {
 	}
 
 	@Override
-	protected void checkTickOnNeighbor(World worldIn, BlockPos pos, BlockState state) {
+	protected void checkTickOnNeighbor(Level worldIn, BlockPos pos, BlockState state) {
 		if (!worldIn.getBlockTicks().willTickThisTick(pos, this)) {
 			TickPriority tickpriority = TickPriority.HIGH;
 			if (this.shouldPrioritize(worldIn, pos, state)) {
@@ -45,7 +45,7 @@ public class SRLatchBlock extends BaseDiodeBlock {
 	}
 
 	@Override
-	protected boolean shouldTurnOn(World worldIn, BlockPos pos, BlockState state) {
+	protected boolean shouldTurnOn(Level worldIn, BlockPos pos, BlockState state) {
 		Direction set = state.getValue(FACING).getClockWise();
 		Direction reset = state.getValue(FACING).getCounterClockWise();
 		boolean setPowered = this.getRedstonePowerForSide(worldIn, pos, set) > 0;

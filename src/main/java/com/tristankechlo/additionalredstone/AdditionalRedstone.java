@@ -7,7 +7,7 @@ import com.tristankechlo.additionalredstone.client.ClientSetup;
 import com.tristankechlo.additionalredstone.init.ModBlocks;
 import com.tristankechlo.additionalredstone.init.ModContainer;
 import com.tristankechlo.additionalredstone.init.ModItems;
-import com.tristankechlo.additionalredstone.init.ModTileEntities;
+import com.tristankechlo.additionalredstone.init.ModBlockEntities;
 import com.tristankechlo.additionalredstone.network.PacketHandler;
 
 import net.minecraftforge.common.MinecraftForge;
@@ -28,7 +28,7 @@ public class AdditionalRedstone {
 
 		ModItems.ITEMS.register(modEventBus);
 		ModBlocks.BLOCKS.register(modEventBus);
-		ModTileEntities.TILE_ENTITIES.register(modEventBus);
+		ModBlockEntities.TILE_ENTITIES.register(modEventBus);
 		ModContainer.CONTAINER_TYPES.register(modEventBus);
 
 		modEventBus.addListener(ClientSetup::init);

@@ -1,28 +1,27 @@
-package com.tristankechlo.additionalredstone.tileentity;
+package com.tristankechlo.additionalredstone.blockentity;
 
 import com.tristankechlo.additionalredstone.blocks.OscillatorBlock;
-import com.tristankechlo.additionalredstone.init.ModTileEntities;
+import com.tristankechlo.additionalredstone.init.ModBlockEntities;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
-public class OscillatorTileEntity extends TileEntity implements ITickableTileEntity {
+public class OscillatorBlockEntity extends BlockEntity {
 
 	private boolean powered = false;
 	private int tickCounter = 0;
 	private int ticksOn = 50;
 	private int ticksOff = 50;
 
-	public OscillatorTileEntity() {
-		super(ModTileEntities.OSCILLATOR_TILE_ENTITY.get());
+	public OscillatorBlockEntity(BlockPos pos, BlockState state) {
+		super(ModBlockEntities.OSCILLATOR_TILE_ENTITY.get(), pos, state);
 	}
 
-	@Override
 	public void tick() {
 		if (this.level != null && !this.level.isClientSide) {
 			if (this.ticksOn <= 0) {
@@ -67,8 +66,8 @@ public class OscillatorTileEntity extends TileEntity implements ITickableTileEnt
 	}
 
 	@Override
-	public void load(BlockState state, CompoundNBT nbt) {
-		super.load(state, nbt);
+	public void load(CompoundTag nbt) {
+		super.load(nbt);
 		this.tickCounter = nbt.getInt("TickCounter");
 		this.powered = nbt.getBoolean("Powered");
 		this.ticksOn = nbt.getInt("TicksOn");
@@ -76,7 +75,7 @@ public class OscillatorTileEntity extends TileEntity implements ITickableTileEnt
 	}
 
 	@Override
-	public CompoundNBT save(CompoundNBT nbt) {
+	public CompoundTag save(CompoundTag nbt) {
 		nbt.putInt("TickCounter", this.tickCounter);
 		nbt.putBoolean("Powered", this.powered);
 		nbt.putInt("TicksOn", this.ticksOn);
@@ -85,28 +84,27 @@ public class OscillatorTileEntity extends TileEntity implements ITickableTileEnt
 	}
 
 	@Override
-	public SUpdateTileEntityPacket getUpdatePacket() {
-		CompoundNBT nbt = new CompoundNBT();
+	public ClientboundBlockEntityDataPacket getUpdatePacket() {
+		CompoundTag nbt = new CompoundTag();
 		save(nbt);
-		return new SUpdateTileEntityPacket(this.getBlockPos(), 42, nbt);
+		return new ClientboundBlockEntityDataPacket(this.getBlockPos(), 42, nbt);
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-		BlockState blockState = level.getBlockState(worldPosition);
-		this.load(blockState, pkt.getTag());
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+		this.load(pkt.getTag());
 	}
 
 	@Override
-	public CompoundNBT getUpdateTag() {
-		CompoundNBT nbt = new CompoundNBT();
+	public CompoundTag getUpdateTag() {
+		CompoundTag nbt = new CompoundTag();
 		save(nbt);
 		return nbt;
 	}
 
 	@Override
-	public void handleUpdateTag(BlockState state, CompoundNBT tag) {
-		this.load(state, tag);
+	public void handleUpdateTag(CompoundTag tag) {
+		this.load(tag);
 	}
 
 	public int getTicksOn() {

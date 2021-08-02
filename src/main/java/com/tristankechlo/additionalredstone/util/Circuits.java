@@ -2,8 +2,8 @@ package com.tristankechlo.additionalredstone.util;
 
 import com.tristankechlo.additionalredstone.init.ModItems;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 public enum Circuits {
 

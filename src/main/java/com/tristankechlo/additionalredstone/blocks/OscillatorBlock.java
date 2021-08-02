@@ -1,37 +1,42 @@
 package com.tristankechlo.additionalredstone.blocks;
 
-import com.tristankechlo.additionalredstone.client.screen.OscillatorScreen;
-import com.tristankechlo.additionalredstone.tileentity.OscillatorTileEntity;
+import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import com.tristankechlo.additionalredstone.blockentity.OscillatorBlockEntity;
+import com.tristankechlo.additionalredstone.client.screen.OscillatorScreen;
+
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.IBooleanFunction;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class OscillatorBlock extends Block {
+public class OscillatorBlock extends BaseEntityBlock {
 
-	private static final VoxelShape SHAPE = VoxelShapes.join(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D),
-			Block.box(4.5D, 2.0D, 4.5D, 11.5D, 12.0D, 11.5D), IBooleanFunction.OR);
+	private static final VoxelShape SHAPE = Shapes.join(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D),
+			Block.box(4.5D, 2.0D, 4.5D, 11.5D, 12.0D, 11.5D), BooleanOp.OR);
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
 	public OscillatorBlock() {
@@ -40,15 +45,15 @@ public class OscillatorBlock extends Block {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 		return SHAPE;
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos,
+	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos,
 			boolean isMoving) {
 		if (!state.canSurvive(worldIn, pos)) {
-			TileEntity tileentity = state.hasTileEntity() ? worldIn.getBlockEntity(pos) : null;
+			BlockEntity tileentity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
 			dropResources(state, worldIn, pos, tileentity);
 			worldIn.removeBlock(pos, false);
 			for (Direction direction : Direction.values()) {
@@ -58,7 +63,7 @@ public class OscillatorBlock extends Block {
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+	public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
 		return canSupportRigidBlock(worldIn, pos.below());
 	}
 
@@ -68,16 +73,16 @@ public class OscillatorBlock extends Block {
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn,
-			BlockRayTraceResult hit) {
-		TileEntity tile = worldIn.getBlockEntity(pos);
-		if (tile instanceof OscillatorTileEntity && worldIn.isClientSide) {
-			OscillatorTileEntity oscillator = (OscillatorTileEntity) tile;
+	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
+			BlockHitResult hit) {
+		BlockEntity tile = worldIn.getBlockEntity(pos);
+		if (tile instanceof OscillatorBlockEntity && worldIn.isClientSide) {
+			OscillatorBlockEntity oscillator = (OscillatorBlockEntity) tile;
 			int ticksOn = oscillator.getTicksOn();
 			int ticksOff = oscillator.getTicksOff();
 			this.openOscillatorScreen(ticksOn, ticksOff, pos);
 		}
-		return ActionResultType.SUCCESS;
+		return InteractionResult.SUCCESS;
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -85,18 +90,18 @@ public class OscillatorBlock extends Block {
 		Minecraft.getInstance().setScreen(new OscillatorScreen(ticksOn, ticksOff, pos));
 	}
 
-	public static void setPowered(BlockState state, World world, BlockPos pos, boolean powered) {
+	public static void setPowered(BlockState state, Level world, BlockPos pos, boolean powered) {
 		world.setBlock(pos, state.setValue(POWERED, Boolean.valueOf(powered)), 3);
 	}
 
 	@Override
-	public int getSignal(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+	public int getSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
 		return blockState.getValue(POWERED) ? 15 : 0;
 	}
 
 	@Override
-	public BlockRenderType getRenderShape(BlockState state) {
-		return BlockRenderType.MODEL;
+	public RenderShape getRenderShape(BlockState state) {
+		return RenderShape.MODEL;
 	}
 
 	@Override
@@ -105,13 +110,21 @@ public class OscillatorBlock extends Block {
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return true;
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return new OscillatorBlockEntity(pos, state);
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new OscillatorTileEntity();
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
+		BlockEntity blockEntity = level.getBlockEntity(pos);
+		if (blockEntity instanceof OscillatorBlockEntity) {
+			((OscillatorBlockEntity) blockEntity).tick();
+		}
+	}
+	
+	@Override
+	public PushReaction getPistonPushReaction(BlockState p_60584_) {
+		return PushReaction.DESTROY;
 	}
 
 }

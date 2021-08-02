@@ -2,14 +2,14 @@ package com.tristankechlo.additionalredstone.network.packets;
 
 import java.util.function.Supplier;
 
-import com.tristankechlo.additionalredstone.tileentity.OscillatorTileEntity;
+import com.tristankechlo.additionalredstone.blockentity.OscillatorBlockEntity;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class SetOscillatorValues {
 
@@ -23,13 +23,13 @@ public class SetOscillatorValues {
 		this.pos = pos;
 	}
 
-	public static void encode(SetOscillatorValues msg, PacketBuffer buffer) {
+	public static void encode(SetOscillatorValues msg, FriendlyByteBuf buffer) {
 		buffer.writeInt(msg.ticksOn);
 		buffer.writeInt(msg.ticksOff);
 		buffer.writeBlockPos(msg.pos);
 	}
 
-	public static SetOscillatorValues decode(PacketBuffer buffer) {
+	public static SetOscillatorValues decode(FriendlyByteBuf buffer) {
 		int ticksOn = buffer.readInt();
 		int ticksOff = buffer.readInt();
 		BlockPos pos = buffer.readBlockPos();
@@ -40,18 +40,18 @@ public class SetOscillatorValues {
 	public static void handle(SetOscillatorValues msg, Supplier<NetworkEvent.Context> context) {
 		context.get().enqueueWork(() -> {
 
-			ServerPlayerEntity player = context.get().getSender();
+			ServerPlayer player = context.get().getSender();
 			if (player == null) {
 				return;
 			}
-			ServerWorld world = player.getLevel();
+			ServerLevel world = player.getLevel();
 			if (world == null || !world.hasChunkAt(msg.pos)) {
 				return;
 			}
-			TileEntity entity = world.getBlockEntity(msg.pos);
+			BlockEntity entity = world.getBlockEntity(msg.pos);
 
-			if (entity != null && (entity instanceof OscillatorTileEntity)) {
-				OscillatorTileEntity oscillator = (OscillatorTileEntity) entity;
+			if (entity != null && (entity instanceof OscillatorBlockEntity)) {
+				OscillatorBlockEntity oscillator = (OscillatorBlockEntity) entity;
 				oscillator.setConfiguration(Math.abs(msg.ticksOn), Math.abs(msg.ticksOff));
 				world.sendBlockUpdated(msg.pos, world.getBlockState(msg.pos), world.getBlockState(msg.pos), 3);
 				oscillator.setChanged();
