@@ -28,7 +28,7 @@ public class AdditionalRedstone {
 
 		ModItems.ITEMS.register(modEventBus);
 		ModBlocks.BLOCKS.register(modEventBus);
-		ModBlockEntities.TILE_ENTITIES.register(modEventBus);
+		ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
 		ModContainer.CONTAINER_TYPES.register(modEventBus);
 
 		modEventBus.addListener(ClientSetup::init);

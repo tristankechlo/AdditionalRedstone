@@ -1,14 +1,13 @@
 package com.tristankechlo.additionalredstone.blocks;
 
-import java.util.Random;
-
 import com.tristankechlo.additionalredstone.blockentity.OscillatorBlockEntity;
 import com.tristankechlo.additionalredstone.client.screen.OscillatorScreen;
+import com.tristankechlo.additionalredstone.init.ModBlockEntities;
+import com.tristankechlo.additionalredstone.util.Utils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -20,6 +19,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -90,8 +91,10 @@ public class OscillatorBlock extends BaseEntityBlock {
 		Minecraft.getInstance().setScreen(new OscillatorScreen(ticksOn, ticksOff, pos));
 	}
 
-	public static void setPowered(BlockState state, Level world, BlockPos pos, boolean powered) {
-		world.setBlock(pos, state.setValue(POWERED, Boolean.valueOf(powered)), 3);
+	public static void setPowered(BlockState state, Level level, BlockPos pos, boolean powered) {
+		if (!level.isClientSide) {
+			level.setBlock(pos, state.setValue(POWERED, Boolean.valueOf(powered)), 3);
+		}
 	}
 
 	@Override
@@ -115,13 +118,12 @@ public class OscillatorBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
-		BlockEntity blockEntity = level.getBlockEntity(pos);
-		if (blockEntity instanceof OscillatorBlockEntity) {
-			((OscillatorBlockEntity) blockEntity).tick();
-		}
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
+			BlockEntityType<T> type) {
+		return Utils.createTicker(level, type, ModBlockEntities.OSCILLATOR_BLOCK_ENTITY.get(),
+				OscillatorBlockEntity::tick);
 	}
-	
+
 	@Override
 	public PushReaction getPistonPushReaction(BlockState p_60584_) {
 		return PushReaction.DESTROY;

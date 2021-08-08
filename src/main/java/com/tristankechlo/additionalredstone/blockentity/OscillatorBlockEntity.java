@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,11 +20,17 @@ public class OscillatorBlockEntity extends BlockEntity {
 	private int ticksOff = 50;
 
 	public OscillatorBlockEntity(BlockPos pos, BlockState state) {
-		super(ModBlockEntities.OSCILLATOR_TILE_ENTITY.get(), pos, state);
+		super(ModBlockEntities.OSCILLATOR_BLOCK_ENTITY.get(), pos, state);
 	}
 
-	public void tick() {
-		if (this.level != null && !this.level.isClientSide) {
+	public static void tick(Level level, BlockPos pos, BlockState state, OscillatorBlockEntity blockEntity) {
+		if (!level.isClientSide && pos.equals(blockEntity.worldPosition)) {
+			blockEntity.tick();
+		}
+	}
+
+	private void tick() {
+		if (this.level != null) {
 			if (this.ticksOn <= 0) {
 				this.ticksOn = 0;
 				if (this.powered) {

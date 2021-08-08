@@ -68,8 +68,8 @@ public class SequencerScreen extends Screen {
 				new TranslatableComponent("screen.additionalredstone.cancel"), (b) -> {
 					this.cancel();
 				});
-		this.addWidget(saveButton);
-		this.addWidget(cancelButton);
+		this.addRenderableWidget(saveButton);
+		this.addRenderableWidget(cancelButton);
 	}
 
 	private void save() {

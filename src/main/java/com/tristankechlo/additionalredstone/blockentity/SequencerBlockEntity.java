@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,11 +18,17 @@ public class SequencerBlockEntity extends BlockEntity {
 	private int interval = 50;
 
 	public SequencerBlockEntity(BlockPos pos, BlockState state) {
-		super(ModBlockEntities.SEQUENCER_TILE_ENTITY.get(), pos, state);
+		super(ModBlockEntities.SEQUENCER_BLOCK_ENTITY.get(), pos, state);
 	}
 
-	public void tick() {
-		if (this.level != null && !this.level.isClientSide && this.interval > 0) {
+	public static void tick(Level level, BlockPos pos, BlockState state, SequencerBlockEntity blockEntity) {
+		if (!level.isClientSide && pos.equals(blockEntity.worldPosition)) {
+			blockEntity.tick();
+		}
+	}
+
+	private void tick() {
+		if (this.level != null && this.interval > 0) {
 			if (this.tickCounter >= this.interval) {
 				this.tickCounter = 0;
 				this.updatePower();
@@ -35,7 +42,7 @@ public class SequencerBlockEntity extends BlockEntity {
 		BlockState blockstate = this.getBlockState();
 		Block block = blockstate.getBlock();
 		if (block instanceof SequencerBlock) {
-			SequencerBlock.update(blockstate, level, worldPosition);
+			SequencerBlock.updatePower(blockstate, level, worldPosition);
 		}
 	}
 
@@ -67,9 +74,7 @@ public class SequencerBlockEntity extends BlockEntity {
 
 	@Override
 	public CompoundTag getUpdateTag() {
-		CompoundTag nbt = new CompoundTag();
-		save(nbt);
-		return nbt;
+		return save(new CompoundTag());
 	}
 
 	@Override

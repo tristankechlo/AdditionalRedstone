@@ -8,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -22,11 +23,17 @@ public class TimerBlockEntity extends BlockEntity {
 	public static final int maxTime = 24000;
 
 	public TimerBlockEntity(BlockPos pos, BlockState state) {
-		super(ModBlockEntities.TIMER_TILE_ENTITY.get(), pos, state);
+		super(ModBlockEntities.TIMER_BLOCK_ENTITY.get(), pos, state);
 	}
 
-	public void tick() {
-		if (this.level != null && !this.level.isClientSide && level.getGameTime() % this.interval == 0) {
+	public static void tick(Level level, BlockPos pos, BlockState state, TimerBlockEntity blockEntity) {
+		if (!level.isClientSide && pos.equals(blockEntity.worldPosition)) {
+			blockEntity.tick();
+		}
+	}
+
+	private void tick() {
+		if (this.level != null && level.getGameTime() % this.interval == 0) {
 			if (powerUpTime == powerDownTime) {
 				if (this.powered) {
 					this.updatePower(false);

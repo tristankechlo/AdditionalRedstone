@@ -1,16 +1,15 @@
 package com.tristankechlo.additionalredstone.blocks;
 
-import java.util.Random;
-
 import javax.annotation.Nullable;
 
 import com.tristankechlo.additionalredstone.blockentity.SequencerBlockEntity;
 import com.tristankechlo.additionalredstone.client.screen.SequencerScreen;
+import com.tristankechlo.additionalredstone.init.ModBlockEntities;
+import com.tristankechlo.additionalredstone.util.Utils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -26,6 +25,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
@@ -74,10 +75,6 @@ public class SequencerBlock extends Block implements EntityBlock {
 	@OnlyIn(Dist.CLIENT)
 	private void openSequencerScreen(int interval, BlockPos pos) {
 		Minecraft.getInstance().setScreen(new SequencerScreen(interval, pos));
-	}
-
-	public static void update(BlockState state, Level world, BlockPos pos) {
-		world.setBlock(pos, state.cycle(POWERED_SIDE), 3);
 	}
 
 	@Override
@@ -140,13 +137,18 @@ public class SequencerBlock extends Block implements EntityBlock {
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random p_60465_) {
-		BlockEntity blockEntity = level.getBlockEntity(pos);
-		if (blockEntity instanceof SequencerBlockEntity) {
-			((SequencerBlockEntity) blockEntity).tick();
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
+			BlockEntityType<T> type) {
+		return Utils.createTicker(level, type, ModBlockEntities.SEQUENCER_BLOCK_ENTITY.get(),
+				SequencerBlockEntity::tick);
+	}
+
+	public static void updatePower(BlockState state, Level level, BlockPos pos) {
+		if (!level.isClientSide) {
+			level.setBlock(pos, state.cycle(POWERED_SIDE), 3);
 		}
 	}
-	
+
 	@Override
 	public PushReaction getPistonPushReaction(BlockState p_60584_) {
 		return PushReaction.DESTROY;

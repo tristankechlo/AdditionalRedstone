@@ -15,7 +15,7 @@ public class TFlipFlopBlockEntity extends BlockEntity {
 	private boolean previousInput;
 
 	public TFlipFlopBlockEntity(BlockPos pos, BlockState state) {
-		super(ModBlockEntities.T_FLIP_FLOP_TILE_ENTITY.get(), pos, state);
+		super(ModBlockEntities.T_FLIP_FLOP_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	public boolean shouldBePowered(boolean input) {
