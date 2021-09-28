@@ -4,6 +4,7 @@ import java.util.function.BiFunction;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
@@ -25,11 +26,10 @@ public class TwoInputLogicGate extends BaseDiodeBlock {
 		return logic.apply(i, j);
 	}
 
-// TODO connection check
-//	@Override
-//	public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
-//		return state.getValue(FACING) != side;
-//	}
+	@Override
+	public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
+		return state.getValue(FACING) != side;
+	}
 
 	@Override
 	public PushReaction getPistonPushReaction(BlockState p_60584_) {

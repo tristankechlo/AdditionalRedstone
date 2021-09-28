@@ -1,6 +1,7 @@
 package com.tristankechlo.additionalredstone.blocks;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DiodeBlock;
@@ -20,12 +21,11 @@ public class NotGateBlock extends BaseDiodeBlock {
 		return DiodeBlock.SHAPE;
 	}
 
-// TODO connection check
-//	@Override
-//	public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
-//		Direction front = state.getValue(FACING);
-//		Direction back = state.getValue(FACING).getOpposite();
-//		return side == front || side == back;
-//	}
+	@Override
+	public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
+		Direction front = state.getValue(FACING);
+		Direction back = state.getValue(FACING).getOpposite();
+		return side == front || side == back;
+	}
 
 }

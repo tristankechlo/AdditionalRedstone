@@ -5,7 +5,9 @@ import java.util.Random;
 import com.tristankechlo.additionalredstone.blockentity.TFlipFlopBlockEntity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.TickPriority;
 import net.minecraft.world.level.block.EntityBlock;
@@ -50,13 +52,12 @@ public class TFlipFlopBlock extends BaseDiodeBlock implements EntityBlock {
 		return state.getValue(POWERED);
 	}
 
-// TODO connection check
-//	@Override
-//	public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
-//		Direction direction1 = state.getValue(FACING);
-//		Direction direction2 = state.getValue(FACING).getOpposite();
-//		return side == direction1 || side == direction2;
-//	}
+	@Override
+	public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
+		Direction direction1 = state.getValue(FACING);
+		Direction direction2 = state.getValue(FACING).getOpposite();
+		return side == direction1 || side == direction2;
+	}
 
 	@Override
 	protected int getDelay(BlockState state) {

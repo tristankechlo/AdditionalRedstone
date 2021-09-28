@@ -5,17 +5,17 @@ import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.TickPriority;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SRLatchBlock extends BaseDiodeBlock {
 
-// TODO connection check
-//	@Override
-//	public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
-//		return side != state.getValue(FACING).getOpposite();
-//	}
+	@Override
+	public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
+		return side != state.getValue(FACING).getOpposite();
+	}
 
 	@Override
 	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand) {

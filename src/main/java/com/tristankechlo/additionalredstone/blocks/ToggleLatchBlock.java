@@ -94,11 +94,10 @@ public class ToggleLatchBlock extends HorizontalDirectionalBlock {
 		}
 	}
 
-// TODO connection check
-//	@Override
-//	public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
-//		return side != state.getValue(FACING);
-//	}
+	@Override
+	public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
+		return side != state.getValue(FACING);
+	}
 
 	@Override
 	public boolean isSignalSource(BlockState state) {
