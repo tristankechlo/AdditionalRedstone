@@ -32,7 +32,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ToolType;
 
 public class CircuitMakerBlock extends HorizontalDirectionalBlock {
 
@@ -43,7 +42,7 @@ public class CircuitMakerBlock extends HorizontalDirectionalBlock {
 
 	public CircuitMakerBlock() {
 		super(Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).strength(5F, 6F)
-				.harvestLevel(2).harvestTool(ToolType.PICKAXE).requiresCorrectToolForDrops().noOcclusion());
+				.requiresCorrectToolForDrops().noOcclusion());
 	}
 
 	@Override

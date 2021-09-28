@@ -2,10 +2,11 @@ modLoader="javafml"
 loaderVersion="[37,)"
 license="CC BY-NC-ND 4.0"
 showAsResourcePack=false
+issueTrackerURL="https://github.com/tristankechlo/AdditionalRedstone/issues"
 
 [[mods]]
 modId="additionalredstone"
-version="1.17.1 - 1.0.0"
+version="1.17.1 - 1.0.1"
 displayName="Additional Redstone"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/additional-redstone"
 #logoFile="examplemod.png"
@@ -13,14 +14,14 @@ displayURL="https://www.curseforge.com/minecraft/mc-mods/additional-redstone"
 authors="Buecher_wurm"
 description='''additional redstone'''
 
-[[dependencies.toolleveling]]
+[[dependencies.additionalredstone]]
     modId="forge"
     mandatory=true
-    versionRange="[37,)"
+    versionRange="[37.0.72,)"
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.toolleveling]]
+[[dependencies.additionalredstone]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.17.1,1.18)"
