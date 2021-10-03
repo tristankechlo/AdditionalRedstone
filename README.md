@@ -24,5 +24,5 @@
 #### Translations:
 | Language | up to modversion | Translator |
 |:--------:|:----------------:|:-----------|
-| **en_us** | 1.0.1 | tristankechlo ([Github](https://github.com/tristankechlo)) |
-| **de_de** | 1.0.1 | tristankechlo ([Github](https://github.com/tristankechlo)) |
+| **en_us** | 1.0.2 | tristankechlo ([Github](https://github.com/tristankechlo)) |
+| **de_de** | 1.0.2 | tristankechlo ([Github](https://github.com/tristankechlo)) |
