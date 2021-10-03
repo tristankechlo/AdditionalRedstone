@@ -17,7 +17,8 @@ public enum Circuits {
 	RS_LATCH(ModItems.RS_LATCH_BLOCK_ITEM.get()),
 	SR_LATCH(ModItems.SR_LATCH_BLOCK_ITEM.get()),
 	TOGGLE_LATCH(ModItems.TOGGLE_LATCH_BLOCK_ITEM.get()),
-	T_FLIP_FLOP(ModItems.T_FLIP_FLOP_BLOCK_ITEM.get());
+	T_FLIP_FLOP(ModItems.T_FLIP_FLOP_BLOCK_ITEM.get()),
+	SEQUENCER(ModItems.SEQUENCER_BLOCK_ITEM.get());
 
 	private final ItemStack stack;
 	public static final int SIZE = values().length;
