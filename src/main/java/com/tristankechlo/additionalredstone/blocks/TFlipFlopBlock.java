@@ -9,11 +9,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.TickPriority;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.ticks.TickPriority;
 
 public class TFlipFlopBlock extends BaseDiodeBlock implements EntityBlock {
 
@@ -39,7 +39,7 @@ public class TFlipFlopBlock extends BaseDiodeBlock implements EntityBlock {
 			if (this.shouldPrioritize(worldIn, pos, state)) {
 				tickpriority = TickPriority.EXTREMELY_HIGH;
 			}
-			worldIn.getBlockTicks().scheduleTick(pos, this, this.getDelay(state), tickpriority);
+			worldIn.scheduleTick(pos, this, this.getDelay(state), tickpriority);
 		}
 	}
 

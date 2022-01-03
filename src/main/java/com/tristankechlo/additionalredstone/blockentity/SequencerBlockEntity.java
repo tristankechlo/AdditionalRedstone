@@ -62,9 +62,7 @@ public class SequencerBlockEntity extends BlockEntity {
 
 	@Override
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
-		CompoundTag nbt = new CompoundTag();
-		save(nbt);
-		return new ClientboundBlockEntityDataPacket(this.getBlockPos(), 42, nbt);
+		return ClientboundBlockEntityDataPacket.create(this);
 	}
 
 	@Override

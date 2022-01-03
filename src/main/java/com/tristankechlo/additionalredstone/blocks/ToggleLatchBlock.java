@@ -21,7 +21,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.TickPriority;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
@@ -33,6 +32,7 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.ticks.TickPriority;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -70,7 +70,7 @@ public class ToggleLatchBlock extends HorizontalDirectionalBlock {
 	private void updateState(Level worldIn, BlockPos pos, BlockState state) {
 		if (!worldIn.getBlockTicks().willTickThisTick(pos, this)) {
 			TickPriority tickpriority = TickPriority.HIGH;
-			worldIn.getBlockTicks().scheduleTick(pos, this, this.getDelay(state), tickpriority);
+			worldIn.scheduleTick(pos, this, this.getDelay(state), tickpriority);
 		}
 	}
 

@@ -14,9 +14,9 @@ import com.tristankechlo.additionalredstone.blocks.ToggleLatchBlock;
 import com.tristankechlo.additionalredstone.util.Utils;
 
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class ModBlocks {
 
