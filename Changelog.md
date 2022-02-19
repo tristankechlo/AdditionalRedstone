@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 1.18.1 - 1.0.3
+ - Fix NoSuchMethodError
+
 ### Version 1.18.1 - 1.0.2
  - port to 1.18.1
 
