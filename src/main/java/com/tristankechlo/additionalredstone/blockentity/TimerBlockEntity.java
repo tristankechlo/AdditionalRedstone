@@ -82,12 +82,12 @@ public class TimerBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag nbt) {
+	protected void saveAdditional(CompoundTag nbt) {
 		nbt.putInt("PowerUpTime", this.powerUpTime);
 		nbt.putInt("PowerDownTime", this.powerDownTime);
 		nbt.putBoolean("Powered", this.powered);
 		nbt.putInt("Interval", this.interval);
-		return super.save(nbt);
+		super.saveAdditional(nbt);
 	}
 
 	@Override
@@ -103,7 +103,7 @@ public class TimerBlockEntity extends BlockEntity {
 	@Override
 	public CompoundTag getUpdateTag() {
 		CompoundTag nbt = new CompoundTag();
-		save(nbt);
+		saveAdditional(nbt);
 		return nbt;
 	}
 

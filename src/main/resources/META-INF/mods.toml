@@ -6,7 +6,7 @@ issueTrackerURL="https://github.com/tristankechlo/AdditionalRedstone/issues"
 
 [[mods]]
 modId="additionalredstone"
-version="1.18.1 - 1.0.2"
+version="1.18.1 - 1.0.3"
 displayName="Additional Redstone"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/additional-redstone"
 #logoFile="examplemod.png"
@@ -17,7 +17,7 @@ description='''additional redstone'''
 [[dependencies.additionalredstone]]
     modId="forge"
     mandatory=true
-    versionRange="[39,)"
+    versionRange="[39.0.50,)"
     ordering="NONE"
     side="BOTH"
 

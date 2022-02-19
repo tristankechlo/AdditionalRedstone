@@ -38,9 +38,9 @@ public class TFlipFlopBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag compound) {
+	public void saveAdditional(CompoundTag compound) {
 		compound.putBoolean("PreviousInput", this.previousInput);
-		return super.save(compound);
+		super.saveAdditional(compound);
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class TFlipFlopBlockEntity extends BlockEntity {
 	@Override
 	public CompoundTag getUpdateTag() {
 		CompoundTag nbt = new CompoundTag();
-		save(nbt);
+		saveAdditional(nbt);
 		return nbt;
 	}
 

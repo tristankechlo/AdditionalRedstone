@@ -82,12 +82,12 @@ public class OscillatorBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag nbt) {
+	public void saveAdditional(CompoundTag nbt) {
 		nbt.putInt("TickCounter", this.tickCounter);
 		nbt.putBoolean("Powered", this.powered);
 		nbt.putInt("TicksOn", this.ticksOn);
 		nbt.putInt("TicksOff", this.ticksOff);
-		return super.save(nbt);
+		super.saveAdditional(nbt);
 	}
 
 	@Override
@@ -103,7 +103,7 @@ public class OscillatorBlockEntity extends BlockEntity {
 	@Override
 	public CompoundTag getUpdateTag() {
 		CompoundTag nbt = new CompoundTag();
-		save(nbt);
+		saveAdditional(nbt);
 		return nbt;
 	}
 

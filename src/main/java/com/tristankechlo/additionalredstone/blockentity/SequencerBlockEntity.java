@@ -54,10 +54,10 @@ public class SequencerBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag nbt) {
+	public void saveAdditional(CompoundTag nbt) {
 		nbt.putInt("TickCounter", this.tickCounter);
 		nbt.putInt("Interval", this.interval);
-		return super.save(nbt);
+		super.saveAdditional(nbt);
 	}
 
 	@Override
@@ -72,7 +72,9 @@ public class SequencerBlockEntity extends BlockEntity {
 
 	@Override
 	public CompoundTag getUpdateTag() {
-		return save(new CompoundTag());
+		CompoundTag nbt = new CompoundTag();
+		saveAdditional(nbt);
+		return nbt;
 	}
 
 	@Override
