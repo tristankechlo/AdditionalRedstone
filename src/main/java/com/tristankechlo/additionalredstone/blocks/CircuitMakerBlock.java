@@ -5,7 +5,6 @@ import com.tristankechlo.additionalredstone.container.CircuitMakerContainer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -35,8 +34,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class CircuitMakerBlock extends HorizontalDirectionalBlock {
 
-	private static final Component CONTAINER_NAME = new TranslatableComponent(
-			"container.additionalredstone.circuit_maker");
+	private static final Component CONTAINER_NAME = Component
+			.translatable("container.additionalredstone.circuit_maker");
 	private static final VoxelShape SHAPE = Shapes.join(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D),
 			Block.box(2.5D, 2.0D, 2.5D, 13.5D, 12.0D, 13.5D), BooleanOp.OR);
 

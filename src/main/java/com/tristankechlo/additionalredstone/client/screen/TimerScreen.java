@@ -16,14 +16,12 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 public class TimerScreen extends Screen {
 
-	private static final Component TITLE = new TranslatableComponent("screen.additionalredstone.oscillator");
+	private static final Component TITLE = Component.translatable("screen.additionalredstone.oscillator");
 	private static final ResourceLocation ERROR = new ResourceLocation(AdditionalRedstone.MOD_ID,
 			"textures/other/icons.png");
 	private EditBox powerUpWidget;
@@ -63,11 +61,11 @@ public class TimerScreen extends Screen {
 	protected void init() {
 		super.init();
 		this.powerUpWidget = new EditBox(this.font, this.width / 2 + 32, 60, 98, 20,
-				new TextComponent("timer_power_up"));
+				Component.translatable("screen.additionalredstone.timer.power.on"));
 		this.powerDownWidget = new EditBox(this.font, this.width / 2 + 32, 90, 98, 20,
-				new TextComponent("timer_power_down"));
+				Component.translatable("screen.additionalredstone.timer.power.off"));
 		this.intervalWidget = new EditBox(this.font, this.width / 2 + 32, 120, 98, 20,
-				new TextComponent("timer_interval"));
+				Component.translatable("screen.additionalredstone.timer.interval"));
 		this.addWidget(this.powerUpWidget);
 		this.addWidget(this.powerDownWidget);
 		this.addWidget(this.intervalWidget);
@@ -81,11 +79,11 @@ public class TimerScreen extends Screen {
 		this.intervalWidget.setValue(String.valueOf(this.interval));
 
 		this.saveButton = new Button(this.width / 2 - 110, 160, 100, 20,
-				new TranslatableComponent("screen.additionalredstone.save"), (b) -> {
+				Component.translatable("screen.additionalredstone.save"), (b) -> {
 					this.save();
 				});
 		this.cancelButton = new Button(this.width / 2 + 10, 160, 100, 20,
-				new TranslatableComponent("screen.additionalredstone.cancel"), (b) -> {
+				Component.translatable("screen.additionalredstone.cancel"), (b) -> {
 					this.cancel();
 				});
 		this.addRenderableWidget(saveButton);
@@ -116,17 +114,17 @@ public class TimerScreen extends Screen {
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
 
 		drawCenteredString(matrixStack, this.font,
-				new TranslatableComponent("screen.additionalredstone.timer.description"), this.width / 2, 30,
+				Component.translatable("screen.additionalredstone.timer.description"), this.width / 2, 30,
 				Utils.TEXT_COLOR_SCREEN);
 
 		GuiComponent.drawString(matrixStack, this.font,
-				new TranslatableComponent("screen.additionalredstone.timer.power.on"), this.width / 2 - 130, 65,
+				Component.translatable("screen.additionalredstone.timer.power.on"), this.width / 2 - 130, 65,
 				Utils.TEXT_COLOR_SCREEN);
 		GuiComponent.drawString(matrixStack, this.font,
-				new TranslatableComponent("screen.additionalredstone.timer.power.off"), this.width / 2 - 130, 95,
+				Component.translatable("screen.additionalredstone.timer.power.off"), this.width / 2 - 130, 95,
 				Utils.TEXT_COLOR_SCREEN);
 		GuiComponent.drawString(matrixStack, this.font,
-				new TranslatableComponent("screen.additionalredstone.timer.interval"), this.width / 2 - 130, 125,
+				Component.translatable("screen.additionalredstone.timer.interval"), this.width / 2 - 130, 125,
 				Utils.TEXT_COLOR_SCREEN);
 
 		if (this.powerUpError) {

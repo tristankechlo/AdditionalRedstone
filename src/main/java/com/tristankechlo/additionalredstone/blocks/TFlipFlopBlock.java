@@ -1,12 +1,11 @@
 package com.tristankechlo.additionalredstone.blocks;
 
-import java.util.Random;
-
 import com.tristankechlo.additionalredstone.blockentity.TFlipFlopBlockEntity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
@@ -18,7 +17,7 @@ import net.minecraft.world.ticks.TickPriority;
 public class TFlipFlopBlock extends BaseDiodeBlock implements EntityBlock {
 
 	@Override
-	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand) {
+	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource rand) {
 		boolean inputPowered = this.getInputSignal(worldIn, pos, state) > 0;
 		if (inputPowered) {
 			worldIn.setBlock(pos, state.cycle(POWERED), 2);

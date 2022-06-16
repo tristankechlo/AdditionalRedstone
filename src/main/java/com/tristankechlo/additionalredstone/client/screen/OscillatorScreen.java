@@ -8,21 +8,19 @@ import com.tristankechlo.additionalredstone.network.packets.SetOscillatorValues;
 import com.tristankechlo.additionalredstone.util.Utils;
 
 import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class OscillatorScreen extends Screen {
 
-	private static final Component TITLE = new TranslatableComponent("screen.additionalredstone.oscillator");
+	private static final Component TITLE = Component.translatable("screen.additionalredstone.oscillator");
 	private static final ResourceLocation ICONS = new ResourceLocation(AdditionalRedstone.MOD_ID,
 			"textures/other/icons.png");
 	private EditBox ticksOnWidget;
@@ -58,9 +56,9 @@ public class OscillatorScreen extends Screen {
 	protected void init() {
 		super.init();
 		this.ticksOnWidget = new EditBox(this.font, this.width / 2 + 32, 60, 98, 20,
-				new TextComponent("oscillator_ticks_on"));
+				Component.translatable("screen.additionalredstone.oscillator.ticks.on"));
 		this.ticksOffWidget = new EditBox(this.font, this.width / 2 + 32, 90, 98, 20,
-				new TextComponent("oscillator_ticks_off"));
+				Component.translatable("screen.additionalredstone.oscillator.ticks.off"));
 		this.addWidget(this.ticksOnWidget);
 		this.addWidget(this.ticksOffWidget);
 		this.ticksOnWidget.setMaxLength(10);
@@ -71,11 +69,11 @@ public class OscillatorScreen extends Screen {
 		this.ticksOffWidget.setValue(String.valueOf(this.ticksOff));
 
 		this.saveButton = new Button(this.width / 2 - 110, 150, 100, 20,
-				new TranslatableComponent("screen.additionalredstone.save"), (b) -> {
+				Component.translatable("screen.additionalredstone.save"), (b) -> {
 					this.save();
 				});
 		this.cancelButton = new Button(this.width / 2 + 10, 150, 100, 20,
-				new TranslatableComponent("screen.additionalredstone.cancel"), (b) -> {
+				Component.translatable("screen.additionalredstone.cancel"), (b) -> {
 					this.cancel();
 				});
 		this.addRenderableWidget(saveButton);
@@ -116,14 +114,14 @@ public class OscillatorScreen extends Screen {
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
 
 		drawCenteredString(matrixStack, this.font,
-				new TranslatableComponent("screen.additionalredstone.oscillator.description"), this.width / 2, 30,
+				Component.translatable("screen.additionalredstone.oscillator.description"), this.width / 2, 30,
 				Utils.TEXT_COLOR_SCREEN);
 
 		GuiComponent.drawString(matrixStack, this.font,
-				new TranslatableComponent("screen.additionalredstone.oscillator.ticks.on"), this.width / 2 - 130, 65,
+				Component.translatable("screen.additionalredstone.oscillator.ticks.on"), this.width / 2 - 130, 65,
 				Utils.TEXT_COLOR_SCREEN);
 		GuiComponent.drawString(matrixStack, this.font,
-				new TranslatableComponent("screen.additionalredstone.oscillator.ticks.off"), this.width / 2 - 130, 95,
+				Component.translatable("screen.additionalredstone.oscillator.ticks.off"), this.width / 2 - 130, 95,
 				Utils.TEXT_COLOR_SCREEN);
 
 		if (this.ticksOnError) {

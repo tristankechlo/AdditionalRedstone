@@ -13,8 +13,6 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -22,7 +20,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class SequencerScreen extends Screen {
 
-	private static final Component TITLE = new TranslatableComponent("screen.additionalredstone.sequencer");
+	private static final Component TITLE = Component.translatable("screen.additionalredstone.sequencer");
 	private static final ResourceLocation ERROR = new ResourceLocation(AdditionalRedstone.MOD_ID,
 			"textures/other/icons.png");
 	private EditBox intervalWidget;
@@ -53,7 +51,7 @@ public class SequencerScreen extends Screen {
 	protected void init() {
 		super.init();
 		this.intervalWidget = new EditBox(this.font, this.width / 2 + 32, 60, 98, 20,
-				new TextComponent("sequencer_interval"));
+				Component.translatable("screen.additionalredstone.sequencer.interval"));
 		this.addWidget(this.intervalWidget);
 		this.intervalWidget.setMaxLength(10);
 		this.setInitialFocus(this.intervalWidget);
@@ -61,11 +59,11 @@ public class SequencerScreen extends Screen {
 		this.intervalWidget.setValue(String.valueOf(this.interval));
 
 		this.saveButton = new Button(this.width / 2 - 110, 150, 100, 20,
-				new TranslatableComponent("screen.additionalredstone.save"), (b) -> {
+				Component.translatable("screen.additionalredstone.save"), (b) -> {
 					this.save();
 				});
 		this.cancelButton = new Button(this.width / 2 + 10, 150, 100, 20,
-				new TranslatableComponent("screen.additionalredstone.cancel"), (b) -> {
+				Component.translatable("screen.additionalredstone.cancel"), (b) -> {
 					this.cancel();
 				});
 		this.addRenderableWidget(saveButton);
@@ -98,11 +96,11 @@ public class SequencerScreen extends Screen {
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
 
 		drawCenteredString(matrixStack, this.font,
-				new TranslatableComponent("screen.additionalredstone.sequencer.description"), this.width / 2, 30,
+				Component.translatable("screen.additionalredstone.sequencer.description"), this.width / 2, 30,
 				Utils.TEXT_COLOR_SCREEN);
 
 		GuiComponent.drawString(matrixStack, this.font,
-				new TranslatableComponent("screen.additionalredstone.sequencer.interval"), this.width / 2 - 130, 65,
+				Component.translatable("screen.additionalredstone.sequencer.interval"), this.width / 2 - 130, 65,
 				Utils.TEXT_COLOR_SCREEN);
 
 		if (this.intervalError) {

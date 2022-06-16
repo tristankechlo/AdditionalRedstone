@@ -1,10 +1,9 @@
 package com.tristankechlo.additionalredstone.blocks;
 
-import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -85,7 +84,7 @@ public abstract class BaseDiodeBlock extends DiodeBlock {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {
+	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand) {
 		if (stateIn.getValue(POWERED)) {
 			Direction direction = stateIn.getValue(FACING);
 			double x = (double) pos.getX() + 0.5D + (rand.nextDouble() - 0.5D) * 0.2D;
@@ -97,7 +96,7 @@ public abstract class BaseDiodeBlock extends DiodeBlock {
 			worldIn.addParticle(DustParticleOptions.REDSTONE, x + xOffset, y, z + zOffset, 0.0D, 0.0D, 0.0D);
 		}
 	}
-	
+
 	@Override
 	public PushReaction getPistonPushReaction(BlockState p_60584_) {
 		return PushReaction.DESTROY;

@@ -11,7 +11,6 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -91,7 +90,7 @@ public class CircuitMakerScreen extends AbstractContainerScreen<CircuitMakerCont
 			RenderSystem.setShaderTexture(0, ICONS);
 			this.blit(matrixStack, xx, yy, 50, 0, 25, 25);
 			if (x >= xx && x < xx + 25 && y >= yy && y < yy + 25) {
-				Component helpText = new TranslatableComponent("screen.additionalredstone.circuit_maker.show_recipe");
+				Component helpText = Component.translatable("screen.additionalredstone.circuit_maker.show_recipe");
 				this.renderTooltip(matrixStack, helpText, x, y);
 			}
 		}
@@ -123,7 +122,7 @@ public class CircuitMakerScreen extends AbstractContainerScreen<CircuitMakerCont
 		this.blit(matrixStack, xx, yy, 25, 0, 25, 25);
 		this.blit(matrixStack, xx + 3, yy + 4, 1, 1, 18, 18);
 		if (mouseX >= xx && mouseX < xx + 25 && mouseY >= yy && mouseY < yy + 25) {
-			Component helpText = new TranslatableComponent("screen.additionalredstone.close");
+			Component helpText = Component.translatable("screen.additionalredstone.close");
 			this.renderTooltip(matrixStack, helpText, mouseX, mouseY);
 		}
 	}

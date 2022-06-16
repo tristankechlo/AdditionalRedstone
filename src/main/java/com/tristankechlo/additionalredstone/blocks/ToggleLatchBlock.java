@@ -1,7 +1,6 @@
 package com.tristankechlo.additionalredstone.blocks;
 
 import java.util.EnumSet;
-import java.util.Random;
 
 import javax.annotation.Nullable;
 
@@ -13,6 +12,7 @@ import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -59,7 +59,7 @@ public class ToggleLatchBlock extends HorizontalDirectionalBlock {
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand) {
+	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource rand) {
 		boolean inputPowered = this.calculateInputStrength(worldIn, pos, state) > 0;
 		if (inputPowered) {
 			worldIn.setBlock(pos, state.cycle(POWERED_SIDE), 2);
@@ -184,7 +184,7 @@ public class ToggleLatchBlock extends HorizontalDirectionalBlock {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {
+	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand) {
 		ToggleLatchSide side = stateIn.getValue(POWERED_SIDE);
 		if (side == ToggleLatchSide.LEFT) {
 			this.spawnParticle(stateIn, worldIn, pos, rand, true);
@@ -194,7 +194,7 @@ public class ToggleLatchBlock extends HorizontalDirectionalBlock {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void spawnParticle(BlockState state, Level world, BlockPos pos, Random rand, boolean left) {
+	public void spawnParticle(BlockState state, Level world, BlockPos pos, RandomSource rand, boolean left) {
 		double xOff = left ? 0.25D : 0.75D;
 		Direction direction = state.getValue(FACING);
 		double x = (double) pos.getX() + xOff + (rand.nextDouble() - 0.5D) * 0.2D;
