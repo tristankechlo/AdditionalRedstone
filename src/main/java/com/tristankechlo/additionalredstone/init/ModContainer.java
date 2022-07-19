@@ -11,9 +11,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ModContainer {
 
-	public static final DeferredRegister<MenuType<?>> CONTAINER_TYPES = DeferredRegister
-			.create(ForgeRegistries.CONTAINERS, AdditionalRedstone.MOD_ID);
+	public static final DeferredRegister<MenuType<?>> CONTAINER_TYPES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, AdditionalRedstone.MOD_ID);
 
-	public static final RegistryObject<MenuType<CircuitMakerContainer>> CIRCUIT_MAKER_CONTAINER = CONTAINER_TYPES
-			.register("circuit_maker", () -> IForgeMenuType.create(CircuitMakerContainer::new));
+	public static final RegistryObject<MenuType<CircuitMakerContainer>> CIRCUIT_MAKER_CONTAINER = CONTAINER_TYPES.register("circuit_maker", () -> IForgeMenuType.create(CircuitMakerContainer::new));
 }

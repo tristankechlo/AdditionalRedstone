@@ -1,5 +1,7 @@
 # Changelog
 
+### Version 1.19 - 1.0.4
+ - fix `Mod Loading has failed` error
 ### Version 1.19 - 1.0.3
  - port to 1.19
 
