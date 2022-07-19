@@ -1,7 +1,8 @@
 {
-	"parent" : "additionalredstone:block/base_gate_powered",
-	"textures" : {
-		"symbol" : "additionalredstone:block/sr_latch",
-		"top" : "additionalredstone:block/2_input"
+	"parent": "additionalredstone:block/base_gate_powered",
+	"render_type": "minecraft:cutout",
+	"textures": {
+		"symbol": "additionalredstone:block/sr_latch",
+		"top": "additionalredstone:block/2_input"
 	}
 }

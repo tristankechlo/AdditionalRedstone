@@ -1,6 +1,7 @@
 {
-	"parent" : "additionalredstone:block/base_gate",
-	"textures" : {
-		"symbol" : "additionalredstone:block/xor_gate"
+	"parent": "additionalredstone:block/base_gate",
+	"render_type": "minecraft:cutout",
+	"textures": {
+		"symbol": "additionalredstone:block/xor_gate"
 	}
 }

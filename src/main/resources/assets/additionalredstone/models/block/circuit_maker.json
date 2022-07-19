@@ -1,5 +1,6 @@
 {
 	"ambientocclusion": false,
+	"render_type": "minecraft:cutout",
 	"textures": {
 		"particle": "additionalredstone:block/circuit_maker",
 		"top": "additionalredstone:block/circuit_maker",

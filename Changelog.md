@@ -2,6 +2,8 @@
 
 ### Version 1.19 - 1.0.4
  - fix `Mod Loading has failed` error
+ - move block render-types to the blockmodel json
+
 ### Version 1.19 - 1.0.3
  - port to 1.19
 

@@ -1,5 +1,6 @@
 {
 	"ambientocclusion": false,
+	"render_type": "minecraft:cutout",
 	"textures": {
 		"base": "minecraft:block/smooth_stone",
 		"lit": "minecraft:block/redstone_torch",
