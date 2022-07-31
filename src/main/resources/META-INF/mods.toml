@@ -6,13 +6,13 @@ issueTrackerURL="https://github.com/tristankechlo/AdditionalRedstone/issues"
 
 [[mods]]
 modId="additionalredstone"
-version="1.19 - 1.0.4"
+version="1.19.1 - 1.0.4"
 displayName="Additional Redstone"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/additional-redstone"
 #logoFile="examplemod.png"
 #credits="Thanks for this example mod goes to Java"
 authors="Buecher_wurm"
-description='''additional redstone'''
+description='''additional redstone mechanics like logic gates and more'''
 
 [[dependencies.additionalredstone]]
     modId="forge"
