@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 1.19.2 - 1.0.4
+ - port to 1.19.2
+
 ### Version 1.19.1 - 1.0.4
  - port to 1.19.1
 

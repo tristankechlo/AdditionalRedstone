@@ -22,7 +22,7 @@
  
  
 #### Translations:
-| Language | up to modversion | Translator |
-|:--------:|:----------------:|:-----------|
-| **en_us** | 1.0.2 | tristankechlo ([Github](https://github.com/tristankechlo)) |
-| **de_de** | 1.0.2 | tristankechlo ([Github](https://github.com/tristankechlo)) |
+| Language  | up to modversion | Translator                                                 |
+|:---------:|:----------------:|:-----------------------------------------------------------|
+| **en_us** |      1.0.4       | tristankechlo ([Github](https://github.com/tristankechlo)) |
+| **de_de** |      1.0.4       | tristankechlo ([Github](https://github.com/tristankechlo)) |
