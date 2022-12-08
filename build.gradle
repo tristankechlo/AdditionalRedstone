@@ -3,7 +3,7 @@ plugins {
     id 'eclipse'
 }
 
-version = "${mod_version}"
+version = "forge-${mod_version}"
 group = 'com.tristankechlo.additionalredstone'
 archivesBaseName = 'additionalredstone'
 
