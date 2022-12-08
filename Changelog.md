@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 1.18.2 - 1.0.4
+ - port to 1.18.2
+ - change file name to `additionalredstone-forge-{version}.jar`
+
 ### Version 1.18.1 - 1.0.3
  - Fix NoSuchMethodError
 
