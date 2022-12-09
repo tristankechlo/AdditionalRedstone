@@ -1,6 +1,6 @@
 # Changelog
 
-### Version 1.19.3 - 1.0.5
+### Version 1.19.3 - 1.1.0
 - added the `/additionalredstone` command
     - `/additionalredstone github` shows the url to the github page
     - `/additionalredstone discord` shows the url to the discord server
