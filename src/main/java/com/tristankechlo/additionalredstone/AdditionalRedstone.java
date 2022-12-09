@@ -39,8 +39,8 @@ public class AdditionalRedstone {
         ModContainer.CONTAINER_TYPES.register(modEventBus);
 
         modEventBus.addListener(ClientSetup::init);
-        modEventBus.addListener(this::commandRegister);
 
+        MinecraftForge.EVENT_BUS.addListener(this::commandRegister);
         MinecraftForge.EVENT_BUS.register(this);
     }
 
