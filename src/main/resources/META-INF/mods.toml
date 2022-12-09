@@ -1,29 +1,29 @@
 modLoader="javafml"
-loaderVersion="[34,)"
+loaderVersion="[36,)"
 license="CC BY-NC-ND 4.0"
 showAsResourcePack=false
 issueTrackerURL="https://github.com/tristankechlo/AdditionalRedstone/issues"
 
 [[mods]]
 modId="additionalredstone"
-version="1.16.5 - 1.0.2"
+version="1.16.5-1.0.5"
 displayName="Additional Redstone"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/additional-redstone"
 #logoFile="examplemod.png"
 #credits="Thanks for this example mod goes to Java"
 authors="Buecher_wurm"
-description='''additional redstone'''
+description='''additional redstone mechanics, like logic gates and more'''
 
 [[dependencies.additionalredstone]]
     modId="forge"
     mandatory=true
-    versionRange="[34,)"
+    versionRange="[36,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.additionalredstone]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.4,1.16.5]"
+    versionRange="[1.16.5,1.17]"
     ordering="NONE"
     side="BOTH"
