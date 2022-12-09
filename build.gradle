@@ -11,7 +11,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 
-version = "${mod_version}"
+version = "forge-${mod_version}"
 group = 'com.tristankechlo.additionalredstone'
 archivesBaseName = 'additionalredstone'
 
