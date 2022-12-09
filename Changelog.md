@@ -1,6 +1,6 @@
 # Changelog
 
-### Version 1.17.1 - 1.0.5
+### Version 1.17.1 - 1.1.0
  - port to 1.17.1
  - added the `/additionalredstone` command
      - `/additionalredstone github` shows the url to the github page
