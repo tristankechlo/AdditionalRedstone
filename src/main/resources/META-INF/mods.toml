@@ -12,7 +12,7 @@ displayURL="https://www.curseforge.com/minecraft/mc-mods/additional-redstone"
 #logoFile="examplemod.png"
 #credits="Thanks for this example mod goes to Java"
 authors="Buecher_wurm"
-description='''additional redstone'''
+description='''additional redstone mechanics, like logic gates and more'''
 
 [[dependencies.additionalredstone]]
     modId="forge"
