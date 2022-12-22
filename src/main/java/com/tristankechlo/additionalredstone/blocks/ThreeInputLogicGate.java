@@ -1,6 +1,6 @@
 package com.tristankechlo.additionalredstone.blocks;
 
-import com.tristankechlo.additionalredstone.util.TriFunction;
+import com.tristankechlo.additionalredstone.util.ThreeInputLogic;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -8,9 +8,9 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class ThreeInputLogicGate extends BaseDiodeBlock {
 
-    private final TriFunction<Boolean, Boolean, Boolean, Boolean> logic;
+    private final ThreeInputLogic logic;
 
-    public ThreeInputLogicGate(TriFunction<Boolean, Boolean, Boolean, Boolean> logic) {
+    public ThreeInputLogicGate(ThreeInputLogic logic) {
         this.logic = logic;
     }
 
