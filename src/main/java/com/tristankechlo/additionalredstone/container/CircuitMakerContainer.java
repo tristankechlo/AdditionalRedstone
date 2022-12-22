@@ -54,42 +54,12 @@ public class CircuitMakerContainer extends AbstractContainerMenu {
         super(ModContainer.CIRCUIT_MAKER_CONTAINER.get(), id);
         this.worldPos = worldCallable;
 
-        this.slotRedstone = this.addSlot(new Slot(this.inputInventory, 0, 8, 25) {
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return stack.getItem().equals(Items.REDSTONE);
-            }
-        });
-        this.slotQuartz = this.addSlot(new Slot(this.inputInventory, 1, 28, 25) {
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return stack.getItem().equals(Items.QUARTZ);
-            }
-        });
-        this.slotRedstoneTorch = this.addSlot(new Slot(this.inputInventory, 2, 48, 25) {
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return stack.getItem().equals(Items.REDSTONE_TORCH);
-            }
-        });
-        this.slotStoneSlab1 = this.addSlot(new Slot(this.inputInventory, 3, 8, 45) {
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return stack.getItem().equals(Items.STONE_SLAB);
-            }
-        });
-        this.slotStoneSlab2 = this.addSlot(new Slot(this.inputInventory, 4, 28, 45) {
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return stack.getItem().equals(Items.STONE_SLAB);
-            }
-        });
-        this.slotStoneSlab3 = this.addSlot(new Slot(this.inputInventory, 5, 48, 45) {
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return stack.getItem().equals(Items.STONE_SLAB);
-            }
-        });
+        this.slotRedstone = this.addSlot(new ConditionedSlot(this.inputInventory, 0, 8, 25, Items.REDSTONE));
+        this.slotQuartz = this.addSlot(new ConditionedSlot(this.inputInventory, 1, 28, 25, Items.QUARTZ));
+        this.slotRedstoneTorch = this.addSlot(new ConditionedSlot(this.inputInventory, 2, 48, 25, Items.REDSTONE_TORCH));
+        this.slotStoneSlab1 = this.addSlot(new ConditionedSlot(this.inputInventory, 3, 8, 45, Items.STONE_SLAB));
+        this.slotStoneSlab2 = this.addSlot(new ConditionedSlot(this.inputInventory, 4, 28, 45, Items.STONE_SLAB));
+        this.slotStoneSlab3 = this.addSlot(new ConditionedSlot(this.inputInventory, 5, 48, 45, Items.STONE_SLAB));
 
         this.slotOutput = this.addSlot(new Slot(this.outputInventory, 0, 164, 50) {
             @Override
