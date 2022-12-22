@@ -48,14 +48,14 @@ public class OscillatorBlockEntity extends BlockEntity {
 			if (this.powered) {
 				if (this.tickCounter >= this.ticksOn) {
 					this.tickCounter = 0;
-					this.updatePower(!this.powered);
+					this.updatePower(false);
 				} else {
 					this.tickCounter++;
 				}
 			} else {
 				if (this.tickCounter >= this.ticksOff) {
 					this.tickCounter = 0;
-					this.updatePower(!this.powered);
+					this.updatePower(true);
 				} else {
 					this.tickCounter++;
 				}
