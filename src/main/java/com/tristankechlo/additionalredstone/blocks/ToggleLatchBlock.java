@@ -1,6 +1,5 @@
 package com.tristankechlo.additionalredstone.blocks;
 
-import com.tristankechlo.additionalredstone.util.ToggleLatchSide;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -8,6 +7,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -213,4 +213,26 @@ public class ToggleLatchBlock extends HorizontalDirectionalBlock {
         return PushReaction.DESTROY;
     }
 
+    private enum ToggleLatchSide implements StringRepresentable {
+
+        LEFT("left"),
+        RIGHT("right");
+
+        private final String name;
+
+        ToggleLatchSide(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return this.name;
+        }
+
+        @Override
+        public String getSerializedName() {
+            return this.name;
+        }
+
+    }
 }
