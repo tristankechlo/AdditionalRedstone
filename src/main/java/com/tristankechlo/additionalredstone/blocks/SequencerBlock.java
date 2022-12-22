@@ -3,7 +3,6 @@ package com.tristankechlo.additionalredstone.blocks;
 import com.tristankechlo.additionalredstone.blockentity.SequencerBlockEntity;
 import com.tristankechlo.additionalredstone.client.screen.SequencerScreen;
 import com.tristankechlo.additionalredstone.init.ModBlockEntities;
-import com.tristankechlo.additionalredstone.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,9 +16,9 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -36,7 +35,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 
-public class SequencerBlock extends Block implements EntityBlock {
+
+public class SequencerBlock extends BaseEntityBlock {
 
     public static final IntegerProperty POWERED_SIDE = IntegerProperty.create("output", 0, 3);
     protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D);
@@ -47,8 +47,7 @@ public class SequencerBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
-                                 BlockHitResult hit) {
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         if (player.isShiftKeyDown()) {
             if (!player.getAbilities().mayBuild) {
                 return InteractionResult.PASS;
@@ -136,8 +135,7 @@ public class SequencerBlock extends Block implements EntityBlock {
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return Utils.createTicker(level, type, ModBlockEntities.SEQUENCER_BLOCK_ENTITY.get(),
-                SequencerBlockEntity::tick);
+        return level.isClientSide() ? null : createTickerHelper(type, ModBlockEntities.SEQUENCER_BLOCK_ENTITY.get(), SequencerBlockEntity::tick);
     }
 
     public static void updatePower(BlockState state, Level level, BlockPos pos) {

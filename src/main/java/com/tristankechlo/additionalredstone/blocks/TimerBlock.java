@@ -3,7 +3,6 @@ package com.tristankechlo.additionalredstone.blocks;
 import com.tristankechlo.additionalredstone.blockentity.TimerBlockEntity;
 import com.tristankechlo.additionalredstone.client.screen.TimerScreen;
 import com.tristankechlo.additionalredstone.init.ModBlockEntities;
-import com.tristankechlo.additionalredstone.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -115,7 +114,7 @@ public class TimerBlock extends BaseEntityBlock {
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return Utils.createTicker(level, type, ModBlockEntities.TIMER_BLOCK_ENTITY.get(), TimerBlockEntity::tick);
+        return level.isClientSide ? null : createTickerHelper(type, ModBlockEntities.TIMER_BLOCK_ENTITY.get(), TimerBlockEntity::tick);
     }
 
     @Override
