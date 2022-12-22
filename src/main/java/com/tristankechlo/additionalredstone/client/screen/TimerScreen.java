@@ -4,9 +4,9 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.blockentity.TimerBlockEntity;
+import com.tristankechlo.additionalredstone.client.ClientSetup;
 import com.tristankechlo.additionalredstone.network.PacketHandler;
 import com.tristankechlo.additionalredstone.network.packets.SetTimerValues;
-import com.tristankechlo.additionalredstone.util.Utils;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -106,17 +106,17 @@ public class TimerScreen extends Screen {
 
         drawCenteredString(matrixStack, this.font,
                 Component.translatable("screen.additionalredstone.timer.description"), this.width / 2, 30,
-                Utils.TEXT_COLOR_SCREEN);
+                ClientSetup.TEXT_COLOR_SCREEN);
 
         GuiComponent.drawString(matrixStack, this.font,
                 Component.translatable("screen.additionalredstone.timer.power.on"), this.width / 2 - 130, 65,
-                Utils.TEXT_COLOR_SCREEN);
+                ClientSetup.TEXT_COLOR_SCREEN);
         GuiComponent.drawString(matrixStack, this.font,
                 Component.translatable("screen.additionalredstone.timer.power.off"), this.width / 2 - 130, 95,
-                Utils.TEXT_COLOR_SCREEN);
+                ClientSetup.TEXT_COLOR_SCREEN);
         GuiComponent.drawString(matrixStack, this.font,
                 Component.translatable("screen.additionalredstone.timer.interval"), this.width / 2 - 130, 125,
-                Utils.TEXT_COLOR_SCREEN);
+                ClientSetup.TEXT_COLOR_SCREEN);
 
         if (this.powerUpError) {
             RenderSystem.setShaderTexture(0, ERROR);

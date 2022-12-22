@@ -12,7 +12,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 @Mod.EventBusSubscriber(modid = AdditionalRedstone.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientSetup {
 
-	public static void init(final FMLClientSetupEvent event) {
+    public static final int TEXT_COLOR_SCREEN = 0xCCCCCC;
+
+    public static void init(final FMLClientSetupEvent event) {
 		MenuScreens.register(ModContainer.CIRCUIT_MAKER_CONTAINER.get(), CircuitMakerScreen::new);
 	}
 

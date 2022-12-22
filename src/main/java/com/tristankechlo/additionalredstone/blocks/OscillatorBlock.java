@@ -3,7 +3,6 @@ package com.tristankechlo.additionalredstone.blocks;
 import com.tristankechlo.additionalredstone.blockentity.OscillatorBlockEntity;
 import com.tristankechlo.additionalredstone.client.screen.OscillatorScreen;
 import com.tristankechlo.additionalredstone.init.ModBlockEntities;
-import com.tristankechlo.additionalredstone.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
