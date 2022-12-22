@@ -58,12 +58,9 @@ public class TimerScreen extends Screen {
     @Override
     protected void init() {
         super.init();
-        this.powerUpWidget = new EditBox(this.font, this.width / 2 + 32, 60, 98, 20,
-                Component.translatable("screen.additionalredstone.timer.power.on"));
-        this.powerDownWidget = new EditBox(this.font, this.width / 2 + 32, 90, 98, 20,
-                Component.translatable("screen.additionalredstone.timer.power.off"));
-        this.intervalWidget = new EditBox(this.font, this.width / 2 + 32, 120, 98, 20,
-                Component.translatable("screen.additionalredstone.timer.interval"));
+        this.powerUpWidget = new EditBox(this.font, this.width / 2 + 32, 60, 98, 20, Component.translatable("screen.additionalredstone.timer.power.on"));
+        this.powerDownWidget = new EditBox(this.font, this.width / 2 + 32, 90, 98, 20, Component.translatable("screen.additionalredstone.timer.power.off"));
+        this.intervalWidget = new EditBox(this.font, this.width / 2 + 32, 120, 98, 20, Component.translatable("screen.additionalredstone.timer.interval"));
         this.addWidget(this.powerUpWidget);
         this.addWidget(this.powerDownWidget);
         this.addWidget(this.intervalWidget);

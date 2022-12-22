@@ -48,8 +48,7 @@ public class SequencerScreen extends Screen {
     @Override
     protected void init() {
         super.init();
-        this.intervalWidget = new EditBox(this.font, this.width / 2 + 32, 60, 98, 20,
-                Component.translatable("screen.additionalredstone.sequencer.interval"));
+        this.intervalWidget = new EditBox(this.font, this.width / 2 + 32, 60, 98, 20, Component.translatable("screen.additionalredstone.sequencer.interval"));
         this.addWidget(this.intervalWidget);
         this.intervalWidget.setMaxLength(10);
         this.setInitialFocus(this.intervalWidget);

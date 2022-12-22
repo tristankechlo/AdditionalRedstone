@@ -53,10 +53,8 @@ public class OscillatorScreen extends Screen {
     @Override
     protected void init() {
         super.init();
-        this.ticksOnWidget = new EditBox(this.font, this.width / 2 + 32, 60, 98, 20,
-                Component.translatable("screen.additionalredstone.oscillator.ticks.on"));
-        this.ticksOffWidget = new EditBox(this.font, this.width / 2 + 32, 90, 98, 20,
-                Component.translatable("screen.additionalredstone.oscillator.ticks.off"));
+        this.ticksOnWidget = new EditBox(this.font, this.width / 2 + 32, 60, 98, 20, Component.translatable("screen.additionalredstone.oscillator.ticks.on"));
+        this.ticksOffWidget = new EditBox(this.font, this.width / 2 + 32, 90, 98, 20, Component.translatable("screen.additionalredstone.oscillator.ticks.off"));
         this.addWidget(this.ticksOnWidget);
         this.addWidget(this.ticksOffWidget);
         this.ticksOnWidget.setMaxLength(10);
@@ -66,8 +64,8 @@ public class OscillatorScreen extends Screen {
         this.ticksOnWidget.setValue(String.valueOf(this.ticksOn));
         this.ticksOffWidget.setValue(String.valueOf(this.ticksOff));
 
-        this.saveButton = new Button.Builder(Component.translatable("screen.additionalredstone.save"), (b) -> this.save())
-                .pos(this.width / 2 - 110, 150).size(100, 20).build();
+        this.saveButton = new Button.Builder(Component.translatable("screen.additionalredstone.save"),
+                (b) -> this.save()).pos(this.width / 2 - 110, 150).size(100, 20).build();
         this.cancelButton = new Button.Builder(Component.translatable("screen.additionalredstone.cancel"),
                 (b) -> this.cancel()).pos(this.width / 2 + 10, 150).size(100, 20).build();
         this.addRenderableWidget(saveButton);

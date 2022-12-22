@@ -11,21 +11,21 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class NotGateBlock extends BaseDiodeBlock {
 
-	@Override
-	protected boolean shouldTurnOn(Level worldIn, BlockPos pos, BlockState state) {
-		return this.getInputSignal(worldIn, pos, state) <= 0;
-	}
+    @Override
+    protected boolean shouldTurnOn(Level worldIn, BlockPos pos, BlockState state) {
+        return this.getInputSignal(worldIn, pos, state) <= 0;
+    }
 
-	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-		return DiodeBlock.SHAPE;
-	}
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+        return DiodeBlock.SHAPE;
+    }
 
-	@Override
-	public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
-		Direction front = state.getValue(FACING);
-		Direction back = state.getValue(FACING).getOpposite();
-		return side == front || side == back;
-	}
+    @Override
+    public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
+        Direction front = state.getValue(FACING);
+        Direction back = state.getValue(FACING).getOpposite();
+        return side == front || side == back;
+    }
 
 }
