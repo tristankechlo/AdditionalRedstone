@@ -211,41 +211,6 @@ public class CircuitMakerContainer extends AbstractContainerMenu {
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public Slot getSlotCircuitBase1() {
-        return this.slotStoneSlab1;
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public Slot getSlotCircuitBase2() {
-        return this.slotStoneSlab2;
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public Slot getSlotCircuitBase3() {
-        return this.slotStoneSlab3;
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public Slot getSlotQuartz() {
-        return this.slotQuartz;
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public Slot getSlotRedstoneTorch() {
-        return this.slotRedstoneTorch;
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public Slot getSlotRedstone() {
-        return this.slotRedstone;
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public Slot getSlotOutput() {
-        return this.slotOutput;
-    }
-
     public boolean hasEnoughItemsInSlots() {
         return !this.slotStoneSlab1.getItem().isEmpty() && !this.slotQuartz.getItem().isEmpty()
                 && !this.slotRedstoneTorch.getItem().isEmpty() && !this.slotStoneSlab2.getItem().isEmpty()
