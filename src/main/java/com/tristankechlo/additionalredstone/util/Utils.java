@@ -14,35 +14,11 @@ public class Utils {
     @Nullable
     @SuppressWarnings("unchecked")
     public static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTicker(Level level,
-									   BlockEntityType<A> typeA, BlockEntityType<E> typeB, BlockEntityTicker<? super E> ticker) {
+                                                                                                   BlockEntityType<A> typeA, BlockEntityType<E> typeB, BlockEntityTicker<? super E> ticker) {
         if (level.isClientSide) {
             return null;
         }
         return typeB == typeA ? (BlockEntityTicker<A>) ticker : null;
-    }
-
-    public static boolean and(boolean a, boolean b) {
-        return a && b;
-    }
-
-    public static boolean nand(boolean a, boolean b) {
-        return !and(a, b);
-    }
-
-    public static boolean or(boolean a, boolean b) {
-        return a || b;
-    }
-
-    public static boolean nor(boolean a, boolean b) {
-        return !or(a, b);
-    }
-
-    public static boolean xor(boolean a, boolean b) {
-        return a ^ b;
-    }
-
-    public static boolean xnor(boolean a, boolean b) {
-        return !xor(a, b);
     }
 
 }
