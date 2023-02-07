@@ -1,4 +1,4 @@
-# AdditionalRedstone
+# AdditionalRedstone [![Curseforge](http://cf.way2muchnoise.eu/full_455373_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/additional-redstone) [![Discord](https://img.shields.io/discord/639540436524072970?color=0a48c4&label=%20&logo=discord&logoColor=FFF)](https://discord.gg/bhUaWhq)
 ### adds more content to the redstone mechanics 
 ### currently added logic gates and blocks
  - AND - Gate
