@@ -12,7 +12,7 @@ public class ModItemGroups {
         event.registerCreativeModeTab(new ResourceLocation(AdditionalRedstone.MOD_ID, "general"),
                 builder -> builder.icon(() -> new ItemStack(ModItems.CIRCUIT_MAKER_BLOCK_ITEM.get()))
                         .title(Component.translatable("itemGroup.additionalredstone.main"))
-                        .displayItems((features, output, hasPermissions) -> {
+                        .displayItems((parameters, output) -> {
                             output.accept(ModItems.NOT_GATE_BLOCK_ITEM.get());
                             output.accept(ModItems.AND_GATE_BLOCK_ITEM.get());
                             output.accept(ModItems.NAND_GATE_BLOCK_ITEM.get());

@@ -52,7 +52,7 @@ public class SequencerScreen extends Screen {
         this.addWidget(this.intervalWidget);
         this.intervalWidget.setMaxLength(10);
         this.setInitialFocus(this.intervalWidget);
-        this.intervalWidget.setFocus(true);
+        this.intervalWidget.setFocused(true);
         this.intervalWidget.setValue(String.valueOf(this.interval));
 
         this.saveButton = new Button.Builder(Component.translatable("screen.additionalredstone.save"), (b) -> this.save())
@@ -98,7 +98,7 @@ public class SequencerScreen extends Screen {
 
         if (this.intervalError) {
             RenderSystem.setShaderTexture(0, ERROR);
-            this.blit(matrixStack, this.width / 2 + 140, 61, 1, 1, 18, 18);
+            blit(matrixStack, this.width / 2 + 140, 61, 1, 1, 18, 18);
         }
 
     }

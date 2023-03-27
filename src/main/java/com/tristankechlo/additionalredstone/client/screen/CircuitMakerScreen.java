@@ -29,8 +29,8 @@ public class CircuitMakerScreen extends AbstractContainerScreen<CircuitMakerCont
     private boolean clickedOnSroll;
     private int recipeIndexOffset;
     private boolean hasItemsInInputSlot;
-    private int buttonsPerRow = 4;
-    private int buttonSize = 18;
+    private final int buttonsPerRow = 4;
+    private final int buttonSize = 18;
     private boolean renderInputHelp = false;
 
     public CircuitMakerScreen(CircuitMakerContainer screenContainer, Inventory inv, Component titleIn) {
@@ -62,11 +62,11 @@ public class CircuitMakerScreen extends AbstractContainerScreen<CircuitMakerCont
         RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
         int i = this.leftPos;
         int j = this.topPos;
-        this.blit(matrixStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
+        blit(matrixStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
 
         // render scrollbar
         int k = (int) (41.0F * this.sliderProgress);
-        this.blit(matrixStack, i + 144, j + 16 + k, 232 + (this.canScroll() ? 0 : 12), 0, 12, 15);
+        blit(matrixStack, i + 144, j + 16 + k, 232 + (this.canScroll() ? 0 : 12), 0, 12, 15);
 
         // render buttons with items
         if (this.hasItemsInInputSlot) {
@@ -74,7 +74,7 @@ public class CircuitMakerScreen extends AbstractContainerScreen<CircuitMakerCont
             int i1 = this.topPos + 15;
             int j1 = this.recipeIndexOffset + 12;
             this.renderButtons(matrixStack, x, y, l, i1, j1);
-            this.renderCraftableItems(l, i1, j1);
+            this.renderCraftableItems(matrixStack, l, i1, j1);
         }
 
         // render help for input slots
@@ -84,7 +84,7 @@ public class CircuitMakerScreen extends AbstractContainerScreen<CircuitMakerCont
             int xx = this.leftPos - 25;
             int yy = this.topPos;
             RenderSystem.setShaderTexture(0, ICONS);
-            this.blit(matrixStack, xx, yy, 50, 0, 25, 25);
+            blit(matrixStack, xx, yy, 50, 0, 25, 25);
             if (x >= xx && x < xx + 25 && y >= yy && y < yy + 25) {
                 Component helpText = Component.translatable("screen.additionalredstone.circuit_maker.show_recipe");
                 this.renderTooltip(matrixStack, helpText, x, y);
@@ -94,12 +94,12 @@ public class CircuitMakerScreen extends AbstractContainerScreen<CircuitMakerCont
 
     private void renderInputHelp(PoseStack matrixStack, int mouseX, int mouseY) {
         RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
-        this.blit(matrixStack, this.leftPos - 72, this.topPos, 18, 167, 72, 52);
+        blit(matrixStack, this.leftPos - 72, this.topPos, 18, 167, 72, 52);
         final ItemRenderer renderer = this.minecraft.getItemRenderer();
         for (int i = 0; i < 3; i++) {
             int x = this.leftPos - 64 + (i * 20);
             int y = this.topPos + 8;
-            renderer.renderGuiItem(STACKS[i], x, y);
+            renderer.renderGuiItem(matrixStack, STACKS[i], x, y);
             if (mouseX >= x && mouseX < x + 16 && mouseY >= y && mouseY < y + 16) {
                 this.renderTooltip(matrixStack, STACKS[i], mouseX, mouseY);
             }
@@ -107,7 +107,7 @@ public class CircuitMakerScreen extends AbstractContainerScreen<CircuitMakerCont
         for (int i = 0; i < 3; i++) {
             int x = this.leftPos - 64 + (i * 20);
             int y = this.topPos + 28;
-            renderer.renderGuiItem(STACKS[3], x, y);
+            renderer.renderGuiItem(matrixStack, STACKS[3], x, y);
             if (mouseX >= x && mouseX < x + 16 && mouseY >= y && mouseY < y + 16) {
                 this.renderTooltip(matrixStack, STACKS[3], mouseX, mouseY);
             }
@@ -115,8 +115,8 @@ public class CircuitMakerScreen extends AbstractContainerScreen<CircuitMakerCont
         int xx = this.leftPos - 97;
         int yy = this.topPos;
         RenderSystem.setShaderTexture(0, ICONS);
-        this.blit(matrixStack, xx, yy, 25, 0, 25, 25);
-        this.blit(matrixStack, xx + 3, yy + 4, 1, 1, 18, 18);
+        blit(matrixStack, xx, yy, 25, 0, 25, 25);
+        blit(matrixStack, xx + 3, yy + 4, 1, 1, 18, 18);
         if (mouseX >= xx && mouseX < xx + 25 && mouseY >= yy && mouseY < yy + 25) {
             Component helpText = Component.translatable("screen.additionalredstone.close");
             this.renderTooltip(matrixStack, helpText, mouseX, mouseY);
@@ -156,18 +156,18 @@ public class CircuitMakerScreen extends AbstractContainerScreen<CircuitMakerCont
             } else if (x >= k && y >= i1 && x < k + buttonSize && y < i1 + buttonSize) {
                 j1 += (2 * buttonSize);
             }
-            this.blit(matrixStack, k, i1 - 1, 0, j1, buttonSize, buttonSize);
+            blit(matrixStack, k, i1 - 1, 0, j1, buttonSize, buttonSize);
         }
     }
 
-    private void renderCraftableItems(int left, int top, int recipeIndexOffsetMax) {
+    private void renderCraftableItems(PoseStack ps, int left, int top, int recipeIndexOffsetMax) {
         Circuits[] list = Circuits.values();
         for (int i = this.recipeIndexOffset; i < recipeIndexOffsetMax && i < Circuits.SIZE; ++i) {
             int j = i - this.recipeIndexOffset;
             int k = left + j % buttonsPerRow * buttonSize + 1;
             int l = j / buttonsPerRow;
             int i1 = top + l * buttonSize + 1;
-            this.minecraft.getItemRenderer().renderAndDecorateItem(list[i].getItemStack(), k, i1);
+            this.minecraft.getItemRenderer().renderAndDecorateItem(ps, list[i].getItemStack(), k, i1);
         }
     }
 

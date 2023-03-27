@@ -60,7 +60,7 @@ public class OscillatorScreen extends Screen {
         this.ticksOnWidget.setMaxLength(10);
         this.ticksOffWidget.setMaxLength(10);
         this.setInitialFocus(this.ticksOnWidget);
-        this.ticksOnWidget.setFocus(true);
+        this.ticksOnWidget.setFocused(true);
         this.ticksOnWidget.setValue(String.valueOf(this.ticksOn));
         this.ticksOffWidget.setValue(String.valueOf(this.ticksOff));
 
@@ -118,11 +118,11 @@ public class OscillatorScreen extends Screen {
 
         if (this.ticksOnError) {
             RenderSystem.setShaderTexture(0, ICONS);
-            this.blit(matrixStack, this.width / 2 + 140, 61, 1, 1, 18, 18);
+            blit(matrixStack, this.width / 2 + 140, 61, 1, 1, 18, 18);
         }
         if (this.ticksOffError) {
             RenderSystem.setShaderTexture(0, ICONS);
-            this.blit(matrixStack, this.width / 2 + 140, 91, 1, 1, 18, 18);
+            blit(matrixStack, this.width / 2 + 140, 91, 1, 1, 18, 18);
         }
 
     }

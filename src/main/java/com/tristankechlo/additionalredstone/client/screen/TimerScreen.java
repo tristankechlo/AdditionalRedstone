@@ -68,7 +68,7 @@ public class TimerScreen extends Screen {
         this.powerDownWidget.setMaxLength(5);
         this.intervalWidget.setMaxLength(5);
         this.setInitialFocus(this.powerUpWidget);
-        this.powerUpWidget.setFocus(true);
+        this.powerUpWidget.setFocused(true);
         this.powerUpWidget.setValue(String.valueOf(this.powerUpTime));
         this.powerDownWidget.setValue(String.valueOf(this.powerDownTime));
         this.intervalWidget.setValue(String.valueOf(this.interval));
@@ -120,15 +120,15 @@ public class TimerScreen extends Screen {
 
         if (this.powerUpError) {
             RenderSystem.setShaderTexture(0, ERROR);
-            this.blit(matrixStack, this.width / 2 + 140, 61, 1, 1, 18, 18);
+            blit(matrixStack, this.width / 2 + 140, 61, 1, 1, 18, 18);
         }
         if (this.powerDownError) {
             RenderSystem.setShaderTexture(0, ERROR);
-            this.blit(matrixStack, this.width / 2 + 140, 91, 1, 1, 18, 18);
+            blit(matrixStack, this.width / 2 + 140, 91, 1, 1, 18, 18);
         }
         if (this.intervalError) {
             RenderSystem.setShaderTexture(0, ERROR);
-            this.blit(matrixStack, this.width / 2 + 140, 121, 1, 1, 18, 18);
+            blit(matrixStack, this.width / 2 + 140, 121, 1, 1, 18, 18);
         }
     }
 
