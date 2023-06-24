@@ -1,0 +1,41 @@
+{
+    "schemaVersion": 1,
+    "id": "additionalredstone",
+    "version": "${version}",
+    "name": "Additional Redstone",
+    "description": "additional redstone mechanics, like logic gates and more",
+    "authors": [
+        "Buecher_wurm"
+    ],
+    "contact": {
+        "homepage": "https://www.curseforge.com/minecraft/mc-mods/additional-redstone",
+        "sources": "https://github.com/tristankechlo/AdditionalRedstone",
+        "issues": "https://github.com/tristankechlo/AdditionalRedstone/issues"
+    },
+    "license": "CC BY-NC-ND 4.0",
+    "icon": "logo.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "com.tristankechlo.additionalredstone.AdditionalRedstone"
+        ]
+    },
+    "mixins": [
+    ],
+    "depends": {
+        "fabricloader": ">=0.14",
+        "fabric": "*",
+        "minecraft": ">=1.20",
+        "java": ">=17"
+    },
+    "custom": {
+        "modmenu": {
+            "links": {
+                "modmenu.discord": "https://discord.gg/bhUaWhq",
+                "modmenu.curseforge": "https://www.curseforge.com/minecraft/mc-mods/additional-redstone",
+                "modmenu.modrinth": "https://modrinth.com/mod/additional-redstone",
+                "modmenu.wiki": "https://github.com/tristankechlo/AdditionalRedstone/wiki"
+            }
+        }
+    }
+}
