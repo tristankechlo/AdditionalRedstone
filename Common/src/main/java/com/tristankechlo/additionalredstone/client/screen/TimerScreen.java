@@ -1,13 +1,9 @@
 package com.tristankechlo.additionalredstone.client.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.tristankechlo.additionalredstone.Constants;
 import com.tristankechlo.additionalredstone.blockentity.TimerBlockEntity;
-import com.tristankechlo.additionalredstone.client.ClientSetup;
-import com.tristankechlo.additionalredstone.network.PacketHandler;
-import com.tristankechlo.additionalredstone.network.packets.SetTimerValues;
-import net.minecraft.client.gui.GuiComponent;
+import com.tristankechlo.additionalredstone.network.IPacketHandler;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
@@ -88,7 +84,7 @@ public class TimerScreen extends Screen {
         if (this.powerUpError || this.powerDownError || this.intervalError) {
             return;
         }
-        PacketHandler.INSTANCE.sendToServer(new SetTimerValues(powerUp, powerDown, interval, pos));
+        IPacketHandler.INSTANCE.sendPacketSetTimerValues(powerUp, powerDown, interval, pos);
         this.onClose();
     }
 
@@ -97,38 +93,31 @@ public class TimerScreen extends Screen {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(matrixStack);
-        this.powerUpWidget.render(matrixStack, mouseX, mouseY, partialTicks);
-        this.powerDownWidget.render(matrixStack, mouseX, mouseY, partialTicks);
-        this.intervalWidget.render(matrixStack, mouseX, mouseY, partialTicks);
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(graphics);
+        this.powerUpWidget.render(graphics, mouseX, mouseY, partialTicks);
+        this.powerDownWidget.render(graphics, mouseX, mouseY, partialTicks);
+        this.intervalWidget.render(graphics, mouseX, mouseY, partialTicks);
+        super.render(graphics, mouseX, mouseY, partialTicks);
 
-        drawCenteredString(matrixStack, this.font,
-                Component.translatable("screen.additionalredstone.timer.description"), this.width / 2, 30,
-                ClientSetup.TEXT_COLOR_SCREEN);
+        graphics.drawCenteredString(this.font, Component.translatable("screen.additionalredstone.timer.description"),
+                this.width / 2, 30, Constants.TEXT_COLOR_SCREEN);
 
-        GuiComponent.drawString(matrixStack, this.font,
-                Component.translatable("screen.additionalredstone.timer.power.on"), this.width / 2 - 130, 65,
-                ClientSetup.TEXT_COLOR_SCREEN);
-        GuiComponent.drawString(matrixStack, this.font,
-                Component.translatable("screen.additionalredstone.timer.power.off"), this.width / 2 - 130, 95,
-                ClientSetup.TEXT_COLOR_SCREEN);
-        GuiComponent.drawString(matrixStack, this.font,
-                Component.translatable("screen.additionalredstone.timer.interval"), this.width / 2 - 130, 125,
-                ClientSetup.TEXT_COLOR_SCREEN);
+        graphics.drawString(this.font, Component.translatable("screen.additionalredstone.timer.power.on"),
+                this.width / 2 - 130, 65, Constants.TEXT_COLOR_SCREEN);
+        graphics.drawString(this.font, Component.translatable("screen.additionalredstone.timer.power.off"),
+                this.width / 2 - 130, 95, Constants.TEXT_COLOR_SCREEN);
+        graphics.drawString(this.font, Component.translatable("screen.additionalredstone.timer.interval"),
+                this.width / 2 - 130, 125, Constants.TEXT_COLOR_SCREEN);
 
         if (this.powerUpError) {
-            RenderSystem.setShaderTexture(0, ERROR);
-            blit(matrixStack, this.width / 2 + 140, 61, 1, 1, 18, 18);
+            graphics.blit(ERROR, this.width / 2 + 140, 61, 1, 1, 18, 18);
         }
         if (this.powerDownError) {
-            RenderSystem.setShaderTexture(0, ERROR);
-            blit(matrixStack, this.width / 2 + 140, 91, 1, 1, 18, 18);
+            graphics.blit(ERROR, this.width / 2 + 140, 91, 1, 1, 18, 18);
         }
         if (this.intervalError) {
-            RenderSystem.setShaderTexture(0, ERROR);
-            blit(matrixStack, this.width / 2 + 140, 121, 1, 1, 18, 18);
+            graphics.blit(ERROR, this.width / 2 + 140, 121, 1, 1, 18, 18);
         }
     }
 

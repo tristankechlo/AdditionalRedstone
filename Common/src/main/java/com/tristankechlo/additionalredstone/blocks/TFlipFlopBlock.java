@@ -2,15 +2,12 @@ package com.tristankechlo.additionalredstone.blocks;
 
 import com.tristankechlo.additionalredstone.blockentity.TFlipFlopBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.ticks.TickPriority;
 
 public class TFlipFlopBlock extends BaseDiodeBlock implements EntityBlock {
@@ -50,12 +47,13 @@ public class TFlipFlopBlock extends BaseDiodeBlock implements EntityBlock {
         return state.getValue(POWERED);
     }
 
+    /*TODO connect redstone to sides
     @Override
     public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
         Direction direction1 = state.getValue(FACING);
         Direction direction2 = state.getValue(FACING).getOpposite();
         return side == direction1 || side == direction2;
-    }
+    }*/
 
     @Override
     protected int getDelay(BlockState state) {
@@ -65,11 +63,6 @@ public class TFlipFlopBlock extends BaseDiodeBlock implements EntityBlock {
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new TFlipFlopBlockEntity(pos, state);
-    }
-
-    @Override
-    public PushReaction getPistonPushReaction(BlockState p_60584_) {
-        return PushReaction.DESTROY;
     }
 
 }

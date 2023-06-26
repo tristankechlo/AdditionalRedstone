@@ -4,11 +4,7 @@ import com.tristankechlo.additionalredstone.blockentity.SequencerBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.network.NetworkEvent;
-
-import java.util.function.Supplier;
 
 public class SetSequencerValues {
 
@@ -31,28 +27,18 @@ public class SetSequencerValues {
         return new SetSequencerValues(interval, pos);
     }
 
-    @SuppressWarnings("deprecation")
-    public static void handle(SetSequencerValues msg, Supplier<NetworkEvent.Context> context) {
-        context.get().enqueueWork(() -> {
+    public static void handle(SetSequencerValues msg, ServerLevel world) {
+        if (world == null || !world.hasChunkAt(msg.pos)) {
+            return;
+        }
+        BlockEntity entity = world.getBlockEntity(msg.pos);
 
-            ServerPlayer player = context.get().getSender();
-            if (player == null) {
-                return;
-            }
-            ServerLevel world = player.getLevel();
-            if (world == null || !world.hasChunkAt(msg.pos)) {
-                return;
-            }
-            BlockEntity entity = world.getBlockEntity(msg.pos);
-
-            if (entity != null && (entity instanceof SequencerBlockEntity)) {
-                SequencerBlockEntity sequencer = (SequencerBlockEntity) entity;
-                sequencer.setConfiguration(Math.abs(msg.interval));
-                world.sendBlockUpdated(msg.pos, world.getBlockState(msg.pos), world.getBlockState(msg.pos), 3);
-                sequencer.setChanged();
-            }
-
-        });
-        context.get().setPacketHandled(true);
+        if (entity != null && (entity instanceof SequencerBlockEntity)) {
+            SequencerBlockEntity sequencer = (SequencerBlockEntity) entity;
+            sequencer.setConfiguration(Math.abs(msg.interval));
+            world.sendBlockUpdated(msg.pos, world.getBlockState(msg.pos), world.getBlockState(msg.pos), 3);
+            sequencer.setChanged();
+        }
     }
+
 }

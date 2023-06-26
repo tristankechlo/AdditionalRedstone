@@ -20,15 +20,12 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class CircuitMakerBlock extends HorizontalDirectionalBlock {
 
@@ -36,7 +33,8 @@ public class CircuitMakerBlock extends HorizontalDirectionalBlock {
     private static final VoxelShape SHAPE = Shapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D), Block.box(2.5D, 2.0D, 2.5D, 13.5D, 12.0D, 13.5D));
 
     public CircuitMakerBlock() {
-        super(Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).strength(5F, 6F).requiresCorrectToolForDrops().noOcclusion());
+        super(Properties.of().mapColor(MapColor.COLOR_GRAY).sound(SoundType.METAL).strength(5F, 6F)
+                .requiresCorrectToolForDrops().noOcclusion().pushReaction(PushReaction.DESTROY));
     }
 
     @Override
@@ -67,7 +65,6 @@ public class CircuitMakerBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos) {
         return 1.0F;
     }
@@ -102,11 +99,6 @@ public class CircuitMakerBlock extends HorizontalDirectionalBlock {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING);
-    }
-
-    @Override
-    public PushReaction getPistonPushReaction(BlockState p_60584_) {
-        return PushReaction.DESTROY;
     }
 
 }

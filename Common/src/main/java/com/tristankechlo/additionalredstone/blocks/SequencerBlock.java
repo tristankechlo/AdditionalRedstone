@@ -26,14 +26,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-
-import javax.annotation.Nullable;
 
 
 public class SequencerBlock extends BaseEntityBlock {
@@ -66,11 +61,10 @@ public class SequencerBlock extends BaseEntityBlock {
         return InteractionResult.sidedSuccess(worldIn.isClientSide);
     }
 
-    private void playSound(@Nullable Player playerIn, LevelAccessor worldIn, BlockPos pos, boolean hitByArrow) {
+    private void playSound(Player playerIn, LevelAccessor worldIn, BlockPos pos, boolean hitByArrow) {
         worldIn.playSound(playerIn, pos, SoundEvents.WOODEN_BUTTON_CLICK_OFF, SoundSource.BLOCKS, 0.3F, 0.6F);
     }
 
-    @OnlyIn(Dist.CLIENT)
     private void openSequencerScreen(int interval, BlockPos pos) {
         Minecraft.getInstance().setScreen(new SequencerScreen(interval, pos));
     }
@@ -142,11 +136,6 @@ public class SequencerBlock extends BaseEntityBlock {
         if (!level.isClientSide) {
             level.setBlock(pos, state.cycle(POWERED_SIDE), 3);
         }
-    }
-
-    @Override
-    public PushReaction getPistonPushReaction(BlockState p_60584_) {
-        return PushReaction.DESTROY;
     }
 
 }

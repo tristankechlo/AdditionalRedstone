@@ -23,13 +23,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class OscillatorBlock extends BaseEntityBlock {
 
@@ -80,7 +77,6 @@ public class OscillatorBlock extends BaseEntityBlock {
         return InteractionResult.SUCCESS;
     }
 
-    @OnlyIn(Dist.CLIENT)
     private void openOscillatorScreen(int ticksOn, int ticksOff, BlockPos pos) {
         Minecraft.getInstance().setScreen(new OscillatorScreen(ticksOn, ticksOff, pos));
     }
@@ -114,11 +110,6 @@ public class OscillatorBlock extends BaseEntityBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return level.isClientSide() ? null : createTickerHelper(type, ModBlockEntities.OSCILLATOR_BLOCK_ENTITY.get(), OscillatorBlockEntity::tick);
-    }
-
-    @Override
-    public PushReaction getPistonPushReaction(BlockState p_60584_) {
-        return PushReaction.DESTROY;
     }
 
 }

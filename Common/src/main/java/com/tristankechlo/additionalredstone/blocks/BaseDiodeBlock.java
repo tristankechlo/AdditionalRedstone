@@ -13,13 +13,10 @@ import net.minecraft.world.level.block.DiodeBlock;
 import net.minecraft.world.level.block.RedStoneWireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public abstract class BaseDiodeBlock extends DiodeBlock {
 
@@ -79,7 +76,6 @@ public abstract class BaseDiodeBlock extends DiodeBlock {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand) {
         if (stateIn.getValue(POWERED)) {
             Direction direction = stateIn.getValue(FACING);
@@ -91,11 +87,6 @@ public abstract class BaseDiodeBlock extends DiodeBlock {
             double zOffset = (double) (f * (float) direction.getStepZ());
             worldIn.addParticle(DustParticleOptions.REDSTONE, x + xOffset, y, z + zOffset, 0.0D, 0.0D, 0.0D);
         }
-    }
-
-    @Override
-    public PushReaction getPistonPushReaction(BlockState p_60584_) {
-        return PushReaction.DESTROY;
     }
 
 }

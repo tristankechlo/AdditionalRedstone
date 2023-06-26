@@ -1,19 +1,19 @@
 package com.tristankechlo.additionalredstone.init;
 
 import com.tristankechlo.additionalredstone.Constants;
+import com.tristankechlo.additionalredstone.platform.RegistrationProvider;
+import com.tristankechlo.additionalredstone.platform.RegistryObject;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
 
 public class ModItems {
 
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Constants.MOD_ID);
+    public static final RegistrationProvider<Item> ITEMS = RegistrationProvider.get(BuiltInRegistries.ITEM, Constants.MOD_ID);
 
     public static final RegistryObject<Item> CIRCUIT_MAKER_BLOCK_ITEM = create("circuit_maker", ModBlocks.CIRCUIT_MAKER_BLOCK);
     public static final RegistryObject<Item> OSCILLATOR_BLOCK_ITEM = create("oscillator", ModBlocks.OSCILLATOR_BLOCK);
@@ -34,6 +34,8 @@ public class ModItems {
     private static RegistryObject<Item> create(String name, Supplier<Block> block) {
         return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Properties()));
     }
+
+    public static void load() {}
 
 
 }

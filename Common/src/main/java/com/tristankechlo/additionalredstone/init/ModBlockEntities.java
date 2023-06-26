@@ -5,24 +5,21 @@ import com.tristankechlo.additionalredstone.blockentity.OscillatorBlockEntity;
 import com.tristankechlo.additionalredstone.blockentity.SequencerBlockEntity;
 import com.tristankechlo.additionalredstone.blockentity.TFlipFlopBlockEntity;
 import com.tristankechlo.additionalredstone.blockentity.TimerBlockEntity;
+import com.tristankechlo.additionalredstone.platform.IPlatformHelper;
+import com.tristankechlo.additionalredstone.platform.RegistrationProvider;
+import com.tristankechlo.additionalredstone.platform.RegistryObject;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 
 public class ModBlockEntities {
 
-    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Constants.MOD_ID);
+    public static final RegistrationProvider<BlockEntityType<?>> BLOCK_ENTITIES = RegistrationProvider.get(BuiltInRegistries.BLOCK_ENTITY_TYPE, Constants.MOD_ID);
 
-    public static final RegistryObject<BlockEntityType<OscillatorBlockEntity>> OSCILLATOR_BLOCK_ENTITY = BLOCK_ENTITIES
-            .register("oscillator", () -> BlockEntityType.Builder.of(OscillatorBlockEntity::new, ModBlocks.OSCILLATOR_BLOCK.get()).build(null));
+    public static final RegistryObject<BlockEntityType<OscillatorBlockEntity>> OSCILLATOR_BLOCK_ENTITY = BLOCK_ENTITIES.register("oscillator", () -> IPlatformHelper.INSTANCE.buildBETypeOscillator().build(null));
+    public static final RegistryObject<BlockEntityType<TimerBlockEntity>> TIMER_BLOCK_ENTITY = BLOCK_ENTITIES.register("timer", () -> IPlatformHelper.INSTANCE.buildBlockEntityTypeTimer().build(null));
+    public static final RegistryObject<BlockEntityType<SequencerBlockEntity>> SEQUENCER_BLOCK_ENTITY = BLOCK_ENTITIES.register("sequencer", () -> IPlatformHelper.INSTANCE.buildBlockEntityTypeSequencer().build(null));
+    public static final RegistryObject<BlockEntityType<TFlipFlopBlockEntity>> T_FLIP_FLOP_BLOCK_ENTITY = BLOCK_ENTITIES.register("t_flip_flop", () -> IPlatformHelper.INSTANCE.buildBlockEntityTypeTFlipFlop().build(null));
 
-    public static final RegistryObject<BlockEntityType<TimerBlockEntity>> TIMER_BLOCK_ENTITY = BLOCK_ENTITIES
-            .register("timer", () -> BlockEntityType.Builder.of(TimerBlockEntity::new, ModBlocks.TIMER_BLOCK.get()).build(null));
+    public static void load() {}
 
-    public static final RegistryObject<BlockEntityType<SequencerBlockEntity>> SEQUENCER_BLOCK_ENTITY = BLOCK_ENTITIES
-            .register("sequencer", () -> BlockEntityType.Builder.of(SequencerBlockEntity::new, ModBlocks.SEQUENCER_BLOCK.get()).build(null));
-
-    public static final RegistryObject<BlockEntityType<TFlipFlopBlockEntity>> T_FLIP_FLOP_BLOCK_ENTITY = BLOCK_ENTITIES
-            .register("t_flip_flop", () -> BlockEntityType.Builder.of(TFlipFlopBlockEntity::new, ModBlocks.T_FLIP_FLOP_BLOCK.get()).build(null));
 }

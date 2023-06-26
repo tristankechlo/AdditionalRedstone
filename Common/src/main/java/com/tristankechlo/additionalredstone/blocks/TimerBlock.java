@@ -23,13 +23,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class TimerBlock extends BaseEntityBlock {
 
@@ -81,7 +78,6 @@ public class TimerBlock extends BaseEntityBlock {
         return InteractionResult.SUCCESS;
     }
 
-    @OnlyIn(Dist.CLIENT)
     private void openTimerScreen(int powerUp, int powerDown, int interval, BlockPos pos) {
         Minecraft.getInstance().setScreen(new TimerScreen(powerUp, powerDown, interval, pos));
     }
@@ -115,11 +111,6 @@ public class TimerBlock extends BaseEntityBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return level.isClientSide ? null : createTickerHelper(type, ModBlockEntities.TIMER_BLOCK_ENTITY.get(), TimerBlockEntity::tick);
-    }
-
-    @Override
-    public PushReaction getPistonPushReaction(BlockState p_60584_) {
-        return PushReaction.DESTROY;
     }
 
 }

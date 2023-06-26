@@ -1,15 +1,10 @@
 package com.tristankechlo.additionalredstone;
 
-import com.tristankechlo.additionalredstone.client.ClientSetup;
-import com.tristankechlo.additionalredstone.commands.ModCommand;
 import com.tristankechlo.additionalredstone.init.*;
-import com.tristankechlo.additionalredstone.network.PacketHandler;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.ServiceLoader;
 
 public class Constants {
 
@@ -22,26 +17,22 @@ public class Constants {
     public static final String DISCORD_URL = "https://discord.gg/bhUaWhq";
     public static final String CURSEFORGE_URL = "https://curseforge.com/minecraft/mc-mods/additional-redstone";
     public static final String MODRINTH_URL = "https://modrinth.com/mod/additional-redstone";
+    public static final int TEXT_COLOR_SCREEN = 0xCCCCCC;
 
-    public Constants() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
-        PacketHandler.registerPackets();
-
-        ModItems.ITEMS.register(modEventBus);
-        ModBlocks.BLOCKS.register(modEventBus);
-        ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
-        ModContainer.CONTAINER_TYPES.register(modEventBus);
-
-        modEventBus.addListener(ClientSetup::init);
-        modEventBus.addListener(ModItemGroups::onCreativeModeTabRegister);
-
-        MinecraftForge.EVENT_BUS.addListener(this::commandRegister);
-        MinecraftForge.EVENT_BUS.register(this);
+    public static void registerContent() {
+        ModBlockEntities.load();
+        ModBlocks.load();
+        ModContainer.load();
+        ModItems.load();
+        ModItemGroups.load();
     }
 
-    private void commandRegister(RegisterCommandsEvent event) {
-        ModCommand.register(event.getDispatcher());
+    public static <T> T load(Class<T> clazz) {
+        final T loadedService = ServiceLoader.load(clazz)
+                .findFirst()
+                .orElseThrow(() -> new NullPointerException("Failed to load service for " + clazz.getName()));
+        LOGGER.debug("Loaded {} for service {}", loadedService, clazz);
+        return loadedService;
     }
 
 }

@@ -15,8 +15,6 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class CircuitMakerContainer extends AbstractContainerMenu {
 
@@ -46,7 +44,11 @@ public class CircuitMakerContainer extends AbstractContainerMenu {
         }
     };
 
-    public CircuitMakerContainer(int id, Inventory playerInventory, FriendlyByteBuf buffer) {
+    public CircuitMakerContainer(int id, Inventory playerInventory, FriendlyByteBuf extraData) {
+        this(id, playerInventory, ContainerLevelAccess.NULL);
+    }
+
+    public CircuitMakerContainer(int id, Inventory playerInventory) {
         this(id, playerInventory, ContainerLevelAccess.NULL);
     }
 
@@ -106,12 +108,10 @@ public class CircuitMakerContainer extends AbstractContainerMenu {
         return stillValid(this.worldPos, playerIn, ModBlocks.CIRCUIT_MAKER_BLOCK.get());
     }
 
-    @OnlyIn(Dist.CLIENT)
     public int getSelectedRecipe() {
         return this.selectedRecipe.get();
     }
 
-    @OnlyIn(Dist.CLIENT)
     public void setInventoryChangeListener(Runnable run) {
         this.changeListener = run;
     }

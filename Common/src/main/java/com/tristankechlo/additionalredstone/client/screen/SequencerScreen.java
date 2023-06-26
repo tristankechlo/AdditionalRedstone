@@ -1,22 +1,15 @@
 package com.tristankechlo.additionalredstone.client.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.tristankechlo.additionalredstone.Constants;
-import com.tristankechlo.additionalredstone.client.ClientSetup;
-import com.tristankechlo.additionalredstone.network.PacketHandler;
-import com.tristankechlo.additionalredstone.network.packets.SetSequencerValues;
-import net.minecraft.client.gui.GuiComponent;
+import com.tristankechlo.additionalredstone.network.IPacketHandler;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class SequencerScreen extends Screen {
 
     private static final Component TITLE = Component.translatable("screen.additionalredstone.sequencer");
@@ -37,12 +30,6 @@ public class SequencerScreen extends Screen {
     @Override
     public void tick() {
         this.intervalWidget.tick();
-    }
-
-    @Override
-    public boolean isPauseScreen() {
-        // TODO adjustable via config
-        return false;
     }
 
     @Override
@@ -74,7 +61,7 @@ public class SequencerScreen extends Screen {
         if (this.intervalError) {
             return;
         }
-        PacketHandler.INSTANCE.sendToServer(new SetSequencerValues(interval, pos));
+        IPacketHandler.INSTANCE.sendPacketSetSequencerValues(interval, pos);
         this.onClose();
     }
 
@@ -83,22 +70,19 @@ public class SequencerScreen extends Screen {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(matrixStack);
-        this.intervalWidget.render(matrixStack, mouseX, mouseY, partialTicks);
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(graphics);
+        this.intervalWidget.render(graphics, mouseX, mouseY, partialTicks);
+        super.render(graphics, mouseX, mouseY, partialTicks);
 
-        drawCenteredString(matrixStack, this.font,
-                Component.translatable("screen.additionalredstone.sequencer.description"), this.width / 2, 30,
-                ClientSetup.TEXT_COLOR_SCREEN);
+        graphics.drawCenteredString(this.font, Component.translatable("screen.additionalredstone.sequencer.description"),
+                this.width / 2, 30, Constants.TEXT_COLOR_SCREEN);
 
-        GuiComponent.drawString(matrixStack, this.font,
-                Component.translatable("screen.additionalredstone.sequencer.interval"), this.width / 2 - 130, 65,
-                ClientSetup.TEXT_COLOR_SCREEN);
+        graphics.drawString(this.font, Component.translatable("screen.additionalredstone.sequencer.interval"),
+                this.width / 2 - 130, 65, Constants.TEXT_COLOR_SCREEN);
 
         if (this.intervalError) {
-            RenderSystem.setShaderTexture(0, ERROR);
-            blit(matrixStack, this.width / 2 + 140, 61, 1, 1, 18, 18);
+            graphics.blit(ERROR, this.width / 2 + 140, 61, 1, 1, 18, 18);
         }
 
     }

@@ -23,17 +23,10 @@ import net.minecraft.world.level.block.RedStoneWireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.ticks.TickPriority;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.ForgeEventFactory;
-
-import javax.annotation.Nullable;
-import java.util.EnumSet;
 
 public class ToggleLatchBlock extends HorizontalDirectionalBlock {
 
@@ -90,10 +83,11 @@ public class ToggleLatchBlock extends HorizontalDirectionalBlock {
         }
     }
 
+    /*TODO connect redstone to sides
     @Override
     public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
         return side != state.getValue(FACING);
-    }
+    }*/
 
     @Override
     public boolean isSignalSource(BlockState state) {
@@ -111,7 +105,7 @@ public class ToggleLatchBlock extends HorizontalDirectionalBlock {
         }
     }
 
-    private void playSound(@Nullable Player playerIn, LevelAccessor worldIn, BlockPos pos, boolean hitByArrow) {
+    private void playSound(Player playerIn, LevelAccessor worldIn, BlockPos pos, boolean hitByArrow) {
         worldIn.playSound(playerIn, pos, SoundEvents.WOODEN_BUTTON_CLICK_OFF, SoundSource.BLOCKS, 0.3F, 0.6F);
     }
 
@@ -152,17 +146,19 @@ public class ToggleLatchBlock extends HorizontalDirectionalBlock {
         if (side == ToggleLatchSide.LEFT) {
             Direction direction = state.getValue(FACING).getClockWise();
             BlockPos blockpos = pos.relative(direction);
+            /*TODO post forge/fabric event
             if (ForgeEventFactory.onNeighborNotify(worldIn, pos, worldIn.getBlockState(pos), EnumSet.of(direction), false).isCanceled()) {
                 return;
-            }
+            }*/
             worldIn.neighborChanged(blockpos, this, pos);
             worldIn.updateNeighborsAtExceptFromFacing(blockpos, this, direction.getOpposite());
         } else if (side == ToggleLatchSide.RIGHT) {
             Direction direction = state.getValue(FACING).getCounterClockWise();
             BlockPos blockpos = pos.relative(direction);
+            /*TODO post forge/fabric event
             if (ForgeEventFactory.onNeighborNotify(worldIn, pos, worldIn.getBlockState(pos), EnumSet.of(direction), false).isCanceled()) {
                 return;
-            }
+            }*/
             worldIn.neighborChanged(blockpos, this, pos);
             worldIn.updateNeighborsAtExceptFromFacing(blockpos, this, direction.getOpposite());
         }
@@ -173,7 +169,6 @@ public class ToggleLatchBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand) {
         ToggleLatchSide side = stateIn.getValue(POWERED_SIDE);
         if (side == ToggleLatchSide.LEFT) {
@@ -183,7 +178,6 @@ public class ToggleLatchBlock extends HorizontalDirectionalBlock {
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
     public void spawnParticle(BlockState state, Level world, BlockPos pos, RandomSource rand, boolean left) {
         double xOff = left ? 0.25D : 0.75D;
         Direction direction = state.getValue(FACING);
@@ -206,11 +200,6 @@ public class ToggleLatchBlock extends HorizontalDirectionalBlock {
             BlockState blockstate = worldIn.getBlockState(blockpos);
             return Math.max(i, blockstate.is(Blocks.REDSTONE_WIRE) ? blockstate.getValue(RedStoneWireBlock.POWER) : 0);
         }
-    }
-
-    @Override
-    public PushReaction getPistonPushReaction(BlockState p_60584_) {
-        return PushReaction.DESTROY;
     }
 
     private enum ToggleLatchSide implements StringRepresentable {

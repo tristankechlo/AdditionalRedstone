@@ -4,11 +4,7 @@ import com.tristankechlo.additionalredstone.blockentity.TimerBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.network.NetworkEvent;
-
-import java.util.function.Supplier;
 
 public class SetTimerValues {
 
@@ -39,28 +35,17 @@ public class SetTimerValues {
         return new SetTimerValues(ticksOn, ticksOff, interval, pos);
     }
 
-    @SuppressWarnings("deprecation")
-    public static void handle(SetTimerValues msg, Supplier<NetworkEvent.Context> context) {
-        context.get().enqueueWork(() -> {
+    public static void handle(SetTimerValues msg, ServerLevel world) {
+        if (world == null || !world.hasChunkAt(msg.pos)) {
+            return;
+        }
+        BlockEntity entity = world.getBlockEntity(msg.pos);
 
-            ServerPlayer player = context.get().getSender();
-            if (player == null) {
-                return;
-            }
-            ServerLevel world = player.getLevel();
-            if (world == null || !world.hasChunkAt(msg.pos)) {
-                return;
-            }
-            BlockEntity entity = world.getBlockEntity(msg.pos);
-
-            if (entity != null && (entity instanceof TimerBlockEntity)) {
-                TimerBlockEntity timer = (TimerBlockEntity) entity;
-                timer.setConfiguration(msg.powerUpTime, msg.powerDownTime, msg.interval);
-                world.sendBlockUpdated(msg.pos, world.getBlockState(msg.pos), world.getBlockState(msg.pos), 3);
-                timer.setChanged();
-            }
-
-        });
-        context.get().setPacketHandled(true);
+        if (entity != null && (entity instanceof TimerBlockEntity)) {
+            TimerBlockEntity timer = (TimerBlockEntity) entity;
+            timer.setConfiguration(msg.powerUpTime, msg.powerDownTime, msg.interval);
+            world.sendBlockUpdated(msg.pos, world.getBlockState(msg.pos), world.getBlockState(msg.pos), 3);
+            timer.setChanged();
+        }
     }
 }

@@ -18,6 +18,9 @@
     "entrypoints": {
         "main": [
             "com.tristankechlo.additionalredstone.AdditionalRedstone"
+        ],
+        "client": [
+            "com.tristankechlo.additionalredstone.FabricClientSetup"
         ]
     },
     "mixins": [

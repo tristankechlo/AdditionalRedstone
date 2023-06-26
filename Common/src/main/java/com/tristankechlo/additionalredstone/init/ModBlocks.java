@@ -2,15 +2,15 @@ package com.tristankechlo.additionalredstone.init;
 
 import com.tristankechlo.additionalredstone.Constants;
 import com.tristankechlo.additionalredstone.blocks.*;
+import com.tristankechlo.additionalredstone.platform.RegistrationProvider;
+import com.tristankechlo.additionalredstone.platform.RegistryObject;
 import com.tristankechlo.additionalredstone.util.ThreeInputLogic;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 
 public class ModBlocks {
 
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Constants.MOD_ID);
+    public static final RegistrationProvider<Block> BLOCKS = RegistrationProvider.get(BuiltInRegistries.BLOCK, Constants.MOD_ID);
 
     public static final RegistryObject<Block> CIRCUIT_MAKER_BLOCK = BLOCKS.register("circuit_maker", CircuitMakerBlock::new);
     public static final RegistryObject<Block> OSCILLATOR_BLOCK = BLOCKS.register("oscillator", OscillatorBlock::new);
@@ -29,5 +29,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> SR_LATCH_BLOCK = BLOCKS.register("sr_latch", SRLatchBlock::new);
     public static final RegistryObject<Block> RS_LATCH_BLOCK = BLOCKS.register("rs_latch", RSLatchBlock::new);
     public static final RegistryObject<Block> SEQUENCER_BLOCK = BLOCKS.register("sequencer", SequencerBlock::new);
+
+    public static void load() {}
 
 }
