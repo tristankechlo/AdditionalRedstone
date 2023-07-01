@@ -1,5 +1,8 @@
 # Changelog
 
+### Version 1.20.1 - 1.2.0
+- fix recipes on fabric for timer and oscillator
+
 ### Version 1.20.1 - 1.1.0
 - port to 1.20.1
 

@@ -1,0 +1,22 @@
+{
+	"type" : "minecraft:crafting_shaped",
+	"pattern" : [
+		"#X#",
+		"SSS"
+	],
+	"key" : {
+		"#" : {
+			"tag" : "c:redstone_dusts"
+		},
+		"X" : {
+			"item" : "minecraft:redstone_torch"
+		},
+		"S" : {
+			"item" : "minecraft:stone"
+		}
+	},
+	"result" : {
+		"item" : "additionalredstone:oscillator",
+		"count" : 1
+	}
+}
