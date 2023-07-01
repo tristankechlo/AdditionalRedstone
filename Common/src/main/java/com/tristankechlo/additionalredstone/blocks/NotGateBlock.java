@@ -20,12 +20,4 @@ public class NotGateBlock extends BaseDiodeBlock {
         return DiodeBlock.SHAPE;
     }
 
-    /*TODO connect redstone to sides
-    @Override
-    public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
-        Direction front = state.getValue(FACING);
-        Direction back = state.getValue(FACING).getOpposite();
-        return side == front || side == back;
-    }*/
-
 }

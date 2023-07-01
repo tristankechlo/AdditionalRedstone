@@ -47,14 +47,6 @@ public class TFlipFlopBlock extends BaseDiodeBlock implements EntityBlock {
         return state.getValue(POWERED);
     }
 
-    /*TODO connect redstone to sides
-    @Override
-    public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
-        Direction direction1 = state.getValue(FACING);
-        Direction direction2 = state.getValue(FACING).getOpposite();
-        return side == direction1 || side == direction2;
-    }*/
-
     @Override
     protected int getDelay(BlockState state) {
         return 0;

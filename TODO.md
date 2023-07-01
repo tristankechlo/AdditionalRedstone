@@ -1,6 +1,3 @@
- - make redstone only connect to specific sides of the diodes
-  
-  
  - item textures
  - jei integration
  - circuit maker
