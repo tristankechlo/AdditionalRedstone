@@ -1,9 +1,8 @@
 package com.tristankechlo.additionalredstone.blocks;
 
 import com.tristankechlo.additionalredstone.blockentity.TimerBlockEntity;
-import com.tristankechlo.additionalredstone.client.screen.TimerScreen;
 import com.tristankechlo.additionalredstone.init.ModBlockEntities;
-import net.minecraft.client.Minecraft;
+import com.tristankechlo.additionalredstone.platform.IPlatformHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -73,13 +72,9 @@ public class TimerBlock extends BaseEntityBlock {
             int powerUp = timer.getPowerUpTime();
             int powerDown = timer.getPowerDownTime();
             int interval = timer.getInterval();
-            this.openTimerScreen(powerUp, powerDown, interval, pos);
+            IPlatformHelper.INSTANCE.openTimerScreen(powerUp, powerDown, interval, pos);
         }
         return InteractionResult.SUCCESS;
-    }
-
-    private void openTimerScreen(int powerUp, int powerDown, int interval, BlockPos pos) {
-        Minecraft.getInstance().setScreen(new TimerScreen(powerUp, powerDown, interval, pos));
     }
 
     public static void setPowered(BlockState state, Level level, BlockPos pos, boolean powered) {

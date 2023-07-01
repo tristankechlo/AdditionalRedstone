@@ -3,6 +3,7 @@ package com.tristankechlo.additionalredstone.blocks;
 import com.tristankechlo.additionalredstone.blockentity.SequencerBlockEntity;
 import com.tristankechlo.additionalredstone.client.screen.SequencerScreen;
 import com.tristankechlo.additionalredstone.init.ModBlockEntities;
+import com.tristankechlo.additionalredstone.platform.IPlatformHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -56,17 +57,13 @@ public class SequencerBlock extends BaseEntityBlock {
         if (tile instanceof SequencerBlockEntity && worldIn.isClientSide) {
             SequencerBlockEntity sequencer = (SequencerBlockEntity) tile;
             int interval = sequencer.getInterval();
-            this.openSequencerScreen(interval, pos);
+            IPlatformHelper.INSTANCE.openSequencerScreen(interval, pos);
         }
         return InteractionResult.sidedSuccess(worldIn.isClientSide);
     }
 
     private void playSound(Player playerIn, LevelAccessor worldIn, BlockPos pos, boolean hitByArrow) {
         worldIn.playSound(playerIn, pos, SoundEvents.WOODEN_BUTTON_CLICK_OFF, SoundSource.BLOCKS, 0.3F, 0.6F);
-    }
-
-    private void openSequencerScreen(int interval, BlockPos pos) {
-        Minecraft.getInstance().setScreen(new SequencerScreen(interval, pos));
     }
 
     @Override

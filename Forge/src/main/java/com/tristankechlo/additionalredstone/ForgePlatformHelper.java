@@ -4,12 +4,19 @@ import com.tristankechlo.additionalredstone.blockentity.OscillatorBlockEntity;
 import com.tristankechlo.additionalredstone.blockentity.SequencerBlockEntity;
 import com.tristankechlo.additionalredstone.blockentity.TFlipFlopBlockEntity;
 import com.tristankechlo.additionalredstone.blockentity.TimerBlockEntity;
+import com.tristankechlo.additionalredstone.client.screen.OscillatorScreen;
+import com.tristankechlo.additionalredstone.client.screen.SequencerScreen;
+import com.tristankechlo.additionalredstone.client.screen.TimerScreen;
 import com.tristankechlo.additionalredstone.container.CircuitMakerContainer;
 import com.tristankechlo.additionalredstone.init.ModBlocks;
 import com.tristankechlo.additionalredstone.platform.IPlatformHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.fml.loading.FMLPaths;
 
@@ -51,6 +58,24 @@ public class ForgePlatformHelper implements IPlatformHelper {
     @Override
     public Supplier<MenuType<CircuitMakerContainer>> buildContainerCircuitMaker() {
         return () -> IForgeMenuType.create(CircuitMakerContainer::new);
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void openOscillatorScreen(int ticksOn, int ticksOff, BlockPos pos) {
+        Minecraft.getInstance().setScreen(new OscillatorScreen(ticksOn, ticksOff, pos));
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void openTimerScreen(int powerUp, int powerDown, int interval, BlockPos pos) {
+        Minecraft.getInstance().setScreen(new TimerScreen(powerUp, powerDown, interval, pos));
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void openSequencerScreen(int interval, BlockPos pos) {
+        Minecraft.getInstance().setScreen(new SequencerScreen(interval, pos));
     }
 
 }

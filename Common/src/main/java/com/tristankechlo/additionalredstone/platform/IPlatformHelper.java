@@ -6,6 +6,7 @@ import com.tristankechlo.additionalredstone.blockentity.SequencerBlockEntity;
 import com.tristankechlo.additionalredstone.blockentity.TFlipFlopBlockEntity;
 import com.tristankechlo.additionalredstone.blockentity.TimerBlockEntity;
 import com.tristankechlo.additionalredstone.container.CircuitMakerContainer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -30,5 +31,11 @@ public interface IPlatformHelper {
     BlockEntityType.Builder<TimerBlockEntity> buildBlockEntityTypeTimer();
 
     Supplier<MenuType<CircuitMakerContainer>> buildContainerCircuitMaker();
+
+    void openOscillatorScreen(int ticksOn, int ticksOff, BlockPos pos);
+
+    void openTimerScreen(int powerUp, int powerDown, int interval, BlockPos pos);
+
+    void openSequencerScreen(int interval, BlockPos pos);
 
 }

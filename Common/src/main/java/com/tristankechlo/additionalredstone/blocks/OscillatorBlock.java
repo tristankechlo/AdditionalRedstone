@@ -1,9 +1,8 @@
 package com.tristankechlo.additionalredstone.blocks;
 
 import com.tristankechlo.additionalredstone.blockentity.OscillatorBlockEntity;
-import com.tristankechlo.additionalredstone.client.screen.OscillatorScreen;
 import com.tristankechlo.additionalredstone.init.ModBlockEntities;
-import net.minecraft.client.Minecraft;
+import com.tristankechlo.additionalredstone.platform.IPlatformHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -72,13 +71,9 @@ public class OscillatorBlock extends BaseEntityBlock {
             OscillatorBlockEntity oscillator = (OscillatorBlockEntity) tile;
             int ticksOn = oscillator.getTicksOn();
             int ticksOff = oscillator.getTicksOff();
-            this.openOscillatorScreen(ticksOn, ticksOff, pos);
+            IPlatformHelper.INSTANCE.openOscillatorScreen(ticksOn, ticksOff, pos);
         }
         return InteractionResult.SUCCESS;
-    }
-
-    private void openOscillatorScreen(int ticksOn, int ticksOff, BlockPos pos) {
-        Minecraft.getInstance().setScreen(new OscillatorScreen(ticksOn, ticksOff, pos));
     }
 
     public static void setPowered(BlockState state, Level level, BlockPos pos, boolean powered) {
