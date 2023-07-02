@@ -6,6 +6,7 @@
   - add new item `circuit_base` which is used to craft all gates/circuits
   - add custom recipe type `additionalredstone:circuit_maker` which is used for all recipes in the circuit maker
   - timer and oscillator are now crafted in the circuit maker
+- add support for JustEnoughItems to show the recipes of the circuit maker
 
 ### Version 1.20.1 - 1.1.0
 - port to 1.20.1

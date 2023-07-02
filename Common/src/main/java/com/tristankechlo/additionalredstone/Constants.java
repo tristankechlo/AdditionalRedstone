@@ -18,6 +18,7 @@ public class Constants {
     public static final String CURSEFORGE_URL = "https://curseforge.com/minecraft/mc-mods/additional-redstone";
     public static final String MODRINTH_URL = "https://modrinth.com/mod/additional-redstone";
     public static final int TEXT_COLOR_SCREEN = 0xCCCCCC;
+    public static boolean JEI_LOADED = false;
 
     public static void registerContent() {
         ModBlockEntities.load();

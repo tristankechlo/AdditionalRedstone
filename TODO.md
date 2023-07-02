@@ -1,5 +1,4 @@
- - item textures
+ - better item textures for the logic gates
  - make recipes loader specific with corresponding item tags
- - jei integration
  - circuit maker
      - render items in block
