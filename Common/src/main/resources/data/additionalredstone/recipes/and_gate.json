@@ -1,0 +1,12 @@
+{
+    "type": "additionalredstone:circuit_maker",
+    "input_1": {
+        "item": "minecraft:redstone_torch"
+    },
+    "input_2": {
+        "item": "minecraft:quartz"
+    },
+    "result": {
+        "item": "additionalredstone:and_gate"
+    }
+}

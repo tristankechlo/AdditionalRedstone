@@ -1,0 +1,12 @@
+{
+    "type": "additionalredstone:circuit_maker",
+    "input_1": {
+        "item": "minecraft:clock"
+    },
+    "input_2": {
+        "item": "minecraft:quartz"
+    },
+    "result": {
+        "item": "additionalredstone:timer"
+    }
+}

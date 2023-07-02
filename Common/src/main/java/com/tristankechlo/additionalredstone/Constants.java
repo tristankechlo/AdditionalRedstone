@@ -25,6 +25,7 @@ public class Constants {
         ModContainer.load();
         ModItems.load();
         ModItemGroups.load();
+        ModRecipes.load();
     }
 
     public static <T> T load(Class<T> clazz) {

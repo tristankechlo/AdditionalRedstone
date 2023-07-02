@@ -1,48 +1,39 @@
 package com.tristankechlo.additionalredstone.container;
 
+import com.google.common.collect.Lists;
 import com.tristankechlo.additionalredstone.init.ModBlocks;
 import com.tristankechlo.additionalredstone.init.ModContainer;
-import com.tristankechlo.additionalredstone.util.Circuits;
+import com.tristankechlo.additionalredstone.init.ModItems;
+import com.tristankechlo.additionalredstone.init.ModRecipes;
+import com.tristankechlo.additionalredstone.recipe.CircuitMakerRecipe;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.DataSlot;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+
+import java.util.List;
 
 public class CircuitMakerContainer extends AbstractContainerMenu {
 
     private final ContainerLevelAccess worldPos;
     private final DataSlot selectedRecipe = DataSlot.standalone();
+    private final Level level;
     private Runnable changeListener = () -> {};
-    private final Slot slotStoneSlab1;
-    private final Slot slotStoneSlab2;
-    private final Slot slotStoneSlab3;
-    private final Slot slotRedstoneTorch;
-    private final Slot slotRedstone;
-    private final Slot slotQuartz;
-    private final Slot slotOutput;
-    private final Container inputInventory = new SimpleContainer(6) {
-        @Override
-        public void setChanged() {
-            super.setChanged();
-            CircuitMakerContainer.this.slotsChanged(this);
-            CircuitMakerContainer.this.changeListener.run();
-        }
-    };
-    private final Container outputInventory = new SimpleContainer(1) {
-        @Override
-        public void setChanged() {
-            super.setChanged();
-            CircuitMakerContainer.this.changeListener.run();
-        }
-    };
+    private List<CircuitMakerRecipe> recipes;
+    private final Slot inputSlot1;
+    private final Slot inputSlot2;
+    private final Slot inputSlotCircuitBase;
+    private final Slot resultSlot;
+    public final Container container;
+    private final ResultContainer resultContainer = new ResultContainer();
+    private NonNullList<ItemStack> inputs = NonNullList.withSize(3, ItemStack.EMPTY);
+
 
     public CircuitMakerContainer(int id, Inventory playerInventory, FriendlyByteBuf extraData) {
         this(id, playerInventory, ContainerLevelAccess.NULL);
@@ -55,37 +46,45 @@ public class CircuitMakerContainer extends AbstractContainerMenu {
     public CircuitMakerContainer(int id, Inventory playerInventory, final ContainerLevelAccess worldCallable) {
         super(ModContainer.CIRCUIT_MAKER_CONTAINER.get(), id);
         this.worldPos = worldCallable;
+        this.level = playerInventory.player.level();
+        this.recipes = Lists.newArrayList();
 
-        this.slotRedstone = this.addSlot(new ConditionedSlot(this.inputInventory, 0, 8, 25, Items.REDSTONE));
-        this.slotQuartz = this.addSlot(new ConditionedSlot(this.inputInventory, 1, 28, 25, Items.QUARTZ));
-        this.slotRedstoneTorch = this.addSlot(new ConditionedSlot(this.inputInventory, 2, 48, 25, Items.REDSTONE_TORCH));
-        this.slotStoneSlab1 = this.addSlot(new ConditionedSlot(this.inputInventory, 3, 8, 45, Items.STONE_SLAB));
-        this.slotStoneSlab2 = this.addSlot(new ConditionedSlot(this.inputInventory, 4, 28, 45, Items.STONE_SLAB));
-        this.slotStoneSlab3 = this.addSlot(new ConditionedSlot(this.inputInventory, 5, 48, 45, Items.STONE_SLAB));
+        this.container = new SimpleContainer(3) {
+            @Override
+            public void setChanged() {
+                super.setChanged();
+                CircuitMakerContainer.this.slotsChanged(this);
+                CircuitMakerContainer.this.changeListener.run();
+            }
+        };
 
-        this.slotOutput = this.addSlot(new Slot(this.outputInventory, 0, 164, 50) {
+        this.inputSlot1 = this.addSlot(new Slot(this.container, 0, 14, 24));
+        this.inputSlot2 = this.addSlot(new Slot(this.container, 1, 36, 24));
+        this.inputSlotCircuitBase = this.addSlot(new ConditionedSlot(this.container, 2, 25, 46, ModItems.CIRCUIT_BASE_BLOCK_ITEM.get()));
+        this.resultSlot = this.addSlot(new Slot(this.resultContainer, 0, 160, 35) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return false;
             }
 
             @Override
-            public void onTake(Player thePlayer, ItemStack stack) {
-                CircuitMakerContainer.this.slotStoneSlab1.remove(1);
-                CircuitMakerContainer.this.slotStoneSlab2.remove(1);
-                CircuitMakerContainer.this.slotStoneSlab3.remove(1);
-                CircuitMakerContainer.this.slotQuartz.remove(1);
-                CircuitMakerContainer.this.slotRedstoneTorch.remove(1);
-                CircuitMakerContainer.this.slotRedstone.remove(1);
-                if (!CircuitMakerContainer.this.slotStoneSlab1.hasItem()
-                        || !CircuitMakerContainer.this.slotStoneSlab2.hasItem()
-                        || !CircuitMakerContainer.this.slotStoneSlab3.hasItem()
-                        || !CircuitMakerContainer.this.slotQuartz.hasItem()
-                        || !CircuitMakerContainer.this.slotRedstoneTorch.hasItem()
-                        || !CircuitMakerContainer.this.slotRedstone.hasItem()) {
-                    CircuitMakerContainer.this.selectedRecipe.set(0);
+            public void onTake(Player player, ItemStack stack) {
+                stack.onCraftedBy(player.level(), player, stack.getCount());
+                CircuitMakerContainer.this.resultContainer.awardUsedRecipes(player, this.getRelevantItems());
+                ItemStack $$$1 = CircuitMakerContainer.this.inputSlot1.remove(1);
+                ItemStack $$$2 = CircuitMakerContainer.this.inputSlot2.remove(1);
+                ItemStack $$$3 = CircuitMakerContainer.this.inputSlotCircuitBase.remove(1);
+                if (!$$$1.isEmpty() && !$$$2.isEmpty() && !$$$3.isEmpty()) {
+                    CircuitMakerContainer.this.setupResultSlot();
                 }
-                super.onTake(thePlayer, stack);
+                //TODO play sound
+                super.onTake(player, stack);
+            }
+
+            private List<ItemStack> getRelevantItems() {
+                return List.of(CircuitMakerContainer.this.inputSlot1.getItem(),
+                        CircuitMakerContainer.this.inputSlot2.getItem(),
+                        CircuitMakerContainer.this.inputSlotCircuitBase.getItem());
             }
         });
 
@@ -103,9 +102,22 @@ public class CircuitMakerContainer extends AbstractContainerMenu {
         this.addDataSlot(this.selectedRecipe);
     }
 
+    public List<CircuitMakerRecipe> getRecipes() {
+        return recipes;
+    }
+
+    public int getNumRecipes() {
+        return recipes.size();
+    }
+
+    public boolean hasInputItem() {
+        return this.inputSlot1.hasItem() && this.inputSlot2.hasItem()
+                && this.inputSlotCircuitBase.hasItem() && !this.recipes.isEmpty();
+    }
+
     @Override
-    public boolean stillValid(Player playerIn) {
-        return stillValid(this.worldPos, playerIn, ModBlocks.CIRCUIT_MAKER_BLOCK.get());
+    public boolean stillValid(Player player) {
+        return stillValid(this.worldPos, player, ModBlocks.CIRCUIT_MAKER_BLOCK.get());
     }
 
     public int getSelectedRecipe() {
@@ -117,104 +129,127 @@ public class CircuitMakerContainer extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean clickMenuButton(Player playerIn, int id) {
-        if (id > 0 && id <= Circuits.SIZE) {
-            this.selectedRecipe.set(id);
-            this.createOutputStack();
-            return true;
+    public boolean clickMenuButton(Player player, int index) {
+        if (this.isValidRecipeIndex(index)) {
+            this.selectedRecipe.set(index);
+            this.setupResultSlot();
+        }
+        return true;
+    }
+
+    private boolean isValidRecipeIndex(int index) {
+        return index >= 0 && index < this.recipes.size();
+    }
+
+    @Override
+    public void slotsChanged(Container container) {
+        ItemStack $$1 = this.inputSlot1.getItem();
+        ItemStack $$2 = this.inputSlot2.getItem();
+        ItemStack $$3 = this.inputSlotCircuitBase.getItem();
+        if (!$$1.is(this.inputs.get(0).getItem())
+                || !$$2.is(this.inputs.get(1).getItem())
+                || !$$3.is(this.inputs.get(2).getItem())
+        ) {
+            this.inputs.set(0, $$1.copy());
+            this.inputs.set(1, $$2.copy());
+            this.inputs.set(2, $$3.copy());
+            this.setupRecipeList(container, $$1, $$2, $$3);
+        }
+    }
+
+    private void setupRecipeList(Container container, ItemStack stack1, ItemStack stack2, ItemStack stack3) {
+        this.recipes.clear();
+        this.selectedRecipe.set(-1);
+        this.resultSlot.set(ItemStack.EMPTY);
+        if (!stack1.isEmpty() && !stack2.isEmpty() && !stack3.isEmpty()) {
+            this.recipes = this.level.getRecipeManager().getRecipesFor(ModRecipes.CIRCUIT_MAKER_RECIPE_TYPE.get(), container, this.level);
+        }
+    }
+
+    private void setupResultSlot() {
+        if (!this.recipes.isEmpty() && this.isValidRecipeIndex(this.selectedRecipe.get())) {
+            CircuitMakerRecipe recipe = this.recipes.get(this.selectedRecipe.get());
+            ItemStack $$1 = recipe.assemble(this.container, this.level.registryAccess());
+            if ($$1.isItemEnabled(this.level.enabledFeatures())) {
+                this.resultContainer.setRecipeUsed(recipe);
+                this.resultSlot.set($$1);
+            } else {
+                this.resultSlot.set(ItemStack.EMPTY);
+            }
         } else {
-            return false;
+            this.resultSlot.set(ItemStack.EMPTY);
         }
-    }
-
-    @Override
-    public void removed(Player playerIn) {
-        super.removed(playerIn);
-        this.worldPos.execute((world, pos) -> {
-            this.clearContainer(playerIn, this.inputInventory);
-        });
-    }
-
-    @Override
-    public void slotsChanged(Container inventoryIn) {
-        ItemStack baseStack1 = this.slotStoneSlab1.getItem();
-        ItemStack baseStack2 = this.slotStoneSlab2.getItem();
-        ItemStack baseStack3 = this.slotStoneSlab3.getItem();
-        ItemStack quartzStack = this.slotQuartz.getItem();
-        ItemStack torchStack = this.slotRedstoneTorch.getItem();
-        ItemStack redstoneStack = this.slotRedstone.getItem();
-
-        if (baseStack1.isEmpty() || quartzStack.isEmpty() || torchStack.isEmpty() || baseStack2.isEmpty()
-                || baseStack3.isEmpty() || redstoneStack.isEmpty()) {
-            this.slotOutput.set(ItemStack.EMPTY);
-            this.selectedRecipe.set(0);
-        }
-
-        this.createOutputStack();
         this.broadcastChanges();
     }
 
     @Override
-    public ItemStack quickMoveStack(Player playerIn, int index) {
+    public boolean canTakeItemForPickAll(ItemStack stack, Slot slot) {
+        return slot.container != this.resultContainer && super.canTakeItemForPickAll(stack, slot);
+    }
+
+    @Override
+    public ItemStack quickMoveStack(Player player, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
         if (slot != null && slot.hasItem()) {
             ItemStack itemstack1 = slot.getItem();
+            Item item = itemstack1.getItem();
             itemstack = itemstack1.copy();
-            if (index >= 0 && index < 7) {
-                if (!this.moveItemStackTo(itemstack1, 7, 43, true)) {
+            if (index >= 0 && index < 3) {
+                if (!this.moveItemStackTo(itemstack1, 4, 40, false)) { // move from inputs to player inv
                     return ItemStack.EMPTY;
                 }
-            } else if (itemstack1.getItem() == Items.REDSTONE) {
-                if (!this.moveItemStackTo(itemstack1, 0, 1, true)) {
+            } else if (index == 3) {
+                item.onCraftedBy(itemstack1, player.level(), player);
+                if (!this.moveItemStackTo(itemstack1, 4, 40, true)) { // move from result to player inv
                     return ItemStack.EMPTY;
                 }
-            } else if (itemstack1.getItem() == Items.QUARTZ) {
-                if (!this.moveItemStackTo(itemstack1, 1, 2, true)) {
+                slot.onQuickCraft(itemstack1, itemstack);
+            } else if (item == ModItems.CIRCUIT_BASE_BLOCK_ITEM.get()) {
+                if (!this.moveItemStackTo(itemstack1, 2, 3, false)) { // move circuit_base from player inv to inputs
                     return ItemStack.EMPTY;
                 }
-            } else if (itemstack1.getItem() == Items.REDSTONE_TORCH) {
-                if (!this.moveItemStackTo(itemstack1, 2, 3, true)) {
+            } else if (this.hasRecipe(itemstack1)) {
+                if (!this.moveItemStackTo(itemstack1, 0, 2, false)) { // move from player inv to inputs
                     return ItemStack.EMPTY;
                 }
-            } else if (itemstack1.getItem() == Items.STONE_SLAB) {
-                if (!this.moveItemStackTo(itemstack1, 3, 6, false)) {
+            } else if (index >= 3 && index < 31) {
+                if (!this.moveItemStackTo(itemstack1, 31, 40, false)) { // move from player inv to hotbar
                     return ItemStack.EMPTY;
                 }
+            } else if (index >= 31 && index < 40 && !this.moveItemStackTo(itemstack1, 3, 31, false)) { // move from hotbar to player inv
+                return ItemStack.EMPTY;
             }
 
             if (itemstack1.isEmpty()) {
-                slot.set(ItemStack.EMPTY);
-            } else {
-                slot.setChanged();
+                slot.setByPlayer(ItemStack.EMPTY);
             }
+
+            slot.setChanged();
             if (itemstack1.getCount() == itemstack.getCount()) {
                 return ItemStack.EMPTY;
             }
-            slot.onTake(playerIn, itemstack1);
+
+            slot.onTake(player, itemstack1);
             this.broadcastChanges();
         }
 
         return itemstack;
     }
 
-    private void createOutputStack() {
-        if (this.selectedRecipe.get() > 0) {
-            ItemStack possibleOutput = ItemStack.EMPTY;
-            if (this.hasEnoughItemsInSlots()) {
-                Item item = Circuits.values()[this.selectedRecipe.get() - 1].getItem();
-                possibleOutput = new ItemStack(item, 1);
-            }
-            if (!ItemStack.matches(possibleOutput, this.slotOutput.getItem())) {
-                this.slotOutput.set(possibleOutput);
-            }
-        }
+    private boolean hasRecipe(ItemStack stack) {
+        return this.level.getRecipeManager().getAllRecipesFor(ModRecipes.CIRCUIT_MAKER_RECIPE_TYPE.get()).stream().anyMatch((recipe) -> {
+            //check if stack is used in input1 or input2
+            return recipe.getInput1().test(stack) || recipe.getInput2().test(stack);
+        });
     }
 
-    public boolean hasEnoughItemsInSlots() {
-        return !this.slotStoneSlab1.getItem().isEmpty() && !this.slotQuartz.getItem().isEmpty()
-                && !this.slotRedstoneTorch.getItem().isEmpty() && !this.slotStoneSlab2.getItem().isEmpty()
-                && !this.slotStoneSlab3.getItem().isEmpty() && !this.slotRedstone.getItem().isEmpty();
+    public void removed(Player player) {
+        super.removed(player);
+        this.resultContainer.removeItemNoUpdate(1);
+        this.worldPos.execute((level, pos) -> {
+            this.clearContainer(player, this.container);
+        });
     }
 
 }

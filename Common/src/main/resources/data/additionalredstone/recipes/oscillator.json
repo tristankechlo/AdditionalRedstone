@@ -1,0 +1,12 @@
+{
+    "type": "additionalredstone:circuit_maker",
+    "input_1": {
+        "item": "minecraft:redstone"
+    },
+    "input_2": {
+        "item": "minecraft:redstone_torch"
+    },
+    "result": {
+        "item": "additionalredstone:oscillator"
+    }
+}

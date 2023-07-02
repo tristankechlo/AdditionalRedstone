@@ -12,6 +12,7 @@ public class ModBlocks {
 
     public static final RegistrationProvider<Block> BLOCKS = RegistrationProvider.get(BuiltInRegistries.BLOCK, Constants.MOD_ID);
 
+    public static final RegistryObject<Block> CIRCUIT_BASE_BLOCK = BLOCKS.register("circuit_base", CircuitBaseBlock::new);
     public static final RegistryObject<Block> CIRCUIT_MAKER_BLOCK = BLOCKS.register("circuit_maker", CircuitMakerBlock::new);
     public static final RegistryObject<Block> OSCILLATOR_BLOCK = BLOCKS.register("oscillator", OscillatorBlock::new);
     public static final RegistryObject<Block> TIMER_BLOCK = BLOCKS.register("timer", TimerBlock::new);

@@ -1,6 +1,5 @@
  - item textures
+ - make recipes loader specific with corresponding item tags
  - jei integration
  - circuit maker
-     - gui
-     - shift clicking items
      - render items in block

@@ -1,7 +1,11 @@
 # Changelog
 
 ### Version 1.20.1 - 1.2.0
-- fix recipes on fabric for timer and oscillator
+- remove recipes for timer and oscillator
+- overhaul the crafting system for all logic gates
+  - add new item `circuit_base` which is used to craft all gates/circuits
+  - add custom recipe type `additionalredstone:circuit_maker` which is used for all recipes in the circuit maker
+  - timer and oscillator are now crafted in the circuit maker
 
 ### Version 1.20.1 - 1.1.0
 - port to 1.20.1

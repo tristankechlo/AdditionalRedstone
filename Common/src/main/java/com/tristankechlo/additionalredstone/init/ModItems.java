@@ -15,6 +15,7 @@ public class ModItems {
 
     public static final RegistrationProvider<Item> ITEMS = RegistrationProvider.get(BuiltInRegistries.ITEM, Constants.MOD_ID);
 
+    public static final RegistryObject<Item> CIRCUIT_BASE_BLOCK_ITEM = create("circuit_base", ModBlocks.CIRCUIT_BASE_BLOCK);
     public static final RegistryObject<Item> CIRCUIT_MAKER_BLOCK_ITEM = create("circuit_maker", ModBlocks.CIRCUIT_MAKER_BLOCK);
     public static final RegistryObject<Item> OSCILLATOR_BLOCK_ITEM = create("oscillator", ModBlocks.OSCILLATOR_BLOCK);
     public static final RegistryObject<Item> TIMER_BLOCK_ITEM = create("timer", ModBlocks.TIMER_BLOCK);
