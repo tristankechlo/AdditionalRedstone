@@ -21,6 +21,9 @@
         ],
         "client": [
             "com.tristankechlo.additionalredstone.FabricClientSetup"
+        ],
+        "jei_mod_plugin": [
+            "com.tristankechlo.additionalredstone.jei.JustEnoughItemsPlugin"
         ]
     },
     "mixins": [
