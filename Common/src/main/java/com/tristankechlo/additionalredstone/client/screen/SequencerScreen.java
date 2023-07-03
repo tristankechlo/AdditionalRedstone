@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 public class SequencerScreen extends Screen {
 
     private static final Component TITLE = Component.translatable("screen.additionalredstone.sequencer");
-    private static final ResourceLocation ERROR = new ResourceLocation(Constants.MOD_ID, "textures/other/icons.png");
+    private static final ResourceLocation ERROR = new ResourceLocation(Constants.MOD_ID, "textures/gui/icons.png");
     private EditBox intervalWidget;
     private Button saveButton;
     private Button cancelButton;
@@ -82,7 +82,7 @@ public class SequencerScreen extends Screen {
                 this.width / 2 - 130, 65, Constants.TEXT_COLOR_SCREEN);
 
         if (this.intervalError) {
-            graphics.blit(ERROR, this.width / 2 + 140, 61, 1, 1, 18, 18);
+            graphics.blit(ERROR, this.width / 2 + 140, 61, 0, 0, 18, 18, 18, 18);
         }
 
     }

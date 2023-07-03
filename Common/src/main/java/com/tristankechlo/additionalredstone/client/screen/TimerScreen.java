@@ -17,7 +17,7 @@ import java.time.LocalTime;
 public class TimerScreen extends Screen {
 
     private static final Component TITLE = Component.translatable("screen.additionalredstone.oscillator");
-    private static final ResourceLocation ERROR = new ResourceLocation(Constants.MOD_ID, "textures/other/icons.png");
+    private static final ResourceLocation ERROR = new ResourceLocation(Constants.MOD_ID, "textures/gui/icons.png");
     private EditBox powerUpWidget;
     private EditBox powerDownWidget;
     private EditBox intervalWidget;
@@ -111,13 +111,13 @@ public class TimerScreen extends Screen {
                 this.width / 2 - 130, 125, Constants.TEXT_COLOR_SCREEN);
 
         if (this.powerUpError) {
-            graphics.blit(ERROR, this.width / 2 + 140, 61, 1, 1, 18, 18);
+            graphics.blit(ERROR, this.width / 2 + 140, 61, 0, 0, 18, 18, 18, 18);
         }
         if (this.powerDownError) {
-            graphics.blit(ERROR, this.width / 2 + 140, 91, 1, 1, 18, 18);
+            graphics.blit(ERROR, this.width / 2 + 140, 91, 0, 0, 18, 18, 18, 18);
         }
         if (this.intervalError) {
-            graphics.blit(ERROR, this.width / 2 + 140, 121, 1, 1, 18, 18);
+            graphics.blit(ERROR, this.width / 2 + 140, 121, 0, 0, 18, 18, 18, 18);
         }
     }
 

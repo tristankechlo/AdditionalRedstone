@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 public class OscillatorScreen extends Screen {
 
     private static final Component TITLE = Component.translatable("screen.additionalredstone.oscillator");
-    private static final ResourceLocation ICONS = new ResourceLocation(Constants.MOD_ID, "textures/other/icons.png");
+    private static final ResourceLocation ICONS = new ResourceLocation(Constants.MOD_ID, "textures/gui/icons.png");
     private EditBox ticksOnWidget;
     private EditBox ticksOffWidget;
     private Button saveButton;
@@ -102,10 +102,10 @@ public class OscillatorScreen extends Screen {
                 this.width / 2 - 130, 95, Constants.TEXT_COLOR_SCREEN);
 
         if (this.ticksOnError) {
-            graphics.blit(ICONS, this.width / 2 + 140, 61, 1, 1, 18, 18);
+            graphics.blit(ICONS, this.width / 2 + 140, 61, 0, 0, 18, 18, 18, 18);
         }
         if (this.ticksOffError) {
-            graphics.blit(ICONS, this.width / 2 + 140, 91, 1, 1, 18, 18);
+            graphics.blit(ICONS, this.width / 2 + 140, 91, 0, 0, 18, 18, 18, 18);
         }
     }
 
