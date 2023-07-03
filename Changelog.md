@@ -7,6 +7,7 @@
   - add custom recipe type `additionalredstone:circuit_maker` which is used for all recipes in the circuit maker
   - timer and oscillator are now crafted in the circuit maker
 - add support for JustEnoughItems to show the recipes of the circuit maker
+  - when JEI is installed, the circuit maker will have a button to show all the possible recipes
 
 ### Version 1.20.1 - 1.1.0
 - port to 1.20.1

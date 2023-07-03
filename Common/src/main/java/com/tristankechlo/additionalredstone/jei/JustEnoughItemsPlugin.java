@@ -1,6 +1,7 @@
 package com.tristankechlo.additionalredstone.jei;
 
 import com.tristankechlo.additionalredstone.Constants;
+import com.tristankechlo.additionalredstone.client.screen.CircuitMakerScreen;
 import com.tristankechlo.additionalredstone.container.CircuitMakerContainer;
 import com.tristankechlo.additionalredstone.init.ModBlocks;
 import com.tristankechlo.additionalredstone.init.ModContainer;
@@ -68,7 +69,8 @@ public class JustEnoughItemsPlugin implements IModPlugin {
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
         //while in circuit maker GUI, add clickable area to open the JEI GUI for the custom category
-        //TODO: add gui handler
+        registration.addGuiContainerHandler(CircuitMakerScreen.class, new CircuitMakerGuiHandler());
+        registration.addRecipeClickArea(CircuitMakerScreen.class, 189, 0, 18, 22, RECIPE_TYPE);
     }
 
     @Override

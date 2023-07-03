@@ -20,8 +20,6 @@ public class CircuitMakerScreen extends AbstractContainerScreen<CircuitMakerCont
     private static final ResourceLocation BG_LOCATION = new ResourceLocation(Constants.MOD_ID, "textures/gui/container/circuit_maker.png");
     private static final int SCROLLER_WIDTH = 12;
     private static final int SCROLLER_HEIGHT = 15;
-    private static final int RECIPES_COLUMNS = 4;
-    private static final int RECIPES_ROWS = 3;
     private static final int RECIPES_IMAGE_SIZE_WIDTH = 18;
     private static final int RECIPES_IMAGE_SIZE_HEIGHT = 18;
     private static final int SCROLLER_FULL_HEIGHT = 54;
@@ -55,6 +53,9 @@ public class CircuitMakerScreen extends AbstractContainerScreen<CircuitMakerCont
 
         //render background image
         graphics.blit(BG_LOCATION, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+        if (Constants.JEI_LOADED) {
+            graphics.blit(BG_LOCATION, this.leftPos + this.imageWidth - 3, this.topPos, 192, 0, 18, 22);
+        }
 
         //render scrollbar
         int offset = (int) (39.0F * this.scrollOffs);
@@ -186,6 +187,14 @@ public class CircuitMakerScreen extends AbstractContainerScreen<CircuitMakerCont
             this.scrollOffs = 0.0F;
             this.startIndex = 0;
         }
+    }
+
+    public int getStartX() {
+        return this.leftPos + this.imageWidth - 3;
+    }
+
+    public int getStartY() {
+        return this.topPos;
     }
 
 }
