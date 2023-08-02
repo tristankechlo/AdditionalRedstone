@@ -164,23 +164,28 @@ public class ToggleLatchBlock extends HorizontalDirectionalBlock {
 
     @Override
     public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand) {
-        ToggleLatchSide side = stateIn.getValue(POWERED_SIDE);
-        if (side == ToggleLatchSide.LEFT) {
-            this.spawnParticle(stateIn, worldIn, pos, rand, true);
-        } else if (side == ToggleLatchSide.RIGHT) {
-            this.spawnParticle(stateIn, worldIn, pos, rand, false);
-        }
+        boolean leftSide = stateIn.getValue(POWERED_SIDE) == ToggleLatchSide.LEFT;
+        this.spawnParticle(stateIn, worldIn, pos, rand, leftSide);
     }
 
     public void spawnParticle(BlockState state, Level world, BlockPos pos, RandomSource rand, boolean left) {
-        double xOff = left ? 0.25D : 0.75D;
+        double offset = left ? -0.25D : 0.25D;
         Direction direction = state.getValue(FACING);
-        double x = (double) pos.getX() + xOff + (rand.nextDouble() - 0.5D) * 0.2D;
+
+        // center of the block
+        double x = (double) pos.getX() + 0.5D + (rand.nextDouble() - 0.5D) * 0.2D;
         double y = (double) pos.getY() + 0.4D + (rand.nextDouble() - 0.5D) * 0.2D;
-        double z = (double) pos.getZ() + 0.65D + (rand.nextDouble() - 0.5D) * 0.2D;
-        float f = -5.0F / 16.0F;
-        double xOffset = (double) (f * (float) direction.getStepX());
-        double zOffset = (double) (f * (float) direction.getStepZ());
+        double z = (double) pos.getZ() + 0.5D + (rand.nextDouble() - 0.5D) * 0.2D;
+
+        // offset to the side its facing
+        float f = -3.0F / 16.0F;
+        double xOffset = f * (float) direction.getStepX();
+        double zOffset = f * (float) direction.getStepZ();
+
+        // offset to left or right side
+        xOffset += offset * (double) direction.getStepZ();
+        zOffset -= offset * (double) direction.getStepX();
+
         world.addParticle(DustParticleOptions.REDSTONE, x + xOffset, y, z + zOffset, 0.0D, 0.0D, 0.0D);
     }
 
