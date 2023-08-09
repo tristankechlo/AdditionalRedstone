@@ -1,5 +1,5 @@
 {
-	"itemGroup.additionalredstone.main" : "更多红石元件",
+	"itemGroup.additionalredstone.main" : "Additional Redstone",
 	"block.additionalredstone.circuit_maker" : "电路制造机",
 	"block.additionalredstone.sequencer" : "序列发生器",
 	"block.additionalredstone.oscillator" : "振荡器",
