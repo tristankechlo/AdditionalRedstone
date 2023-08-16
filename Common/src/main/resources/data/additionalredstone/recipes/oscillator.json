@@ -1,7 +1,7 @@
 {
     "type": "additionalredstone:circuit_maker",
     "input_1": {
-        "item": "minecraft:redstone"
+        "tag": "additionalredstone:redstone_dust"
     },
     "input_2": {
         "item": "minecraft:redstone_torch"

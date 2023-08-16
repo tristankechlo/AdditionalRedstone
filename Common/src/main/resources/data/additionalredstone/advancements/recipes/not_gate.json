@@ -14,7 +14,7 @@
         "has_the_recipe": {
             "trigger": "minecraft:recipe_unlocked",
             "conditions": {
-                "recipe": "additionalredstone:circuit_maker"
+                "recipe": "additionalredstone:not_gate"
             }
         }
     },
@@ -26,7 +26,7 @@
     ],
     "rewards": {
         "recipes": [
-            "additionalredstone:circuit_maker"
+            "additionalredstone:not_gate"
         ]
     }
 }

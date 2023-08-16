@@ -6,7 +6,7 @@
 	],
 	"key" : {
 		"#" : {
-			"tag" : "c:redstone_dusts"
+			"tag" : "additionalredstone:redstone_dust"
 		},
 		"S" : {
 			"item" : "minecraft:stone_slab"
