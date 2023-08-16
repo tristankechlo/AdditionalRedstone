@@ -23,7 +23,7 @@ public class CircuitMakerScreen extends AbstractContainerScreen<CircuitMakerCont
     private static final int RECIPES_IMAGE_SIZE_WIDTH = 18;
     private static final int RECIPES_IMAGE_SIZE_HEIGHT = 18;
     private static final int SCROLLER_FULL_HEIGHT = 54;
-    private static final int RECIPES_X = 64;
+    private static final int RECIPES_X = 59;
     private static final int RECIPES_Y = 16;
     private float scrollOffs;
     private boolean scrolling;
@@ -33,11 +33,11 @@ public class CircuitMakerScreen extends AbstractContainerScreen<CircuitMakerCont
     public CircuitMakerScreen(CircuitMakerContainer screenContainer, Inventory inv, Component titleIn) {
         super(screenContainer, inv, titleIn);
         this.imageWidth = 192;
-        this.imageHeight = 167;
+        this.imageHeight = 166;
         this.titleLabelY -= 1;
         this.titleLabelX -= 3;
-        this.inventoryLabelX -= 2;
-        this.inventoryLabelY += 2;
+        this.inventoryLabelX += 8;
+        this.inventoryLabelY += 1;
         menu.setInventoryChangeListener(this::containerChanged);
     }
 
@@ -59,7 +59,7 @@ public class CircuitMakerScreen extends AbstractContainerScreen<CircuitMakerCont
 
         //render scrollbar
         int offset = (int) (39.0F * this.scrollOffs);
-        graphics.blit(BG_LOCATION, this.leftPos + 140, this.topPos + 16 + offset, 214 + (this.isScrollBarActive() ? 0 : SCROLLER_WIDTH), 0, SCROLLER_WIDTH, SCROLLER_HEIGHT);
+        graphics.blit(BG_LOCATION, this.leftPos + 135, this.topPos + 16 + offset, 214 + (this.isScrollBarActive() ? 0 : SCROLLER_WIDTH), 0, SCROLLER_WIDTH, SCROLLER_HEIGHT);
 
         //render recipes and buttons
         int $$7 = this.leftPos + RECIPES_X;

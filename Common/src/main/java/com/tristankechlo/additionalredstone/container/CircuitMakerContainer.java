@@ -58,9 +58,9 @@ public class CircuitMakerContainer extends AbstractContainerMenu {
             }
         };
 
-        this.inputSlot1 = this.addSlot(new Slot(this.container, 0, 14, 24));
-        this.inputSlot2 = this.addSlot(new Slot(this.container, 1, 36, 24));
-        this.inputSlotCircuitBase = this.addSlot(new ConditionedSlot(this.container, 2, 25, 46, ModItems.CIRCUIT_BASE_BLOCK_ITEM.get()));
+        this.inputSlot1 = this.addSlot(new Slot(this.container, 0, 12, 24));
+        this.inputSlot2 = this.addSlot(new Slot(this.container, 1, 34, 24));
+        this.inputSlotCircuitBase = this.addSlot(new ConditionedSlot(this.container, 2, 23, 46, ModItems.CIRCUIT_BASE_BLOCK_ITEM.get()));
         this.resultSlot = this.addSlot(new Slot(this.resultContainer, 0, 160, 35) {
             @Override
             public boolean mayPlace(ItemStack stack) {
