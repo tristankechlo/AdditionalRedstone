@@ -1,3 +1,6 @@
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+
 plugins {
     id 'fabric-loom' version '1.2-SNAPSHOT' apply(false)
     id 'net.minecraftforge.gradle' version '[6.0,6.2)' apply(false)
@@ -46,4 +49,14 @@ subprojects {
     tasks.withType(GenerateModuleMetadata) {
         enabled = false
     }
+
+    //minify json files
+    processResources {
+        doLast {
+            fileTree(dir: outputs.files.asPath, include: "**/*.json").each {
+                File file -> file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
+            }
+        }
+    }
+
 }
