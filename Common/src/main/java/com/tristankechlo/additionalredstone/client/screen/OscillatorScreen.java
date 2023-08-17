@@ -18,7 +18,6 @@ public class OscillatorScreen extends CustomScreen {
     private static final MutableComponent TITLE = Component.translatable(ModBlocks.OSCILLATOR_BLOCK.get().getDescriptionId()).withStyle(ChatFormatting.BOLD);
     private static final MutableComponent TICKS_ON = Component.translatable("screen.additionalredstone.oscillator.ticks.on");
     private static final MutableComponent TICKS_OFF = Component.translatable("screen.additionalredstone.oscillator.ticks.off");
-    private static final ResourceLocation ICONS = new ResourceLocation(Constants.MOD_ID, "textures/gui/icons.png");
     private static final ResourceLocation TEXTURE = new ResourceLocation(Constants.MOD_ID, "textures/gui/base_screen.png");
     private final BlockPos pos;
     private EditBox ticksOnWidget;
@@ -82,10 +81,10 @@ public class OscillatorScreen extends CustomScreen {
 
         // render red cross next to the edit box
         if (this.ticksOnError) {
-            graphics.blit(ICONS, this.leftPos + 227, this.topPos + 25, 0, 0, 18, 18, 18, 18);
+            this.renderErrorIcon(graphics, this.leftPos + 227, this.topPos + 25);
         }
         if (this.ticksOffError) {
-            graphics.blit(ICONS, this.leftPos + 227, this.topPos + 58, 0, 0, 18, 18, 18, 18);
+            this.renderErrorIcon(graphics, this.leftPos + 227, this.topPos + 58);
         }
 
         // render tooltips over edit boxes when focused
