@@ -10,6 +10,9 @@
 - add support for JustEnoughItems to show the recipes of the circuit maker
     - when JEI is installed, the circuit maker will have a button to show all the possible recipes
 - add *zh_cn* translation (thanks to HfSr)
+- reworked menu for following blocks
+    - oscillator
+    - now closable like all menus, with the inventory key and escape key
 
 ### Version 1.20.1 - 1.1.0
 

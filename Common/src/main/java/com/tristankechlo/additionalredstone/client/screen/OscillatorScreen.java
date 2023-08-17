@@ -1,79 +1,66 @@
 package com.tristankechlo.additionalredstone.client.screen;
 
 import com.tristankechlo.additionalredstone.Constants;
+import com.tristankechlo.additionalredstone.client.util.CustomScreen;
+import com.tristankechlo.additionalredstone.init.ModBlocks;
 import com.tristankechlo.additionalredstone.network.IPacketHandler;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 
-public class OscillatorScreen extends Screen {
+public class OscillatorScreen extends CustomScreen {
 
-    private static final Component TITLE = Component.translatable("screen.additionalredstone.oscillator");
+    private static final MutableComponent TITLE = Component.translatable(ModBlocks.OSCILLATOR_BLOCK.get().getDescriptionId()).withStyle(ChatFormatting.BOLD);
+    private static final MutableComponent TICKS_ON = Component.translatable("screen.additionalredstone.oscillator.ticks.on");
+    private static final MutableComponent TICKS_OFF = Component.translatable("screen.additionalredstone.oscillator.ticks.off");
     private static final ResourceLocation ICONS = new ResourceLocation(Constants.MOD_ID, "textures/gui/icons.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(Constants.MOD_ID, "textures/gui/base_screen.png");
+    private final BlockPos pos;
     private EditBox ticksOnWidget;
     private EditBox ticksOffWidget;
-    private Button saveButton;
-    private Button cancelButton;
-    private BlockPos pos;
-    private int ticksOn;
-    private int ticksOff;
-    private boolean ticksOnError = false;
-    private boolean ticksOffError = false;
+    private final int initialTicksOn; // the initial value of the edit box
+    private final int initialTicksOff; // the initial value of the edit box
+    private boolean ticksOnError = false; // when true, render the error icon next to the edit box
+    private boolean ticksOffError = false; // when true, render the error icon next to the edit box
 
-    public OscillatorScreen(int ticksOn, int ticksOff, BlockPos pos) {
-        super(TITLE);
-        this.ticksOn = ticksOn;
-        this.ticksOff = ticksOff;
+    public OscillatorScreen(int initialTicksOn, int initialTicksOff, BlockPos pos) {
+        super(TITLE, 256, 119);
+        this.initialTicksOn = initialTicksOn;
+        this.initialTicksOff = initialTicksOff;
         this.pos = pos;
-    }
-
-    @Override
-    public void tick() {
-        this.ticksOnWidget.tick();
-        this.ticksOffWidget.tick();
     }
 
     @Override
     protected void init() {
         super.init();
-        this.ticksOnWidget = new EditBox(this.font, this.width / 2 + 32, 60, 98, 20, Component.translatable("screen.additionalredstone.oscillator.ticks.on"));
-        this.ticksOffWidget = new EditBox(this.font, this.width / 2 + 32, 90, 98, 20, Component.translatable("screen.additionalredstone.oscillator.ticks.off"));
-        this.addWidget(this.ticksOnWidget);
-        this.addWidget(this.ticksOffWidget);
+        this.ticksOnWidget = new EditBox(this.font, this.leftPos + 176, this.topPos + 24, 70, 20, TICKS_ON);
+        this.ticksOffWidget = new EditBox(this.font, this.leftPos + 176, this.topPos + 57, 70, 20, TICKS_OFF);
         this.ticksOnWidget.setMaxLength(10);
         this.ticksOffWidget.setMaxLength(10);
-        this.setInitialFocus(this.ticksOnWidget);
-        this.ticksOnWidget.setFocused(true);
-        this.ticksOnWidget.setValue(String.valueOf(this.ticksOn));
-        this.ticksOffWidget.setValue(String.valueOf(this.ticksOff));
+        this.ticksOnWidget.setValue(String.valueOf(this.initialTicksOn));
+        this.ticksOffWidget.setValue(String.valueOf(this.initialTicksOff));
+        this.addRenderableWidget(this.ticksOnWidget);
+        this.addRenderableWidget(this.ticksOffWidget);
 
-        this.saveButton = new Button.Builder(Component.translatable("screen.additionalredstone.save"),
-                (b) -> this.save()).pos(this.width / 2 - 110, 150).size(100, 20).build();
-        this.cancelButton = new Button.Builder(Component.translatable("screen.additionalredstone.cancel"),
-                (b) -> this.cancel()).pos(this.width / 2 + 10, 150).size(100, 20).build();
+        Button saveButton = new Button.Builder(CustomScreen.TEXT_SAVE, this::save)
+                .pos(this.leftPos + 9, this.topPos + 90).size(116, 20)
+                .tooltip(CustomScreen.TOOLTIP_SAVE).build();
+        Button cancelButton = new Button.Builder(CustomScreen.TEXT_CANCEL, (b) -> this.onClose())
+                .pos(this.leftPos + 131, this.topPos + 90).size(116, 20)
+                .tooltip(CustomScreen.TOOLTIP_CANCEL).build();
         this.addRenderableWidget(saveButton);
         this.addRenderableWidget(cancelButton);
     }
 
-    private void save() {
-        int ticks_on = 0;
-        int ticks_off = 0;
-        try {
-            ticks_on = Integer.parseInt(this.ticksOnWidget.getValue());
-            this.ticksOnError = false;
-        } catch (Exception e) {
-            this.ticksOnError = true;
-        }
-        try {
-            ticks_off = Integer.parseInt(this.ticksOffWidget.getValue());
-            this.ticksOffError = false;
-        } catch (Exception e) {
-            this.ticksOffError = true;
-        }
+    private void save(Button button) {
+        int ticks_on = getValueFromEditBox(this.ticksOnWidget, (bool) -> this.ticksOnError = bool);
+        int ticks_off = getValueFromEditBox(this.ticksOffWidget, (bool) -> this.ticksOffError = bool);
+
         if (this.ticksOnError || this.ticksOffError) {
             return;
         }
@@ -81,32 +68,52 @@ public class OscillatorScreen extends Screen {
         this.onClose();
     }
 
-    private void cancel() {
-        this.onClose();
+    @Override
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(graphics); // render texture and transparent background
+        super.render(graphics, mouseX, mouseY, partialTicks); // render buttons and labels
+
+        // render title
+        graphics.drawString(this.font, this.title, this.leftPos + 9, this.topPos + 6, 4210752, false);
+
+        // render description for the edit boxes
+        graphics.drawString(this.font, TICKS_ON, this.leftPos + 9, this.topPos + 30, 4210752, false);
+        graphics.drawString(this.font, TICKS_OFF, this.leftPos + 9, this.topPos + 63, 4210752, false);
+
+        // render red cross next to the edit box
+        if (this.ticksOnError) {
+            graphics.blit(ICONS, this.leftPos + 227, this.topPos + 25, 0, 0, 18, 18, 18, 18);
+        }
+        if (this.ticksOffError) {
+            graphics.blit(ICONS, this.leftPos + 227, this.topPos + 58, 0, 0, 18, 18, 18, 18);
+        }
+
+        // render tooltips over edit boxes when focused
+        if (this.ticksOnWidget.isMouseOver(mouseX, mouseY) || this.ticksOffWidget.isMouseOver(mouseX, mouseY)) {
+            graphics.renderTooltip(this.font, CustomScreen.TICK_DESCRIPTION, mouseX, mouseY);
+        }
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(graphics);
-        this.ticksOnWidget.render(graphics, mouseX, mouseY, partialTicks);
-        this.ticksOffWidget.render(graphics, mouseX, mouseY, partialTicks);
-        super.render(graphics, mouseX, mouseY, partialTicks);
-
-        graphics.drawCenteredString(this.font, Component.translatable("screen.additionalredstone.oscillator.description"),
-                this.width / 2, 30, Constants.TEXT_COLOR_SCREEN);
-
-        graphics.drawString(this.font, Component.translatable("screen.additionalredstone.oscillator.ticks.on"),
-                this.width / 2 - 130, 65, Constants.TEXT_COLOR_SCREEN);
-
-        graphics.drawString(this.font, Component.translatable("screen.additionalredstone.oscillator.ticks.off"),
-                this.width / 2 - 130, 95, Constants.TEXT_COLOR_SCREEN);
-
-        if (this.ticksOnError) {
-            graphics.blit(ICONS, this.width / 2 + 140, 61, 0, 0, 18, 18, 18, 18);
-        }
-        if (this.ticksOffError) {
-            graphics.blit(ICONS, this.width / 2 + 140, 91, 0, 0, 18, 18, 18, 18);
-        }
+    public void renderBackground(GuiGraphics graphics) {
+        super.renderBackground(graphics); // transparent background
+        graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, 256, 17); // title
+        graphics.blit(TEXTURE, this.leftPos, this.topPos + 17, 0, 51, 256, 1); // horizontal line
+        graphics.blit(TEXTURE, this.leftPos, this.topPos + 18, 0, 18, 256, 32); // edit box
+        graphics.blit(TEXTURE, this.leftPos, this.topPos + 50, 0, 51, 256, 1); // horizontal line
+        graphics.blit(TEXTURE, this.leftPos, this.topPos + 51, 0, 18, 256, 32); // edit box
+        graphics.blit(TEXTURE, this.leftPos, this.topPos + 83, 0, 51, 256, 1); // horizontal line
+        graphics.blit(TEXTURE, this.leftPos, this.topPos + 84, 0, 53, 256, 35); // buttons
     }
 
+    @Override
+    public boolean keyPressed(int $$0, int $$1, int $$2) {
+        if (this.ticksOnWidget.isFocused()) {
+            this.ticksOnError = false;
+        }
+        if (this.ticksOffWidget.isFocused()) {
+            this.ticksOffError = false;
+        }
+        return super.keyPressed($$0, $$1, $$2);
+    }
 }

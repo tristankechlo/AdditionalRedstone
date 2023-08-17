@@ -27,4 +27,4 @@
 |:---------:|:----------------:|:-----------------------------------------------------------|:--------------|
 | **en_us** |      1.2.0       | tristankechlo ([Github](https://github.com/tristankechlo)) | always        |
 | **de_de** |      1.2.0       | tristankechlo ([Github](https://github.com/tristankechlo)) | always        |
-| **zh_cn** |      1.2.0       | HfSr          ([Github](https://github.com/HfSrJun))       | 1.2.0         |
+| **zh_cn** |      1.1.0       | HfSr          ([Github](https://github.com/HfSrJun))       | 1.2.0         |
