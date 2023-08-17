@@ -1,6 +1,7 @@
 package com.tristankechlo.additionalredstone.jei;
 
 import com.tristankechlo.additionalredstone.Constants;
+import com.tristankechlo.additionalredstone.blocks.CircuitMakerBlock;
 import com.tristankechlo.additionalredstone.init.ModItems;
 import com.tristankechlo.additionalredstone.recipe.CircuitMakerRecipe;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -26,7 +27,7 @@ public class CircuitMakerRecipeCategory implements IRecipeCategory<CircuitMakerR
 
     public CircuitMakerRecipeCategory(IGuiHelper guiHelper) {
         background = guiHelper.createDrawable(LOCATION, 0, 213, 107, 43);
-        localizedName = Component.translatable("container.additionalredstone.circuit_maker");
+        localizedName = CircuitMakerBlock.getContainerName();
         icon = guiHelper.createDrawableItemStack(new ItemStack(ModItems.CIRCUIT_MAKER_BLOCK_ITEM.get()));
     }
 

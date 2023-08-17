@@ -1,6 +1,7 @@
 package com.tristankechlo.additionalredstone.blocks;
 
 import com.tristankechlo.additionalredstone.container.CircuitMakerContainer;
+import com.tristankechlo.additionalredstone.init.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -29,7 +30,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class CircuitMakerBlock extends HorizontalDirectionalBlock {
 
-    private static final Component CONTAINER_NAME = Component.translatable("container.additionalredstone.circuit_maker");
+    private static Component CONTAINER_NAME = null;
     private static final VoxelShape SHAPE = Shapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D), Block.box(2.5D, 2.0D, 2.5D, 13.5D, 12.0D, 13.5D));
 
     public CircuitMakerBlock() {
@@ -88,7 +89,14 @@ public class CircuitMakerBlock extends HorizontalDirectionalBlock {
     public MenuProvider getMenuProvider(BlockState state, Level worldIn, BlockPos pos) {
         return new SimpleMenuProvider((id, playerInv, player) -> {
             return new CircuitMakerContainer(id, playerInv, ContainerLevelAccess.create(worldIn, pos));
-        }, CONTAINER_NAME);
+        }, getContainerName());
+    }
+
+    public static Component getContainerName() {
+        if (CONTAINER_NAME == null) {
+            CONTAINER_NAME = Component.translatable(ModBlocks.CIRCUIT_MAKER_BLOCK.get().getDescriptionId());
+        }
+        return CONTAINER_NAME;
     }
 
     @Override
