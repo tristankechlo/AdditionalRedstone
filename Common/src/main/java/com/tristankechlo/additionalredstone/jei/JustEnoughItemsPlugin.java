@@ -70,7 +70,6 @@ public class JustEnoughItemsPlugin implements IModPlugin {
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
         //while in circuit maker GUI, add clickable area to open the JEI GUI for the custom category
         registration.addGuiContainerHandler(CircuitMakerScreen.class, new CircuitMakerGuiHandler());
-        registration.addRecipeClickArea(CircuitMakerScreen.class, 189, 0, 18, 22, RECIPE_TYPE);
     }
 
     @Override
