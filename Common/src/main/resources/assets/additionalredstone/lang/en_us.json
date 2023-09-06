@@ -32,9 +32,7 @@
     "screen.additionalredstone.timer.power.on": "Time to set powered",
     "screen.additionalredstone.timer.power.off": "Time to set unpowered",
     "screen.additionalredstone.timer.interval": "Check time every X ticks",
-    "screen.additionalredstone.sequencer.description": "20 ticks usually correspond to 1 second",
     "screen.additionalredstone.sequencer.interval": "Amount of ticks until update",
-    "screen.additionalredstone.sequencer": "Sequencer",
 
     "screen.additionalredstone.truthtable.title": "Truthtable for %s",
     "screen.additionalredstone.truthtable.input_a": "Input A",

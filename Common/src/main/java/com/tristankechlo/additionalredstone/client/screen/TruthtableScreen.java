@@ -44,7 +44,7 @@ public class TruthtableScreen extends CustomScreen {
 
         Button cancelButton = new Button.Builder(CustomScreen.TEXT_CLOSE, (b) -> this.onClose())
                 .bounds(this.leftPos + 9, this.topPos + 139, 174, 20)
-                .tooltip(CustomScreen.TOOLTIP_CLOSE).build();
+                .tooltip(CustomScreen.TOOLTIP_CLOSE.get()).build();
         this.addRenderableWidget(cancelButton);
     }
 

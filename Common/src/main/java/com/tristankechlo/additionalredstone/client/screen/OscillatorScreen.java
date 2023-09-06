@@ -18,7 +18,7 @@ public class OscillatorScreen extends CustomScreen {
     private static final MutableComponent TITLE = ModBlocks.OSCILLATOR_BLOCK.get().getName().withStyle(ChatFormatting.BOLD);
     private static final MutableComponent TICKS_ON = Component.translatable("screen.additionalredstone.oscillator.ticks.on");
     private static final MutableComponent TICKS_OFF = Component.translatable("screen.additionalredstone.oscillator.ticks.off");
-    private static final ResourceLocation TEXTURE = new ResourceLocation(Constants.MOD_ID, "textures/gui/base_screen.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(Constants.MOD_ID, "textures/gui/oscillator_screen.png");
     private final BlockPos pos;
     private EditBox ticksOnWidget;
     private EditBox ticksOffWidget;
@@ -48,10 +48,10 @@ public class OscillatorScreen extends CustomScreen {
 
         Button saveButton = new Button.Builder(CustomScreen.TEXT_SAVE, this::save)
                 .pos(this.leftPos + 9, this.topPos + 90).size(116, 20)
-                .tooltip(CustomScreen.TOOLTIP_SAVE).build();
+                .tooltip(CustomScreen.TOOLTIP_SAVE.get()).build();
         Button cancelButton = new Button.Builder(CustomScreen.TEXT_CANCEL, (b) -> this.onClose())
                 .pos(this.leftPos + 131, this.topPos + 90).size(116, 20)
-                .tooltip(CustomScreen.TOOLTIP_CANCEL).build();
+                .tooltip(CustomScreen.TOOLTIP_CANCEL.get()).build();
         this.addRenderableWidget(saveButton);
         this.addRenderableWidget(cancelButton);
     }
@@ -96,13 +96,7 @@ public class OscillatorScreen extends CustomScreen {
     @Override
     public void renderBackground(GuiGraphics graphics) {
         super.renderBackground(graphics); // transparent background
-        graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, 256, 17); // title
-        graphics.blit(TEXTURE, this.leftPos, this.topPos + 17, 0, 51, 256, 1); // horizontal line
-        graphics.blit(TEXTURE, this.leftPos, this.topPos + 18, 0, 18, 256, 32); // edit box
-        graphics.blit(TEXTURE, this.leftPos, this.topPos + 50, 0, 51, 256, 1); // horizontal line
-        graphics.blit(TEXTURE, this.leftPos, this.topPos + 51, 0, 18, 256, 32); // edit box
-        graphics.blit(TEXTURE, this.leftPos, this.topPos + 83, 0, 51, 256, 1); // horizontal line
-        graphics.blit(TEXTURE, this.leftPos, this.topPos + 84, 0, 53, 256, 35); // buttons
+        this.renderTexture(graphics, TEXTURE);
     }
 
     @Override

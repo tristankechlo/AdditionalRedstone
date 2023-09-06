@@ -1,7 +1,7 @@
 {
     "itemGroup.additionalredstone.main": "Additional Redstone",
 
-    "block.additionalredstone.circuit_base": "Basis Schaltkreis",
+    "block.additionalredstone.circuit_base": "Schaltkreisbasis",
     "block.additionalredstone.circuit_maker": "Schaltkreis Maschine",
     "block.additionalredstone.sequencer": "Sequenzer",
     "block.additionalredstone.oscillator": "Oszillator",
@@ -32,9 +32,7 @@
     "screen.additionalredstone.timer.power.on": "Einschaltzeit",
     "screen.additionalredstone.timer.power.off": "Ausschaltzeit",
     "screen.additionalredstone.timer.interval": "Zeit-Check alle X Ticks",
-    "screen.additionalredstone.sequencer.description": "20 Ticks entsprechen normalerweise 1 Sekunde",
-    "screen.additionalredstone.sequencer.interval": "Anzahl an Ticks zwischen den Intervallen",
-    "screen.additionalredstone.sequencer": "Sequenzer",
+    "screen.additionalredstone.sequencer.interval": "Tickanzahl bis Redstone-Update",
 
     "screen.additionalredstone.truthtable.title": "Wahrheitstabelle für %s",
     "screen.additionalredstone.truthtable.input_a": "Input A",

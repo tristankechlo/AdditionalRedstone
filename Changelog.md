@@ -11,7 +11,7 @@
     - when JEI is installed, the circuit maker will have a button to show all the possible recipes
 - add *zh_cn* translation (thanks to HfSr)
 - reworked menu for following blocks
-    - oscillator
+    - oscillator, time and sequencer
     - now closable like all menus, with the inventory key and escape key
 - new menu for following blocks
     - and_gate, or_gate, xor_gate, nand_gate, nor_gate, xnor_gate

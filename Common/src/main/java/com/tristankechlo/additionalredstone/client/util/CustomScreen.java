@@ -12,15 +12,16 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public abstract class CustomScreen extends Screen {
 
     public static final MutableComponent TEXT_SAVE = Component.translatable("screen.additionalredstone.save");
-    public static final Tooltip TOOLTIP_SAVE = Tooltip.create(Component.translatable("screen.additionalredstone.save.tooltip"));
+    public static final Supplier<Tooltip> TOOLTIP_SAVE = () -> Tooltip.create(Component.translatable("screen.additionalredstone.save.tooltip"));
     public static final MutableComponent TEXT_CANCEL = Component.translatable("screen.additionalredstone.cancel");
-    public static final Tooltip TOOLTIP_CANCEL = Tooltip.create(Component.translatable("screen.additionalredstone.cancel.tooltip"));
+    public static final Supplier<Tooltip> TOOLTIP_CANCEL = () -> Tooltip.create(Component.translatable("screen.additionalredstone.cancel.tooltip"));
     public static final MutableComponent TEXT_CLOSE = Component.translatable("screen.additionalredstone.close");
-    public static final Tooltip TOOLTIP_CLOSE = Tooltip.create(Component.translatable("screen.additionalredstone.close.tooltip"));
+    public static final Supplier<Tooltip> TOOLTIP_CLOSE = () -> Tooltip.create(Component.translatable("screen.additionalredstone.close.tooltip"));
     protected static final MutableComponent TICK_DESCRIPTION = Component.translatable("screen.additionalredstone.tick.description");
     private static final ResourceLocation ERROR_ICON = new ResourceLocation(Constants.MOD_ID, "textures/gui/icons.png");
     private Component customTitle;
