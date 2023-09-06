@@ -1,4 +1,0 @@
- - better item textures for the logic gates
- - make recipes loader specific with corresponding item tags
- - circuit maker
-     - render items in block
