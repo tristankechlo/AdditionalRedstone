@@ -23,6 +23,7 @@ public abstract class CustomScreen extends Screen {
     public static final Tooltip TOOLTIP_CLOSE = Tooltip.create(Component.translatable("screen.additionalredstone.close.tooltip"));
     protected static final MutableComponent TICK_DESCRIPTION = Component.translatable("screen.additionalredstone.tick.description");
     private static final ResourceLocation ERROR_ICON = new ResourceLocation(Constants.MOD_ID, "textures/gui/icons.png");
+    private Component customTitle;
     protected final int imageWidth;
     protected final int imageHeight;
     protected int topPos;
@@ -32,6 +33,16 @@ public abstract class CustomScreen extends Screen {
         super(title);
         this.imageWidth = imageWidth;
         this.imageHeight = imageHeight;
+        this.customTitle = title;
+    }
+
+    @Override
+    public Component getTitle() {
+        return this.customTitle;
+    }
+
+    public void setTitle(Component title) {
+        this.customTitle = title;
     }
 
     @Override

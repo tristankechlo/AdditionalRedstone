@@ -1,6 +1,9 @@
 {
     "itemGroup.additionalredstone.main": "Additional Redstone",
+
+    "block.additionalredstone.circuit_base": "Basis Schaltkreis",
     "block.additionalredstone.circuit_maker": "Schaltkreis Maschine",
+    "block.additionalredstone.sequencer": "Sequenzer",
     "block.additionalredstone.oscillator": "Oszillator",
     "block.additionalredstone.timer": "Zeitschaltuhr",
     "block.additionalredstone.not_gate": "NICHT Gatter",
@@ -14,17 +17,28 @@
     "block.additionalredstone.toggle_latch": "Wechsler",
     "block.additionalredstone.sr_latch": "SR-Schalter",
     "block.additionalredstone.rs_latch": "RS-Schalter",
+
     "screen.additionalredstone.save": "Speichern",
+    "screen.additionalredstone.save.tooltip": "Speichert die Änderungen und schließt das Menü",
     "screen.additionalredstone.cancel": "Abbrechen",
+    "screen.additionalredstone.cancel.tooltip": "Schließt das Menü ohne die Änderungen zu speichern",
     "screen.additionalredstone.close": "Schließen",
-    "screen.additionalredstone.oscillator.description": "20 Ticks sind normalerweise 1s",
+    "screen.additionalredstone.close.tooltip": "Schließt das Menü",
+    "screen.additionalredstone.tick.description": "20 Ticks entsprechen normalerweise 1 Sekunde",
+
     "screen.additionalredstone.oscillator.ticks.on": "Anzahl an Ticks aktiviert",
     "screen.additionalredstone.oscillator.ticks.off": "Anzahl an Ticks deaktiviert",
     "screen.additionalredstone.timer.description": "Werte müssen zwischen 0 und 24000 sein",
     "screen.additionalredstone.timer.power.on": "Einschaltzeit",
     "screen.additionalredstone.timer.power.off": "Ausschaltzeit",
     "screen.additionalredstone.timer.interval": "Zeit-Check alle X Ticks",
-    "container.additionalredstone.circuit_maker": "Circuit Maker",
-    "screen.additionalredstone.circuit_maker.show_recipe": "Zeige Materialien",
-    "block.additionalredstone.circuit_base": "Circuit Base"
+    "screen.additionalredstone.sequencer.description": "20 Ticks entsprechen normalerweise 1 Sekunde",
+    "screen.additionalredstone.sequencer.interval": "Anzahl an Ticks zwischen den Intervallen",
+    "screen.additionalredstone.sequencer": "Sequenzer",
+
+    "screen.additionalredstone.truthtable.title": "Wahrheitstabelle für %s",
+    "screen.additionalredstone.truthtable.input_a": "Input A",
+    "screen.additionalredstone.truthtable.input_b": "Input B",
+    "screen.additionalredstone.truthtable.input_c": "Input C",
+    "screen.additionalredstone.truthtable.output": "Ausgang"
 }

@@ -94,7 +94,7 @@ public class CircuitMakerBlock extends HorizontalDirectionalBlock {
 
     public static Component getContainerName() {
         if (CONTAINER_NAME == null) {
-            CONTAINER_NAME = Component.translatable(ModBlocks.CIRCUIT_MAKER_BLOCK.get().getDescriptionId());
+            CONTAINER_NAME = ModBlocks.CIRCUIT_MAKER_BLOCK.get().getName();
         }
         return CONTAINER_NAME;
     }

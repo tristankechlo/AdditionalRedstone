@@ -15,7 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class OscillatorScreen extends CustomScreen {
 
-    private static final MutableComponent TITLE = Component.translatable(ModBlocks.OSCILLATOR_BLOCK.get().getDescriptionId()).withStyle(ChatFormatting.BOLD);
+    private static final MutableComponent TITLE = ModBlocks.OSCILLATOR_BLOCK.get().getName().withStyle(ChatFormatting.BOLD);
     private static final MutableComponent TICKS_ON = Component.translatable("screen.additionalredstone.oscillator.ticks.on");
     private static final MutableComponent TICKS_OFF = Component.translatable("screen.additionalredstone.oscillator.ticks.off");
     private static final ResourceLocation TEXTURE = new ResourceLocation(Constants.MOD_ID, "textures/gui/base_screen.png");

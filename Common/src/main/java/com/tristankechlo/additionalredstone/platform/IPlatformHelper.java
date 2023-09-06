@@ -5,6 +5,7 @@ import com.tristankechlo.additionalredstone.blockentity.OscillatorBlockEntity;
 import com.tristankechlo.additionalredstone.blockentity.SequencerBlockEntity;
 import com.tristankechlo.additionalredstone.blockentity.TFlipFlopBlockEntity;
 import com.tristankechlo.additionalredstone.blockentity.TimerBlockEntity;
+import com.tristankechlo.additionalredstone.blocks.ThreeInputLogicGate;
 import com.tristankechlo.additionalredstone.container.CircuitMakerContainer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.MenuType;
@@ -37,5 +38,7 @@ public interface IPlatformHelper {
     void openTimerScreen(int powerUp, int powerDown, int interval, BlockPos pos);
 
     void openSequencerScreen(int interval, BlockPos pos);
+
+    void openTruthtableScreen(ThreeInputLogicGate block);
 
 }

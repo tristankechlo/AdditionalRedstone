@@ -4,9 +4,11 @@ import com.tristankechlo.additionalredstone.blockentity.OscillatorBlockEntity;
 import com.tristankechlo.additionalredstone.blockentity.SequencerBlockEntity;
 import com.tristankechlo.additionalredstone.blockentity.TFlipFlopBlockEntity;
 import com.tristankechlo.additionalredstone.blockentity.TimerBlockEntity;
+import com.tristankechlo.additionalredstone.blocks.ThreeInputLogicGate;
 import com.tristankechlo.additionalredstone.client.screen.OscillatorScreen;
 import com.tristankechlo.additionalredstone.client.screen.SequencerScreen;
 import com.tristankechlo.additionalredstone.client.screen.TimerScreen;
+import com.tristankechlo.additionalredstone.client.screen.TruthtableScreen;
 import com.tristankechlo.additionalredstone.container.CircuitMakerContainer;
 import com.tristankechlo.additionalredstone.init.ModBlocks;
 import com.tristankechlo.additionalredstone.platform.IPlatformHelper;
@@ -76,6 +78,12 @@ public class ForgePlatformHelper implements IPlatformHelper {
     @OnlyIn(Dist.CLIENT)
     public void openSequencerScreen(int interval, BlockPos pos) {
         Minecraft.getInstance().setScreen(new SequencerScreen(interval, pos));
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void openTruthtableScreen(ThreeInputLogicGate block) {
+        Minecraft.getInstance().setScreen(new TruthtableScreen(block));
     }
 
 }
