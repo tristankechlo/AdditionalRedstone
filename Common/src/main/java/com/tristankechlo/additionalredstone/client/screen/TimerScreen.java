@@ -60,12 +60,12 @@ public class TimerScreen extends CustomScreen {
         this.addRenderableWidget(this.powerDownWidget);
         this.addRenderableWidget(this.intervalWidget);
 
-        Button saveButton = new Button.Builder(CustomScreen.TEXT_SAVE, this::save)
+        Button saveButton = new Button.Builder(TEXT_SAVE, this::save)
                 .pos(this.leftPos + 9, this.topPos + 123).size(116, 20)
-                .tooltip(CustomScreen.TOOLTIP_SAVE.get()).build();
-        Button cancelButton = new Button.Builder(CustomScreen.TEXT_CANCEL, (b) -> this.onClose())
+                .tooltip(TOOLTIP_SAVE.get()).build();
+        Button cancelButton = new Button.Builder(TEXT_CANCEL, (b) -> this.onClose())
                 .pos(this.leftPos + 131, this.topPos + 123).size(116, 20)
-                .tooltip(CustomScreen.TOOLTIP_CANCEL.get()).build();
+                .tooltip(TOOLTIP_CANCEL.get()).build();
         this.addRenderableWidget(saveButton);
         this.addRenderableWidget(cancelButton);
     }
@@ -88,12 +88,12 @@ public class TimerScreen extends CustomScreen {
         super.render(graphics, mouseX, mouseY, partialTicks);
 
         // render title
-        graphics.drawString(this.font, this.title, this.leftPos + 9, this.topPos + 6, 4210752, false);
+        graphics.drawString(this.font, this.title, this.leftPos + 9, this.topPos + 6, TEXT_COLOR_SCREEN, false);
 
         // render description for the edit boxes
-        graphics.drawString(this.font, POWER_ON, this.leftPos + 9, this.topPos + 30, 4210752, false);
-        graphics.drawString(this.font, POWER_OFF, this.leftPos + 9, this.topPos + 63, 4210752, false);
-        graphics.drawString(this.font, INTERVAL, this.leftPos + 9, this.topPos + 96, 4210752, false);
+        graphics.drawString(this.font, POWER_ON, this.leftPos + 9, this.topPos + 30, TEXT_COLOR_SCREEN, false);
+        graphics.drawString(this.font, POWER_OFF, this.leftPos + 9, this.topPos + 63, TEXT_COLOR_SCREEN, false);
+        graphics.drawString(this.font, INTERVAL, this.leftPos + 9, this.topPos + 96, TEXT_COLOR_SCREEN, false);
 
         // render red cross next to the edit box
         if (this.powerUpError) {
@@ -108,7 +108,7 @@ public class TimerScreen extends CustomScreen {
 
         // render tooltips over edit boxes when focused
         if (this.intervalWidget.isMouseOver(mouseX, mouseY)) {
-            graphics.renderTooltip(this.font, CustomScreen.TICK_DESCRIPTION, mouseX, mouseY);
+            graphics.renderTooltip(this.font, TICK_DESCRIPTION, mouseX, mouseY);
         }
         if (this.powerUpWidget.isMouseOver(mouseX, mouseY) || this.powerDownWidget.isMouseOver(mouseX, mouseY)) {
             graphics.renderTooltip(this.font, DESCRIPTION, mouseX, mouseY);

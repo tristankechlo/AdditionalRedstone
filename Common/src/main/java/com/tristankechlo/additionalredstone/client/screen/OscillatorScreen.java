@@ -46,12 +46,12 @@ public class OscillatorScreen extends CustomScreen {
         this.addRenderableWidget(this.ticksOnWidget);
         this.addRenderableWidget(this.ticksOffWidget);
 
-        Button saveButton = new Button.Builder(CustomScreen.TEXT_SAVE, this::save)
+        Button saveButton = new Button.Builder(TEXT_SAVE, this::save)
                 .pos(this.leftPos + 9, this.topPos + 90).size(116, 20)
-                .tooltip(CustomScreen.TOOLTIP_SAVE.get()).build();
-        Button cancelButton = new Button.Builder(CustomScreen.TEXT_CANCEL, (b) -> this.onClose())
+                .tooltip(TOOLTIP_SAVE.get()).build();
+        Button cancelButton = new Button.Builder(TEXT_CANCEL, (b) -> this.onClose())
                 .pos(this.leftPos + 131, this.topPos + 90).size(116, 20)
-                .tooltip(CustomScreen.TOOLTIP_CANCEL.get()).build();
+                .tooltip(TOOLTIP_CANCEL.get()).build();
         this.addRenderableWidget(saveButton);
         this.addRenderableWidget(cancelButton);
     }
@@ -73,11 +73,11 @@ public class OscillatorScreen extends CustomScreen {
         super.render(graphics, mouseX, mouseY, partialTicks); // render buttons and labels
 
         // render title
-        graphics.drawString(this.font, this.title, this.leftPos + 9, this.topPos + 6, 4210752, false);
+        graphics.drawString(this.font, this.title, this.leftPos + 9, this.topPos + 6, TEXT_COLOR_SCREEN, false);
 
         // render description for the edit boxes
-        graphics.drawString(this.font, TICKS_ON, this.leftPos + 9, this.topPos + 30, 4210752, false);
-        graphics.drawString(this.font, TICKS_OFF, this.leftPos + 9, this.topPos + 63, 4210752, false);
+        graphics.drawString(this.font, TICKS_ON, this.leftPos + 9, this.topPos + 30, TEXT_COLOR_SCREEN, false);
+        graphics.drawString(this.font, TICKS_OFF, this.leftPos + 9, this.topPos + 63, TEXT_COLOR_SCREEN, false);
 
         // render red cross next to the edit box
         if (this.ticksOnError) {
@@ -89,7 +89,7 @@ public class OscillatorScreen extends CustomScreen {
 
         // render tooltips over edit boxes when focused
         if (this.ticksOnWidget.isMouseOver(mouseX, mouseY) || this.ticksOffWidget.isMouseOver(mouseX, mouseY)) {
-            graphics.renderTooltip(this.font, CustomScreen.TICK_DESCRIPTION, mouseX, mouseY);
+            graphics.renderTooltip(this.font, TICK_DESCRIPTION, mouseX, mouseY);
         }
     }
 
