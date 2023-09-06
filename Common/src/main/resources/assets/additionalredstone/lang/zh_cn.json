@@ -1,5 +1,7 @@
 {
     "itemGroup.additionalredstone.main": "Additional Redstone",
+
+    "block.additionalredstone.circuit_base": "Circuit Base",
     "block.additionalredstone.circuit_maker": "电路制造机",
     "block.additionalredstone.sequencer": "序列发生器",
     "block.additionalredstone.oscillator": "振荡器",
@@ -15,19 +17,26 @@
     "block.additionalredstone.toggle_latch": "T锁存器",
     "block.additionalredstone.sr_latch": "SR锁存器",
     "block.additionalredstone.rs_latch": "RS锁存器",
+
     "screen.additionalredstone.save": "保存",
+    "screen.additionalredstone.save.tooltip": "Save the changes and close the screen",
     "screen.additionalredstone.cancel": "取消",
+    "screen.additionalredstone.cancel.tooltip": "Close the screen without saving",
     "screen.additionalredstone.close": "关闭",
-    "screen.additionalredstone.oscillator.description": "通常20ticks为1s",
+    "screen.additionalredstone.close.tooltip": "Close the screen",
+    "screen.additionalredstone.tick.description": "通常20ticks为1s",
+
     "screen.additionalredstone.oscillator.ticks.on": "充能状态的tick数",
     "screen.additionalredstone.oscillator.ticks.off": "不充能状态的tick数",
     "screen.additionalredstone.timer.description": "值必须介于0和24000之间",
     "screen.additionalredstone.timer.power.on": "设为充能状态的时间点",
     "screen.additionalredstone.timer.power.off": "设为不充能状态的时间点",
     "screen.additionalredstone.timer.interval": "检查时间点的间隔（单位：ticks）",
-    "screen.additionalredstone.sequencer.description": "通常20ticks为1s",
     "screen.additionalredstone.sequencer.interval": "状态更新的间隔（单位：ticks）",
-    "container.additionalredstone.circuit_maker": "电路制造机",
-    "screen.additionalredstone.circuit_maker.show_recipe": "显示需放入的材料",
-    "container.additionalredstone.sequencer": "序列发生器"
+
+    "screen.additionalredstone.truthtable.title": "Truthtable for %s",
+    "screen.additionalredstone.truthtable.input_a": "Input A",
+    "screen.additionalredstone.truthtable.input_b": "Input B",
+    "screen.additionalredstone.truthtable.input_c": "Input C",
+    "screen.additionalredstone.truthtable.output": "Output"
 }

@@ -20,8 +20,8 @@ public class TruthtableScreen extends CustomScreen {
     private static final Component INPUT_B = Component.translatable(START + "input_b").withStyle(ChatFormatting.BLACK);
     private static final Component INPUT_C = Component.translatable(START + "input_c").withStyle(ChatFormatting.BLACK);
     private static final Component OUTPUT = Component.translatable(START + "output").withStyle(ChatFormatting.BLACK);
-    private static final Component ON = /*Component.translatable("options.on")*/ Component.literal("ON").withStyle(ChatFormatting.DARK_GREEN);
-    private static final Component OFF = /*Component.translatable("options.off")*/ Component.literal("OFF").withStyle(ChatFormatting.DARK_RED);
+    private static final Component ON = Component.translatable("options.on").withStyle(ChatFormatting.DARK_GREEN);
+    private static final Component OFF = Component.translatable("options.off").withStyle(ChatFormatting.DARK_RED);
     private final boolean[] outputStates = new boolean[INPUT_STATES.length];
     private int index;
 
