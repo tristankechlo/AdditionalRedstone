@@ -31,6 +31,7 @@ public class FabricClientSetup implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SR_LATCH_BLOCK.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.RS_LATCH_BLOCK.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SEQUENCER_BLOCK.get(), RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SUPERGATE_BLOCK.get(), RenderType.cutout());
     }
 
 }

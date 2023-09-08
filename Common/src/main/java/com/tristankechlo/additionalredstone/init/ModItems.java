@@ -31,6 +31,7 @@ public class ModItems {
     public static final RegistryObject<Item> SR_LATCH_BLOCK_ITEM = create("sr_latch", ModBlocks.SR_LATCH_BLOCK);
     public static final RegistryObject<Item> RS_LATCH_BLOCK_ITEM = create("rs_latch", ModBlocks.RS_LATCH_BLOCK);
     public static final RegistryObject<Item> SEQUENCER_BLOCK_ITEM = create("sequencer", ModBlocks.SEQUENCER_BLOCK);
+    public static final RegistryObject<Item> SUPERGATE_BLOCK_ITEM = create("supergate", ModBlocks.SUPERGATE_BLOCK);
 
     private static RegistryObject<Item> create(String name, Supplier<Block> block) {
         return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Properties()));

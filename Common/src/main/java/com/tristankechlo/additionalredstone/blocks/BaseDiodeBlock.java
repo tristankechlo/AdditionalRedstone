@@ -49,7 +49,7 @@ public abstract class BaseDiodeBlock extends DiodeBlock {
         builder.add(FACING, POWERED);
     }
 
-    protected int getRedstonePowerForSide(Level worldIn, BlockPos pos, Direction direction) {
+    public static int getRedstonePowerForSide(Level worldIn, BlockPos pos, Direction direction) {
         BlockPos blockpos = pos.relative(direction);
         int i = worldIn.getSignal(blockpos, direction);
         if (i >= 15) {

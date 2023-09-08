@@ -12,7 +12,7 @@
 - add *zh_cn* translation (thanks to HfSr)
 - reworked menu for following blocks
     - oscillator, time and sequencer
-    - now closable like all menus, with the inventory key and escape key
+    - now closable like all menus, with the inventory key or escape key
 - new menu for following blocks
     - and_gate, or_gate, xor_gate, nand_gate, nor_gate, xnor_gate
     - opened by right-clicking the block

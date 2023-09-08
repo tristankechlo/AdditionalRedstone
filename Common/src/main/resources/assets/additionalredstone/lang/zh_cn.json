@@ -17,6 +17,7 @@
     "block.additionalredstone.toggle_latch": "T锁存器",
     "block.additionalredstone.sr_latch": "SR锁存器",
     "block.additionalredstone.rs_latch": "RS锁存器",
+    "block.additionalredstone.supergate": "Supergate",
 
     "screen.additionalredstone.save": "保存",
     "screen.additionalredstone.save.tooltip": "Save the changes and close the screen",

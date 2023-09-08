@@ -17,6 +17,7 @@ public class Constants {
     public static final String DISCORD_URL = "https://discord.gg/bhUaWhq";
     public static final String CURSEFORGE_URL = "https://curseforge.com/minecraft/mc-mods/additional-redstone";
     public static final String MODRINTH_URL = "https://modrinth.com/mod/additional-redstone";
+    public static final boolean[][] INPUT_STATES = new boolean[][]{{false, false, false}, {false, false, true}, {false, true, false}, {false, true, true}, {true, false, false}, {true, false, true}, {true, true, false}, {true, true, true}};
     public static boolean JEI_LOADED = false;
 
     public static void registerContent() {

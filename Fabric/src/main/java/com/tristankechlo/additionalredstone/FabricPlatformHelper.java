@@ -1,9 +1,6 @@
 package com.tristankechlo.additionalredstone;
 
-import com.tristankechlo.additionalredstone.blockentity.OscillatorBlockEntity;
-import com.tristankechlo.additionalredstone.blockentity.SequencerBlockEntity;
-import com.tristankechlo.additionalredstone.blockentity.TFlipFlopBlockEntity;
-import com.tristankechlo.additionalredstone.blockentity.TimerBlockEntity;
+import com.tristankechlo.additionalredstone.blockentity.*;
 import com.tristankechlo.additionalredstone.blocks.ThreeInputLogicGate;
 import com.tristankechlo.additionalredstone.client.screen.OscillatorScreen;
 import com.tristankechlo.additionalredstone.client.screen.SequencerScreen;
@@ -56,6 +53,11 @@ public class FabricPlatformHelper implements IPlatformHelper {
     @Override
     public BlockEntityType.Builder<TimerBlockEntity> buildBlockEntityTypeTimer() {
         return BlockEntityType.Builder.of(TimerBlockEntity::new, ModBlocks.TIMER_BLOCK.get());
+    }
+
+    @Override
+    public BlockEntityType.Builder<SuperGateBlockEntity> buildBlockEntityTypeSuperGate() {
+        return BlockEntityType.Builder.of(SuperGateBlockEntity::new, ModBlocks.SUPERGATE_BLOCK.get());
     }
 
     @Override

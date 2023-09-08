@@ -13,7 +13,6 @@ import net.minecraft.resources.ResourceLocation;
 
 public class TruthtableScreen extends CustomScreen {
 
-    private static final boolean[][] INPUT_STATES = new boolean[][]{{false, false, false}, {false, false, true}, {false, true, false}, {false, true, true}, {true, false, false}, {true, false, true}, {true, true, false}, {true, true, true}};
     private static final ResourceLocation TEXTURE = new ResourceLocation(Constants.MOD_ID, "textures/gui/truthtable.png");
     private static final String START = "screen.additionalredstone.truthtable.";
     private static final Component INPUT_A = Component.translatable(START + "input_a").withStyle(ChatFormatting.BLACK);
@@ -22,7 +21,7 @@ public class TruthtableScreen extends CustomScreen {
     private static final Component OUTPUT = Component.translatable(START + "output").withStyle(ChatFormatting.BLACK);
     private static final Component ON = Component.translatable("options.on").withStyle(ChatFormatting.DARK_GREEN);
     private static final Component OFF = Component.translatable("options.off").withStyle(ChatFormatting.DARK_RED);
-    private final boolean[] outputStates = new boolean[INPUT_STATES.length];
+    private final boolean[] outputStates = new boolean[Constants.INPUT_STATES.length];
     private int index;
 
     public TruthtableScreen(ThreeInputLogicGate block) {
@@ -31,8 +30,8 @@ public class TruthtableScreen extends CustomScreen {
     }
 
     protected void setSelectedBlock(ThreeInputLogicGate block) {
-        for (int i = 0; i < INPUT_STATES.length; i++) {
-            this.outputStates[i] = block.logic.apply(INPUT_STATES[i][0], INPUT_STATES[i][1], INPUT_STATES[i][2]);
+        for (int i = 0; i < Constants.INPUT_STATES.length; i++) {
+            this.outputStates[i] = block.logic.apply(Constants.INPUT_STATES[i][0], Constants.INPUT_STATES[i][1], Constants.INPUT_STATES[i][2]);
         }
         this.index = TruthTableHelper.getIndexOf(block);
         this.setTitle(makeTitle(block.getName()));
@@ -65,8 +64,8 @@ public class TruthtableScreen extends CustomScreen {
         graphics.drawString(this.font, OUTPUT, x + 133, y, 0, false);
 
         // render the input and output states
-        for (int i = 0; i < INPUT_STATES.length; i++) {
-            boolean[] input = INPUT_STATES[i]; // input states for a, b and c
+        for (int i = 0; i < Constants.INPUT_STATES.length; i++) {
+            boolean[] input = Constants.INPUT_STATES[i]; // input states for a, b and c
             boolean output = this.outputStates[i];
             y = topPos + 31 + i * 13;
             // render input states

@@ -17,6 +17,7 @@
     "block.additionalredstone.toggle_latch": "Toggle Latch",
     "block.additionalredstone.sr_latch": "SR-Latch",
     "block.additionalredstone.rs_latch": "RS-Latch",
+    "block.additionalredstone.supergate": "Supergate",
 
     "screen.additionalredstone.save": "Save",
     "screen.additionalredstone.save.tooltip": "Save the changes and close the screen",

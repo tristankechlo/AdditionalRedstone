@@ -17,6 +17,7 @@
     "block.additionalredstone.toggle_latch": "Wechsler",
     "block.additionalredstone.sr_latch": "SR-Schalter",
     "block.additionalredstone.rs_latch": "RS-Schalter",
+    "block.additionalredstone.supergate": "Supergate",
 
     "screen.additionalredstone.save": "Speichern",
     "screen.additionalredstone.save.tooltip": "Speichert die Änderungen und schließt das Menü",
