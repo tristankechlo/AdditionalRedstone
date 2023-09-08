@@ -16,6 +16,9 @@
 - new menu for following blocks
     - and_gate, or_gate, xor_gate, nand_gate, nor_gate, xnor_gate
     - opened by right-clicking the block
+- added new block `supergate`
+    - special logic gate which can be configured
+    - output depends on the configuration for all input combinations
 
 ### Version 1.20.1 - 1.1.0
 
