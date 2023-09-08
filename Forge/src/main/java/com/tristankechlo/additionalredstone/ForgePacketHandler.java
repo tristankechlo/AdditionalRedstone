@@ -3,6 +3,7 @@ package com.tristankechlo.additionalredstone;
 import com.tristankechlo.additionalredstone.network.IPacketHandler;
 import com.tristankechlo.additionalredstone.network.packets.SetOscillatorValues;
 import com.tristankechlo.additionalredstone.network.packets.SetSequencerValues;
+import com.tristankechlo.additionalredstone.network.packets.SetSupergateValues;
 import com.tristankechlo.additionalredstone.network.packets.SetTimerValues;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -34,6 +35,10 @@ public class ForgePacketHandler implements IPacketHandler {
                 SetTimerValues::encode,
                 SetTimerValues::decode,
                 ForgePacketHandler::handleSetTimerValues);
+        INSTANCE.registerMessage(3, SetSupergateValues.class,
+                SetSupergateValues::encode,
+                SetSupergateValues::decode,
+                ForgePacketHandler::handleSetSupergateValues);
     }
 
     @Override
@@ -82,6 +87,22 @@ public class ForgePacketHandler implements IPacketHandler {
             SetTimerValues.handle(msg, player.serverLevel());
         });
         context.get().setPacketHandled(true);
+    }
+
+    @Override
+    public void sendPacketSetSupergateValues(byte configuration, BlockPos pos) {
+        ForgePacketHandler.INSTANCE.sendToServer(new SetSupergateValues(configuration, pos));
+    }
+
+    static void handleSetSupergateValues(SetSupergateValues msg, Supplier<NetworkEvent.Context> contextSupplier) {
+        contextSupplier.get().enqueueWork(() -> {
+            ServerPlayer player = contextSupplier.get().getSender();
+            if (player == null) {
+                return;
+            }
+            SetSupergateValues.handle(msg, player.serverLevel());
+        });
+        contextSupplier.get().setPacketHandled(true);
     }
 
 }

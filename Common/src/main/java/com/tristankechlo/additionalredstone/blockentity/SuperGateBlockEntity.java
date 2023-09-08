@@ -13,16 +13,16 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class SuperGateBlockEntity extends BlockEntity {
 
-    private boolean[] outputs;
-    private static final String TAG_NAME = "outputs";
+    private boolean[] configuration;
+    private static final String TAG_NAME = "configuration";
     private static final int NUMBER_OF_BITS = Constants.INPUT_STATES.length;
 
     public SuperGateBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.SUPERGATE_BLOCK_ENTITY.get(), pos, state);
-        this.outputs = new boolean[NUMBER_OF_BITS];
+        this.configuration = new boolean[NUMBER_OF_BITS];
         for (int i = 0; i < Constants.INPUT_STATES.length; i++) {
             boolean[] input = Constants.INPUT_STATES[i];
-            this.outputs[i] = shouldBePowered(null, input[0], input[1], input[2]);
+            this.configuration[i] = shouldBePowered(null, input[0], input[1], input[2]);
         }
     }
 
@@ -33,7 +33,7 @@ public class SuperGateBlockEntity extends BlockEntity {
         for (int i = 0; i < Constants.INPUT_STATES.length; i++) {
             boolean[] input = Constants.INPUT_STATES[i];
             if (input[0] == left && input[1] == middle && input[2] == right) {
-                return entity.outputs[i];
+                return entity.configuration[i];
             }
         }
         return false;
@@ -43,25 +43,22 @@ public class SuperGateBlockEntity extends BlockEntity {
     public void load(CompoundTag tag) {
         super.load(tag);
         byte temp = tag.getByte(TAG_NAME);
-        this.outputs = byteToBooleans(temp);
+        this.configuration = byteToBooleans(temp);
     }
 
     @Override
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
-        byte temp = booleansToByte(outputs);
+        byte temp = booleansToByte(configuration);
         tag.putByte(TAG_NAME, temp);
     }
 
-    public void setConfiguration(boolean[] states) {
-        if (states.length != NUMBER_OF_BITS) {
-            return;
-        }
-        this.outputs = states;
+    public void setConfiguration(byte configuration) {
+        this.configuration = byteToBooleans(configuration);
     }
 
-    public boolean[] getConfiguration() {
-        return this.outputs;
+    public byte getConfiguration() {
+        return booleansToByte(configuration);
     }
 
     @Override

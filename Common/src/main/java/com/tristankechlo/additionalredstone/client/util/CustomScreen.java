@@ -4,6 +4,7 @@ import com.tristankechlo.additionalredstone.Constants;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
@@ -94,4 +95,13 @@ public abstract class CustomScreen extends Screen {
         return value;
     }
 
+    @Override
+    public boolean mouseClicked(double x, double y, int key) {
+        for (GuiEventListener child : children()) {
+            if (!child.isMouseOver(x, y)) {
+                child.setFocused(false);
+            }
+        }
+        return super.mouseClicked(x, y, key);
+    }
 }

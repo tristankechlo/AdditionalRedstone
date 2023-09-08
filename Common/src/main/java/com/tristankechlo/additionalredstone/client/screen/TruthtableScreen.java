@@ -3,6 +3,7 @@ package com.tristankechlo.additionalredstone.client.screen;
 import com.tristankechlo.additionalredstone.Constants;
 import com.tristankechlo.additionalredstone.blocks.ThreeInputLogicGate;
 import com.tristankechlo.additionalredstone.client.util.CustomScreen;
+import com.tristankechlo.additionalredstone.client.util.ToggleButton;
 import com.tristankechlo.additionalredstone.client.util.TruthTableHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
@@ -13,14 +14,12 @@ import net.minecraft.resources.ResourceLocation;
 
 public class TruthtableScreen extends CustomScreen {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(Constants.MOD_ID, "textures/gui/truthtable.png");
+    public static final ResourceLocation TEXTURE = new ResourceLocation(Constants.MOD_ID, "textures/gui/truthtable.png");
     private static final String START = "screen.additionalredstone.truthtable.";
-    private static final Component INPUT_A = Component.translatable(START + "input_a").withStyle(ChatFormatting.BLACK);
-    private static final Component INPUT_B = Component.translatable(START + "input_b").withStyle(ChatFormatting.BLACK);
-    private static final Component INPUT_C = Component.translatable(START + "input_c").withStyle(ChatFormatting.BLACK);
-    private static final Component OUTPUT = Component.translatable(START + "output").withStyle(ChatFormatting.BLACK);
-    private static final Component ON = Component.translatable("options.on").withStyle(ChatFormatting.DARK_GREEN);
-    private static final Component OFF = Component.translatable("options.off").withStyle(ChatFormatting.DARK_RED);
+    public static final Component INPUT_A = Component.translatable(START + "input_a").withStyle(ChatFormatting.BLACK);
+    public static final Component INPUT_B = Component.translatable(START + "input_b").withStyle(ChatFormatting.BLACK);
+    public static final Component INPUT_C = Component.translatable(START + "input_c").withStyle(ChatFormatting.BLACK);
+    public static final Component OUTPUT = Component.translatable(START + "output").withStyle(ChatFormatting.BLACK);
     private final boolean[] outputStates = new boolean[Constants.INPUT_STATES.length];
     private int index;
 
@@ -70,12 +69,12 @@ public class TruthtableScreen extends CustomScreen {
             y = topPos + 31 + i * 13;
             // render input states
             for (int j = 0; j < input.length; j++) {
-                int width = this.font.width(input[j] ? ON : OFF);
-                graphics.drawString(this.font, input[j] ? ON : OFF, x + j * 43 + (int) (21F - width / 2F), y, 0, false);
+                int width = this.font.width(input[j] ? ToggleButton.ON : ToggleButton.OFF);
+                graphics.drawString(this.font, input[j] ? ToggleButton.ON : ToggleButton.OFF, x + j * 43 + (int) (21F - width / 2F), y, 0, false);
             }
             // render output state
-            int width = this.font.width(output ? ON : OFF);
-            graphics.drawString(this.font, output ? ON : OFF, this.leftPos + 141 + (int) (21.5F - width / 2F), y, 0, false);
+            int width = this.font.width(output ? ToggleButton.ON : ToggleButton.OFF);
+            graphics.drawString(this.font, output ? ToggleButton.ON : ToggleButton.OFF, this.leftPos + 141 + (int) (21.5F - width / 2F), y, 0, false);
         }
 
         // render tooltip for the hovered tab

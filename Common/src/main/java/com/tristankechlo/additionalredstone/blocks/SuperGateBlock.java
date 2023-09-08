@@ -1,6 +1,7 @@
 package com.tristankechlo.additionalredstone.blocks;
 
 import com.tristankechlo.additionalredstone.blockentity.SuperGateBlockEntity;
+import com.tristankechlo.additionalredstone.platform.IPlatformHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -16,7 +17,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.ticks.TickPriority;
 import org.jetbrains.annotations.Nullable;
 
-public class SuperGateBlock extends BaseDiodeBlock implements EntityBlock {
+public class SupergateBlock extends BaseDiodeBlock implements EntityBlock {
 
     @Override
     public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource rand) {
@@ -59,8 +60,12 @@ public class SuperGateBlock extends BaseDiodeBlock implements EntityBlock {
 
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        return super.use(state, worldIn, pos, player, handIn, hit);
-        // open gui
+        BlockEntity tile = worldIn.getBlockEntity(pos);
+        if ((tile instanceof SuperGateBlockEntity blockEntity) && worldIn.isClientSide) {
+            byte config = blockEntity.getConfiguration();
+            IPlatformHelper.INSTANCE.openSupergateScreen(config, pos);
+        }
+        return InteractionResult.SUCCESS;
     }
 
     protected BlockState getDefaultDiodeState() {

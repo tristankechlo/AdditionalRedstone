@@ -8,7 +8,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import org.apache.commons.compress.archivers.sevenz.SevenZFileOptions;
 
 import java.nio.file.Path;
 import java.util.function.Supplier;
@@ -40,5 +39,7 @@ public interface IPlatformHelper {
     void openSequencerScreen(int interval, BlockPos pos);
 
     void openTruthtableScreen(ThreeInputLogicGate block);
+
+    void openSupergateScreen(byte configuration, BlockPos pos);
 
 }

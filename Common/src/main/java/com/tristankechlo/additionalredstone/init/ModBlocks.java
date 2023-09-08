@@ -30,7 +30,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> SR_LATCH_BLOCK = BLOCKS.register("sr_latch", SRLatchBlock::new);
     public static final RegistryObject<Block> RS_LATCH_BLOCK = BLOCKS.register("rs_latch", RSLatchBlock::new);
     public static final RegistryObject<Block> SEQUENCER_BLOCK = BLOCKS.register("sequencer", SequencerBlock::new);
-    public static final RegistryObject<Block> SUPERGATE_BLOCK = BLOCKS.register("supergate", SuperGateBlock::new);
+    public static final RegistryObject<Block> SUPERGATE_BLOCK = BLOCKS.register("supergate", SupergateBlock::new);
 
     public static void load() {}
 

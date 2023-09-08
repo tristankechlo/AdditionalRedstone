@@ -13,4 +13,6 @@ public interface IPacketHandler {
 
     void sendPacketSetTimerValues(int powerUpTime, int powerDownTime, int interval, BlockPos pos);
 
+    void sendPacketSetSupergateValues(byte configuration, BlockPos pos);
+
 }
