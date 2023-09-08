@@ -3,7 +3,7 @@ package com.tristankechlo.additionalredstone.client.screen;
 import com.tristankechlo.additionalredstone.Constants;
 import com.tristankechlo.additionalredstone.blocks.ThreeInputLogicGate;
 import com.tristankechlo.additionalredstone.client.util.CustomScreen;
-import com.tristankechlo.additionalredstone.client.util.ToggleButton;
+import com.tristankechlo.additionalredstone.client.util.OnOffButton;
 import com.tristankechlo.additionalredstone.client.util.TruthTableHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
@@ -69,12 +69,12 @@ public class TruthtableScreen extends CustomScreen {
             y = topPos + 31 + i * 13;
             // render input states
             for (int j = 0; j < input.length; j++) {
-                int width = this.font.width(input[j] ? ToggleButton.ON : ToggleButton.OFF);
-                graphics.drawString(this.font, input[j] ? ToggleButton.ON : ToggleButton.OFF, x + j * 43 + (int) (21F - width / 2F), y, 0, false);
+                int width = this.font.width(input[j] ? OnOffButton.ON : OnOffButton.OFF);
+                graphics.drawString(this.font, input[j] ? OnOffButton.ON : OnOffButton.OFF, x + j * 43 + (int) (21F - width / 2F), y, 0, false);
             }
             // render output state
-            int width = this.font.width(output ? ToggleButton.ON : ToggleButton.OFF);
-            graphics.drawString(this.font, output ? ToggleButton.ON : ToggleButton.OFF, this.leftPos + 141 + (int) (21.5F - width / 2F), y, 0, false);
+            int width = this.font.width(output ? OnOffButton.ON : OnOffButton.OFF);
+            graphics.drawString(this.font, output ? OnOffButton.ON : OnOffButton.OFF, this.leftPos + 141 + (int) (21.5F - width / 2F), y, 0, false);
         }
 
         // render tooltip for the hovered tab

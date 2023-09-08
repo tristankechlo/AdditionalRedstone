@@ -3,7 +3,7 @@ package com.tristankechlo.additionalredstone.client.screen;
 import com.tristankechlo.additionalredstone.Constants;
 import com.tristankechlo.additionalredstone.blockentity.SuperGateBlockEntity;
 import com.tristankechlo.additionalredstone.client.util.CustomScreen;
-import com.tristankechlo.additionalredstone.client.util.ToggleButton;
+import com.tristankechlo.additionalredstone.client.util.OnOffButton;
 import com.tristankechlo.additionalredstone.init.ModBlocks;
 import com.tristankechlo.additionalredstone.network.IPacketHandler;
 import net.minecraft.client.gui.GuiGraphics;
@@ -31,7 +31,7 @@ public class SupergateScreen extends CustomScreen {
 
         for (int i = 0; i < Constants.INPUT_STATES.length; i++) {
             int y = this.topPos + 29 + i * 13;
-            ToggleButton button = new ToggleButton(this.leftPos + 139, y, 43, 12, i);
+            OnOffButton button = new OnOffButton(this.leftPos + 139, y, 43, 12, i);
             button.setToggled(this.configuration[i]);
             button.setConsumer(this::setConfig);
             this.addRenderableWidget(button);
@@ -80,8 +80,8 @@ public class SupergateScreen extends CustomScreen {
             boolean[] input = Constants.INPUT_STATES[i]; // input states for a, b and c
             y = topPos + 31 + i * 13;
             for (int j = 0; j < input.length; j++) {
-                int width = this.font.width(input[j] ? ToggleButton.ON : ToggleButton.OFF);
-                graphics.drawString(this.font, input[j] ? ToggleButton.ON : ToggleButton.OFF, x + j * 43 + (int) (21F - width / 2F), y, 0, false);
+                int width = this.font.width(input[j] ? OnOffButton.ON : OnOffButton.OFF);
+                graphics.drawString(this.font, input[j] ? OnOffButton.ON : OnOffButton.OFF, x + j * 43 + (int) (21F - width / 2F), y, 0, false);
             }
         }
     }
