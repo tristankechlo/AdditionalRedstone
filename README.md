@@ -1,4 +1,7 @@
-# AdditionalRedstone [![Curseforge](http://cf.way2muchnoise.eu/full_455373_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/additional-redstone) [![Discord](https://img.shields.io/discord/639540436524072970?color=0a48c4&label=%20&logo=discord&logoColor=FFF)](https://discord.gg/bhUaWhq)
+# AdditionalRedstone
+[![Curseforge](https://img.shields.io/curseforge/dt/455373?style=for-the-badge&logo=curseforge&color=e05d44)](https://www.curseforge.com/minecraft/mc-mods/additional-redstone)&nbsp;
+[![Modrinth](https://img.shields.io/modrinth/dt/hhraLneG?style=for-the-badge&logo=modrinth&color=e05d44)](https://modrinth.com/mod/additional-redstone)&nbsp;
+[![Discord](https://img.shields.io/discord/639540436524072970?style=for-the-badge&logo=discord&logoColor=fff&label=%20&color=0a48c4)](https://discord.gg/bhUaWhq)
 
 ### adds more content to the redstone mechanics
 
