@@ -6,12 +6,14 @@ import com.tristankechlo.additionalredstone.init.ModItems;
 import com.tristankechlo.additionalredstone.recipe.CircuitMakerRecipe;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
@@ -42,8 +44,13 @@ public class CircuitMakerRecipeCategory implements IRecipeCategory<CircuitMakerR
     }
 
     @Override
-    public IDrawable getBackground() {
-        return background;
+    public int getHeight() {
+        return background.getHeight();
+    }
+
+    @Override
+    public int getWidth() {
+        return background.getWidth();
     }
 
     @Override
@@ -62,6 +69,12 @@ public class CircuitMakerRecipeCategory implements IRecipeCategory<CircuitMakerR
     @Override
     public boolean isHandled(CircuitMakerRecipe recipe) {
         return !recipe.isSpecial();
+    }
+
+    @Override
+    public void draw(CircuitMakerRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        IRecipeCategory.super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
+        background.draw(guiGraphics);
     }
 
     private static ItemStack getResultItem(CircuitMakerRecipe recipe) {
