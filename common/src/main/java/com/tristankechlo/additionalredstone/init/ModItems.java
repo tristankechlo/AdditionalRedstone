@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.Block;
 
 import java.util.function.Supplier;
 
-public class ModItems {
+public final class ModItems {
 
     public static final RegistrationProvider<Item> ITEMS = RegistrationProvider.get(BuiltInRegistries.ITEM, AdditionalRedstone.MOD_ID);
 
@@ -38,6 +38,5 @@ public class ModItems {
     }
 
     public static void load() {}
-
 
 }

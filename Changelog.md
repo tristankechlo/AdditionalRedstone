@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 1.20.1 - 1.2.1
+
+- update to dependencies
+    - newest JEI compatibility
+- several small code improvements
+
 ### Version 1.20.1 - 1.2.0
 
 - remove recipes for timer and oscillator

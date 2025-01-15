@@ -67,8 +67,7 @@ public class TimerBlock extends BaseEntityBlock {
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         BlockEntity tile = worldIn.getBlockEntity(pos);
-        if (tile instanceof TimerBlockEntity && worldIn.isClientSide) {
-            TimerBlockEntity timer = (TimerBlockEntity) tile;
+        if ((tile instanceof TimerBlockEntity timer) && worldIn.isClientSide) {
             int powerUp = timer.getPowerUpTime();
             int powerDown = timer.getPowerDownTime();
             int interval = timer.getInterval();

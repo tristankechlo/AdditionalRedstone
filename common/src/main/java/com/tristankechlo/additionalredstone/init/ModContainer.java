@@ -8,7 +8,7 @@ import com.tristankechlo.additionalredstone.platform.RegistryObject;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.inventory.MenuType;
 
-public class ModContainer {
+public final class ModContainer {
 
     public static final RegistrationProvider<MenuType<?>> CONTAINER_TYPES = RegistrationProvider.get(BuiltInRegistries.MENU, AdditionalRedstone.MOD_ID);
 

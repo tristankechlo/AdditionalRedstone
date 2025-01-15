@@ -41,8 +41,7 @@ public class SetTimerValues {
         }
         BlockEntity entity = world.getBlockEntity(msg.pos);
 
-        if (entity != null && (entity instanceof TimerBlockEntity)) {
-            TimerBlockEntity timer = (TimerBlockEntity) entity;
+        if (entity instanceof TimerBlockEntity timer) {
             timer.setConfiguration(msg.powerUpTime, msg.powerDownTime, msg.interval);
             world.sendBlockUpdated(msg.pos, world.getBlockState(msg.pos), world.getBlockState(msg.pos), 3);
             timer.setChanged();

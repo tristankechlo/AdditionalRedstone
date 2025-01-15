@@ -67,8 +67,7 @@ public class OscillatorBlock extends BaseEntityBlock {
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         BlockEntity tile = worldIn.getBlockEntity(pos);
-        if (tile instanceof OscillatorBlockEntity && worldIn.isClientSide) {
-            OscillatorBlockEntity oscillator = (OscillatorBlockEntity) tile;
+        if ((tile instanceof OscillatorBlockEntity oscillator) && worldIn.isClientSide) {
             int ticksOn = oscillator.getTicksOn();
             int ticksOff = oscillator.getTicksOff();
             IPlatformHelper.INSTANCE.openOscillatorScreen(ticksOn, ticksOff, pos);

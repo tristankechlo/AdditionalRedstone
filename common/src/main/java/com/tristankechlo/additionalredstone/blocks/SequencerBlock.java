@@ -54,8 +54,7 @@ public class SequencerBlock extends BaseEntityBlock {
             }
         }
         BlockEntity tile = worldIn.getBlockEntity(pos);
-        if (tile instanceof SequencerBlockEntity && worldIn.isClientSide) {
-            SequencerBlockEntity sequencer = (SequencerBlockEntity) tile;
+        if ((tile instanceof SequencerBlockEntity sequencer) && worldIn.isClientSide) {
             int interval = sequencer.getInterval();
             IPlatformHelper.INSTANCE.openSequencerScreen(interval, pos);
         }

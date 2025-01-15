@@ -8,7 +8,7 @@ import com.tristankechlo.additionalredstone.util.ThreeInputLogic;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
 
-public class ModBlocks {
+public final class ModBlocks {
 
     public static final RegistrationProvider<Block> BLOCKS = RegistrationProvider.get(BuiltInRegistries.BLOCK, AdditionalRedstone.MOD_ID);
 

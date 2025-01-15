@@ -37,8 +37,7 @@ public class SetOscillatorValues {
         }
         BlockEntity entity = world.getBlockEntity(msg.pos);
 
-        if (entity != null && (entity instanceof OscillatorBlockEntity)) {
-            OscillatorBlockEntity oscillator = (OscillatorBlockEntity) entity;
+        if (entity instanceof OscillatorBlockEntity oscillator) {
             oscillator.setConfiguration(Math.abs(msg.ticksOn), Math.abs(msg.ticksOff));
             world.sendBlockUpdated(msg.pos, world.getBlockState(msg.pos), world.getBlockState(msg.pos), 3);
             oscillator.setChanged();

@@ -8,7 +8,7 @@ import com.tristankechlo.additionalredstone.platform.RegistryObject;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
-public class ModBlockEntities {
+public final class ModBlockEntities {
 
     public static final RegistrationProvider<BlockEntityType<?>> BLOCK_ENTITIES = RegistrationProvider.get(BuiltInRegistries.BLOCK_ENTITY_TYPE, AdditionalRedstone.MOD_ID);
 

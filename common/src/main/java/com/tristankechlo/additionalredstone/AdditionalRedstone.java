@@ -11,12 +11,6 @@ public class AdditionalRedstone {
     public static final String MOD_NAME = "AdditionalRedstone";
     public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
     public static final String MOD_ID = "additionalredstone";
-    public static final String GITHUB_URL = "https://github.com/tristankechlo/AdditionalRedstone";
-    public static final String GITHUB_ISSUE_URL = GITHUB_URL + "/issues";
-    public static final String GITHUB_WIKI_URL = GITHUB_URL + "/wiki";
-    public static final String DISCORD_URL = "https://discord.gg/bhUaWhq";
-    public static final String CURSEFORGE_URL = "https://curseforge.com/minecraft/mc-mods/additional-redstone";
-    public static final String MODRINTH_URL = "https://modrinth.com/mod/additional-redstone";
     public static final boolean[][] INPUT_STATES = new boolean[][]{{false, false, false}, {false, false, true}, {false, true, false}, {false, true, true}, {true, false, false}, {true, false, true}, {true, true, false}, {true, true, true}};
     public static boolean JEI_LOADED = false;
 

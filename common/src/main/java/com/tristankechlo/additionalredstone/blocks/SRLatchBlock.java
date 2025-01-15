@@ -39,8 +39,8 @@ public class SRLatchBlock extends BaseDiodeBlock {
     protected boolean shouldTurnOn(Level worldIn, BlockPos pos, BlockState state) {
         Direction set = state.getValue(FACING).getClockWise();
         Direction reset = state.getValue(FACING).getCounterClockWise();
-        boolean setPowered = this.getRedstonePowerForSide(worldIn, pos, set) > 0;
-        boolean resetPowered = this.getRedstonePowerForSide(worldIn, pos, reset) > 0;
+        boolean setPowered = getRedstonePowerForSide(worldIn, pos, set) > 0;
+        boolean resetPowered = getRedstonePowerForSide(worldIn, pos, reset) > 0;
         if (setPowered) {
             return true;
         } else if (resetPowered) {

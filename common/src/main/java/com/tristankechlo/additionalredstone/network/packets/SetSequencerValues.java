@@ -33,8 +33,7 @@ public class SetSequencerValues {
         }
         BlockEntity entity = world.getBlockEntity(msg.pos);
 
-        if (entity != null && (entity instanceof SequencerBlockEntity)) {
-            SequencerBlockEntity sequencer = (SequencerBlockEntity) entity;
+        if (entity instanceof SequencerBlockEntity sequencer) {
             sequencer.setConfiguration(Math.abs(msg.interval));
             world.sendBlockUpdated(msg.pos, world.getBlockState(msg.pos), world.getBlockState(msg.pos), 3);
             sequencer.setChanged();
