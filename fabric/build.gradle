@@ -21,7 +21,7 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     modImplementation "com.terraformersmc:modmenu:${modmenu_version}"
-    implementation project(":Common")
+    implementation project(":common")
 
     // compile against the JEI API but do not include it at runtime
     modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
@@ -31,8 +31,8 @@ dependencies {
 }
 
 loom {
-    if (project(":Common").file("src/main/resources/${mod_id}.accesswidener").exists()) {
-        accessWidenerPath.set(project(":Common").file("src/main/resources/${mod_id}.accesswidener"))
+    if (project(":common").file("src/main/resources/${mod_id}.accesswidener").exists()) {
+        accessWidenerPath.set(project(":common").file("src/main/resources/${mod_id}.accesswidener"))
     }
 
     mixin {
@@ -56,14 +56,14 @@ loom {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    source(project(":Common").sourceSets.main.allSource)
+    source(project(":common").sourceSets.main.allSource)
 }
 tasks.withType(Javadoc).configureEach {
-    source(project(":Common").sourceSets.main.allJava)
+    source(project(":common").sourceSets.main.allJava)
 }
 
 processResources {
-    from project(":Common").sourceSets.main.resources
+    from project(":common").sourceSets.main.resources
     inputs.property "version", project.version
 
     filesMatching("fabric.mod.json") {
@@ -72,5 +72,5 @@ processResources {
 }
 
 tasks.withType(JavaCompile) {
-    source(project(":Common").sourceSets.main.allSource)
+    source(project(":common").sourceSets.main.allSource)
 }

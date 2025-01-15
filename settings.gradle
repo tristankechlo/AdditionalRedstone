@@ -36,4 +36,4 @@ plugins {
 }
 
 rootProject.name = 'AdditionalRedstone'
-include("Common", "Fabric", "Forge")
+include("common", "fabric", "forge")
