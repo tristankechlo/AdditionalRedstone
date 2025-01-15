@@ -1,6 +1,6 @@
 package com.tristankechlo.additionalredstone.client.screen;
 
-import com.tristankechlo.additionalredstone.Constants;
+import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.blocks.ThreeInputLogicGate;
 import com.tristankechlo.additionalredstone.client.util.CustomScreen;
 import com.tristankechlo.additionalredstone.client.util.OnOffButton;
@@ -14,13 +14,13 @@ import net.minecraft.resources.ResourceLocation;
 
 public class TruthtableScreen extends CustomScreen {
 
-    public static final ResourceLocation TEXTURE = new ResourceLocation(Constants.MOD_ID, "textures/gui/truthtable.png");
+    public static final ResourceLocation TEXTURE = new ResourceLocation(AdditionalRedstone.MOD_ID, "textures/gui/truthtable.png");
     private static final String START = "screen.additionalredstone.truthtable.";
     public static final Component INPUT_A = Component.translatable(START + "input_a").withStyle(ChatFormatting.BLACK);
     public static final Component INPUT_B = Component.translatable(START + "input_b").withStyle(ChatFormatting.BLACK);
     public static final Component INPUT_C = Component.translatable(START + "input_c").withStyle(ChatFormatting.BLACK);
     public static final Component OUTPUT = Component.translatable(START + "output").withStyle(ChatFormatting.BLACK);
-    private final boolean[] outputStates = new boolean[Constants.INPUT_STATES.length];
+    private final boolean[] outputStates = new boolean[AdditionalRedstone.INPUT_STATES.length];
     private int index;
 
     public TruthtableScreen(ThreeInputLogicGate block) {
@@ -29,8 +29,8 @@ public class TruthtableScreen extends CustomScreen {
     }
 
     protected void setSelectedBlock(ThreeInputLogicGate block) {
-        for (int i = 0; i < Constants.INPUT_STATES.length; i++) {
-            this.outputStates[i] = block.logic.apply(Constants.INPUT_STATES[i][0], Constants.INPUT_STATES[i][1], Constants.INPUT_STATES[i][2]);
+        for (int i = 0; i < AdditionalRedstone.INPUT_STATES.length; i++) {
+            this.outputStates[i] = block.logic.apply(AdditionalRedstone.INPUT_STATES[i][0], AdditionalRedstone.INPUT_STATES[i][1], AdditionalRedstone.INPUT_STATES[i][2]);
         }
         this.index = TruthTableHelper.getIndexOf(block);
         this.setTitle(makeTitle(block.getName()));
@@ -63,8 +63,8 @@ public class TruthtableScreen extends CustomScreen {
         graphics.drawString(this.font, OUTPUT, x + 133, y, 0, false);
 
         // render the input and output states
-        for (int i = 0; i < Constants.INPUT_STATES.length; i++) {
-            boolean[] input = Constants.INPUT_STATES[i]; // input states for a, b and c
+        for (int i = 0; i < AdditionalRedstone.INPUT_STATES.length; i++) {
+            boolean[] input = AdditionalRedstone.INPUT_STATES[i]; // input states for a, b and c
             boolean output = this.outputStates[i];
             y = topPos + 31 + i * 13;
             // render input states

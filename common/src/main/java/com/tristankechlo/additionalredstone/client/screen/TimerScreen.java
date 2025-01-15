@@ -1,6 +1,6 @@
 package com.tristankechlo.additionalredstone.client.screen;
 
-import com.tristankechlo.additionalredstone.Constants;
+import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.blockentity.TimerBlockEntity;
 import com.tristankechlo.additionalredstone.client.util.CustomScreen;
 import com.tristankechlo.additionalredstone.init.ModBlocks;
@@ -20,7 +20,7 @@ import java.util.function.Consumer;
 public class TimerScreen extends CustomScreen {
 
     private static final Component TITLE = ModBlocks.TIMER_BLOCK.get().getName().withStyle(ChatFormatting.BOLD);
-    private static final ResourceLocation TEXTURE = new ResourceLocation(Constants.MOD_ID, "textures/gui/timer_screen.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(AdditionalRedstone.MOD_ID, "textures/gui/timer_screen.png");
     private static final Component POWER_ON = Component.translatable("screen.additionalredstone.timer.power.on");
     private static final Component POWER_OFF = Component.translatable("screen.additionalredstone.timer.power.off");
     private static final Component INTERVAL = Component.translatable("screen.additionalredstone.timer.interval");

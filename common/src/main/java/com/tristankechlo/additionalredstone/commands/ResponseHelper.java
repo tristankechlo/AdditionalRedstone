@@ -1,6 +1,6 @@
 package com.tristankechlo.additionalredstone.commands;
 
-import com.tristankechlo.additionalredstone.Constants;
+import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.ClickEvent;
@@ -10,7 +10,7 @@ import net.minecraft.network.chat.MutableComponent;
 public final class ResponseHelper {
 
     public static MutableComponent start() {
-        return Component.literal("[" + Constants.MOD_NAME + "] ").withStyle(ChatFormatting.GOLD);
+        return Component.literal("[" + AdditionalRedstone.MOD_NAME + "] ").withStyle(ChatFormatting.GOLD);
     }
 
     public static void sendMessage(CommandSourceStack source, Component message, boolean broadcastToOps) {

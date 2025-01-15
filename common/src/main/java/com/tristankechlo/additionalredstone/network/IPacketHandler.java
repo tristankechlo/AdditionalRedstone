@@ -1,11 +1,11 @@
 package com.tristankechlo.additionalredstone.network;
 
-import com.tristankechlo.additionalredstone.Constants;
+import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import net.minecraft.core.BlockPos;
 
 public interface IPacketHandler {
 
-    IPacketHandler INSTANCE = Constants.load(IPacketHandler.class);
+    IPacketHandler INSTANCE = AdditionalRedstone.load(IPacketHandler.class);
 
     void sendPacketSetOscillatorValues(int ticksOn, int ticksOff, BlockPos pos);
 

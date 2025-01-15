@@ -1,6 +1,6 @@
 package com.tristankechlo.additionalredstone.init;
 
-import com.tristankechlo.additionalredstone.Constants;
+import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.blocks.*;
 import com.tristankechlo.additionalredstone.platform.RegistrationProvider;
 import com.tristankechlo.additionalredstone.platform.RegistryObject;
@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.Block;
 
 public class ModBlocks {
 
-    public static final RegistrationProvider<Block> BLOCKS = RegistrationProvider.get(BuiltInRegistries.BLOCK, Constants.MOD_ID);
+    public static final RegistrationProvider<Block> BLOCKS = RegistrationProvider.get(BuiltInRegistries.BLOCK, AdditionalRedstone.MOD_ID);
 
     public static final RegistryObject<Block> CIRCUIT_BASE_BLOCK = BLOCKS.register("circuit_base", CircuitBaseBlock::new);
     public static final RegistryObject<Block> CIRCUIT_MAKER_BLOCK = BLOCKS.register("circuit_maker", CircuitMakerBlock::new);

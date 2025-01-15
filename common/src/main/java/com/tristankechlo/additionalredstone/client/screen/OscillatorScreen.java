@@ -1,6 +1,6 @@
 package com.tristankechlo.additionalredstone.client.screen;
 
-import com.tristankechlo.additionalredstone.Constants;
+import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.client.util.CustomScreen;
 import com.tristankechlo.additionalredstone.init.ModBlocks;
 import com.tristankechlo.additionalredstone.network.IPacketHandler;
@@ -18,7 +18,7 @@ public class OscillatorScreen extends CustomScreen {
     private static final MutableComponent TITLE = ModBlocks.OSCILLATOR_BLOCK.get().getName().withStyle(ChatFormatting.BOLD);
     private static final MutableComponent TICKS_ON = Component.translatable("screen.additionalredstone.oscillator.ticks.on");
     private static final MutableComponent TICKS_OFF = Component.translatable("screen.additionalredstone.oscillator.ticks.off");
-    private static final ResourceLocation TEXTURE = new ResourceLocation(Constants.MOD_ID, "textures/gui/oscillator_screen.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(AdditionalRedstone.MOD_ID, "textures/gui/oscillator_screen.png");
     private final BlockPos pos;
     private EditBox ticksOnWidget;
     private EditBox ticksOffWidget;

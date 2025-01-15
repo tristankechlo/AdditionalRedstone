@@ -13,11 +13,11 @@
         "issues": "https://github.com/tristankechlo/AdditionalRedstone/issues"
     },
     "license": "CC BY-NC-ND 4.0",
-    "icon": "logo.png",
+    "icon": "pack.png",
     "environment": "*",
     "entrypoints": {
         "main": [
-            "com.tristankechlo.additionalredstone.AdditionalRedstone"
+            "com.tristankechlo.additionalredstone.FabricAdditionalRedstone"
         ],
         "client": [
             "com.tristankechlo.additionalredstone.FabricClientSetup"
@@ -30,10 +30,10 @@
         "additionalredstone.mixins.json"
     ],
     "depends": {
-        "fabricloader": ">=0.14",
+        "fabricloader": ">=${fabric_loader_min}",
         "fabric": "*",
-        "minecraft": ">=1.20",
-        "java": ">=17"
+        "minecraft": ">=${fabric_range_min_inclusive} <${fabric_range_max_exclusive}",
+        "java": ">=${java_version}"
     },
     "custom": {
         "modmenu": {

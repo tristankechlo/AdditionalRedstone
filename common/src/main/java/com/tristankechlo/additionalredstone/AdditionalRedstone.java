@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ServiceLoader;
 
-public class Constants {
+public class AdditionalRedstone {
 
     public static final String MOD_NAME = "AdditionalRedstone";
     public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);

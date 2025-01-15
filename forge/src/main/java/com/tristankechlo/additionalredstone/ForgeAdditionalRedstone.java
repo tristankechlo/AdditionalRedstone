@@ -1,16 +1,17 @@
 package com.tristankechlo.additionalredstone;
 
 import com.tristankechlo.additionalredstone.commands.ModCommand;
+import com.tristankechlo.additionalredstone.platform.ForgePacketHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod(Constants.MOD_ID)
-public class AdditionalRedstone {
+@Mod(AdditionalRedstone.MOD_ID)
+public class ForgeAdditionalRedstone {
 
-    public AdditionalRedstone() {
+    public ForgeAdditionalRedstone() {
         //register commands
-        Constants.registerContent();
+        AdditionalRedstone.registerContent();
 
         //register packets
         ForgePacketHandler.registerPackets();

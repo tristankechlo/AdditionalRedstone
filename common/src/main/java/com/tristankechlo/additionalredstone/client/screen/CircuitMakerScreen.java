@@ -1,6 +1,6 @@
 package com.tristankechlo.additionalredstone.client.screen;
 
-import com.tristankechlo.additionalredstone.Constants;
+import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.container.CircuitMakerContainer;
 import com.tristankechlo.additionalredstone.recipe.CircuitMakerRecipe;
 import net.minecraft.client.Minecraft;
@@ -17,7 +17,7 @@ import java.util.List;
 
 public class CircuitMakerScreen extends AbstractContainerScreen<CircuitMakerContainer> {
 
-    private static final ResourceLocation BG_LOCATION = new ResourceLocation(Constants.MOD_ID, "textures/gui/container/circuit_maker.png");
+    private static final ResourceLocation BG_LOCATION = new ResourceLocation(AdditionalRedstone.MOD_ID, "textures/gui/container/circuit_maker.png");
     private static final int SCROLLER_WIDTH = 12;
     private static final int SCROLLER_HEIGHT = 15;
     private static final int RECIPES_IMAGE_SIZE_WIDTH = 18;
@@ -53,7 +53,7 @@ public class CircuitMakerScreen extends AbstractContainerScreen<CircuitMakerCont
 
         //render background image
         graphics.blit(BG_LOCATION, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
-        if (Constants.JEI_LOADED) {
+        if (AdditionalRedstone.JEI_LOADED) {
             graphics.blit(BG_LOCATION, this.leftPos + this.imageWidth - 3, this.topPos, 192, 0, 18, 22);
         }
 

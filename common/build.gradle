@@ -1,11 +1,8 @@
 plugins {
-    id 'idea'
     id 'java'
     id 'org.spongepowered.gradle.vanilla'
 }
-base {
-    archivesName = "${mod_name}-common-${minecraft_version}"
-}
+
 minecraft {
     version(minecraft_version)
 }
@@ -13,11 +10,4 @@ minecraft {
 dependencies {
     compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
     compileOnly group: 'mezz.jei', name: "jei-${minecraft_version}-common-api", version: "${jei_version}"
-}
-
-processResources {
-    def buildProps = project.properties.clone()
-    filesMatching("pack.mcmeta") {
-        expand buildProps
-    }
 }

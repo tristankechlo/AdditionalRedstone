@@ -1,6 +1,6 @@
 package com.tristankechlo.additionalredstone.init;
 
-import com.tristankechlo.additionalredstone.Constants;
+import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.platform.IPlatformHelper;
 import com.tristankechlo.additionalredstone.platform.RegistrationProvider;
 import com.tristankechlo.additionalredstone.platform.RegistryObject;
@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class ModItemGroups {
 
-    public static final RegistrationProvider<CreativeModeTab> TABS = RegistrationProvider.get(BuiltInRegistries.CREATIVE_MODE_TAB, Constants.MOD_ID);
+    public static final RegistrationProvider<CreativeModeTab> TABS = RegistrationProvider.get(BuiltInRegistries.CREATIVE_MODE_TAB, AdditionalRedstone.MOD_ID);
 
     public static final RegistryObject<CreativeModeTab> MAIN = TABS.register("general", () -> IPlatformHelper.INSTANCE.buildCreativeModeTab()
             .icon(() -> new ItemStack(ModItems.CIRCUIT_MAKER_BLOCK_ITEM.get()))

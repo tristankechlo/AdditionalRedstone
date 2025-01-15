@@ -1,6 +1,6 @@
 package com.tristankechlo.additionalredstone.client.screen;
 
-import com.tristankechlo.additionalredstone.Constants;
+import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.blockentity.SuperGateBlockEntity;
 import com.tristankechlo.additionalredstone.client.util.CustomScreen;
 import com.tristankechlo.additionalredstone.client.util.OnOffButton;
@@ -29,7 +29,7 @@ public class SupergateScreen extends CustomScreen {
     protected void init() {
         super.init();
 
-        for (int i = 0; i < Constants.INPUT_STATES.length; i++) {
+        for (int i = 0; i < AdditionalRedstone.INPUT_STATES.length; i++) {
             int y = this.topPos + 29 + i * 13;
             OnOffButton button = new OnOffButton(this.leftPos + 139, y, 43, 12, i);
             button.setToggled(this.configuration[i]);
@@ -55,7 +55,7 @@ public class SupergateScreen extends CustomScreen {
     private void save(Button b) {
         byte data = SuperGateBlockEntity.booleansToByte(this.configuration);
         IPacketHandler.INSTANCE.sendPacketSetSupergateValues(data, this.pos);
-        Constants.LOGGER.info(Arrays.toString(this.configuration));
+        AdditionalRedstone.LOGGER.info(Arrays.toString(this.configuration));
         this.onClose();
     }
 
@@ -76,8 +76,8 @@ public class SupergateScreen extends CustomScreen {
         graphics.drawString(this.font, TruthtableScreen.OUTPUT, x + 133, y, 0, false);
 
         // render the input states
-        for (int i = 0; i < Constants.INPUT_STATES.length; i++) {
-            boolean[] input = Constants.INPUT_STATES[i]; // input states for a, b and c
+        for (int i = 0; i < AdditionalRedstone.INPUT_STATES.length; i++) {
+            boolean[] input = AdditionalRedstone.INPUT_STATES[i]; // input states for a, b and c
             y = topPos + 31 + i * 13;
             for (int j = 0; j < input.length; j++) {
                 int width = this.font.width(input[j] ? OnOffButton.ON : OnOffButton.OFF);

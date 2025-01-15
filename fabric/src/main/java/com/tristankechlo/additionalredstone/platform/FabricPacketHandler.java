@@ -1,5 +1,7 @@
-package com.tristankechlo.additionalredstone;
+package com.tristankechlo.additionalredstone.platform;
 
+import com.google.auto.service.AutoService;
+import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.network.IPacketHandler;
 import com.tristankechlo.additionalredstone.network.packets.SetOscillatorValues;
 import com.tristankechlo.additionalredstone.network.packets.SetSequencerValues;
@@ -16,12 +18,13 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 
+@AutoService(IPacketHandler.class)
 public class FabricPacketHandler implements IPacketHandler {
 
-    private static final ResourceLocation CHANNEL_OSCILLATOR = new ResourceLocation(Constants.MOD_ID, "oscillator");
-    private static final ResourceLocation CHANNEL_SEQUENCER = new ResourceLocation(Constants.MOD_ID, "sequencer");
-    private static final ResourceLocation CHANNEL_TIMER = new ResourceLocation(Constants.MOD_ID, "timer");
-    private static final ResourceLocation CHANNEL_SUPERGATE = new ResourceLocation(Constants.MOD_ID, "supergate");
+    private static final ResourceLocation CHANNEL_OSCILLATOR = new ResourceLocation(AdditionalRedstone.MOD_ID, "oscillator");
+    private static final ResourceLocation CHANNEL_SEQUENCER = new ResourceLocation(AdditionalRedstone.MOD_ID, "sequencer");
+    private static final ResourceLocation CHANNEL_TIMER = new ResourceLocation(AdditionalRedstone.MOD_ID, "timer");
+    private static final ResourceLocation CHANNEL_SUPERGATE = new ResourceLocation(AdditionalRedstone.MOD_ID, "supergate");
 
     public static void registerPackets() {
         ServerPlayNetworking.registerGlobalReceiver(CHANNEL_OSCILLATOR, FabricPacketHandler::handleSetOscillatorValues);

@@ -1,6 +1,6 @@
 package com.tristankechlo.additionalredstone.platform;
 
-import com.tristankechlo.additionalredstone.Constants;
+import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.blockentity.*;
 import com.tristankechlo.additionalredstone.blocks.ThreeInputLogicGate;
 import com.tristankechlo.additionalredstone.container.CircuitMakerContainer;
@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 
 public interface IPlatformHelper {
 
-    public static final IPlatformHelper INSTANCE = Constants.load(IPlatformHelper.class);
+    IPlatformHelper INSTANCE = AdditionalRedstone.load(IPlatformHelper.class);
 
     Path getConfigDirectory();
 

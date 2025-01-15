@@ -1,6 +1,6 @@
 package com.tristankechlo.additionalredstone.jei;
 
-import com.tristankechlo.additionalredstone.Constants;
+import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.client.screen.CircuitMakerScreen;
 import com.tristankechlo.additionalredstone.container.CircuitMakerContainer;
 import com.tristankechlo.additionalredstone.init.ModBlocks;
@@ -27,8 +27,8 @@ import java.util.Objects;
 @JeiPlugin
 public class JustEnoughItemsPlugin implements IModPlugin {
 
-    private static final ResourceLocation UID = new ResourceLocation(Constants.MOD_ID, "jei_plugin");
-    public static final RecipeType<CircuitMakerRecipe> RECIPE_TYPE = RecipeType.create(Constants.MOD_ID, "circuit_maker", CircuitMakerRecipe.class);
+    private static final ResourceLocation UID = new ResourceLocation(AdditionalRedstone.MOD_ID, "jei_plugin");
+    public static final RecipeType<CircuitMakerRecipe> RECIPE_TYPE = RecipeType.create(AdditionalRedstone.MOD_ID, "circuit_maker", CircuitMakerRecipe.class);
     private IRecipeCategory<CircuitMakerRecipe> recipeCategory;
 
     @Override
@@ -39,15 +39,15 @@ public class JustEnoughItemsPlugin implements IModPlugin {
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
         //jei features are available
-        Constants.LOGGER.info("JEI is available");
+        AdditionalRedstone.LOGGER.info("JEI is available");
         //if jei is available, the circuit maker GUI will have a button to open the JEI GUI instead of the custom tooltip
-        Constants.JEI_LOADED = true;
+        AdditionalRedstone.JEI_LOADED = true;
     }
 
     @Override
     public void onRuntimeUnavailable() {
-        Constants.LOGGER.info("JEI is no longer available");
-        Constants.JEI_LOADED = false;
+        AdditionalRedstone.LOGGER.info("JEI is no longer available");
+        AdditionalRedstone.JEI_LOADED = false;
     }
 
     @Override

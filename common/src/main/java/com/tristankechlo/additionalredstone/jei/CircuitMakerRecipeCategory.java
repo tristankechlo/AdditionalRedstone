@@ -1,6 +1,6 @@
 package com.tristankechlo.additionalredstone.jei;
 
-import com.tristankechlo.additionalredstone.Constants;
+import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.blocks.CircuitMakerBlock;
 import com.tristankechlo.additionalredstone.init.ModItems;
 import com.tristankechlo.additionalredstone.recipe.CircuitMakerRecipe;
@@ -20,7 +20,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class CircuitMakerRecipeCategory implements IRecipeCategory<CircuitMakerRecipe> {
 
-    private static final ResourceLocation LOCATION = new ResourceLocation(Constants.MOD_ID, "textures/gui/container/circuit_maker.png");
+    private static final ResourceLocation LOCATION = new ResourceLocation(AdditionalRedstone.MOD_ID, "textures/gui/container/circuit_maker.png");
     private final IDrawable background;
     private final IDrawable icon;
     private final Component localizedName;

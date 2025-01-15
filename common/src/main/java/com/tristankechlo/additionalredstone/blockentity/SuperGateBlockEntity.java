@@ -1,6 +1,6 @@
 package com.tristankechlo.additionalredstone.blockentity;
 
-import com.tristankechlo.additionalredstone.Constants;
+import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.init.ModBlockEntities;
 import com.tristankechlo.additionalredstone.util.ThreeInputLogic;
 import net.minecraft.core.BlockPos;
@@ -15,13 +15,13 @@ public class SuperGateBlockEntity extends BlockEntity {
 
     private boolean[] configuration;
     private static final String TAG_NAME = "configuration";
-    private static final int NUMBER_OF_BITS = Constants.INPUT_STATES.length;
+    private static final int NUMBER_OF_BITS = AdditionalRedstone.INPUT_STATES.length;
 
     public SuperGateBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.SUPERGATE_BLOCK_ENTITY.get(), pos, state);
         this.configuration = new boolean[NUMBER_OF_BITS];
-        for (int i = 0; i < Constants.INPUT_STATES.length; i++) {
-            boolean[] input = Constants.INPUT_STATES[i];
+        for (int i = 0; i < AdditionalRedstone.INPUT_STATES.length; i++) {
+            boolean[] input = AdditionalRedstone.INPUT_STATES[i];
             this.configuration[i] = shouldBePowered(null, input[0], input[1], input[2]);
         }
     }
@@ -30,8 +30,8 @@ public class SuperGateBlockEntity extends BlockEntity {
         if (entity == null) {
             return ThreeInputLogic.and(left, middle, right); // default configuration when the block is placed for the first time
         }
-        for (int i = 0; i < Constants.INPUT_STATES.length; i++) {
-            boolean[] input = Constants.INPUT_STATES[i];
+        for (int i = 0; i < AdditionalRedstone.INPUT_STATES.length; i++) {
+            boolean[] input = AdditionalRedstone.INPUT_STATES[i];
             if (input[0] == left && input[1] == middle && input[2] == right) {
                 return entity.configuration[i];
             }

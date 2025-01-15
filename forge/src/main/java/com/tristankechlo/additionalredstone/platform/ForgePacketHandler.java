@@ -1,5 +1,7 @@
-package com.tristankechlo.additionalredstone;
+package com.tristankechlo.additionalredstone.platform;
 
+import com.google.auto.service.AutoService;
+import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.network.IPacketHandler;
 import com.tristankechlo.additionalredstone.network.packets.SetOscillatorValues;
 import com.tristankechlo.additionalredstone.network.packets.SetSequencerValues;
@@ -14,11 +16,12 @@ import net.minecraftforge.network.simple.SimpleChannel;
 
 import java.util.function.Supplier;
 
+@AutoService(IPacketHandler.class)
 public class ForgePacketHandler implements IPacketHandler {
 
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(Constants.MOD_ID, "main"),
+            new ResourceLocation(AdditionalRedstone.MOD_ID, "main"),
             () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
 
 

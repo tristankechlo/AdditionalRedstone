@@ -10,19 +10,12 @@ base {
 }
 
 mixin {
-    add(sourceSets.main, "${mod_id}.refmap.json")
-    config("${mod_id}.mixins.json")
-    //config("${mod_id}.forge.mixins.json")
+    add sourceSets.main, "${mod_id}.refmap.json"
+    config "${mod_id}.mixins.json"
 }
 
 minecraft {
     mappings channel: 'official', version: minecraft_version
-
-    if (file('src/main/resources/META-INF/accesstransformer.cfg').exists()) {
-        accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-        project.logger.debug('Forge Access Transformers are enabled for this project.')
-    }
-
     runs {
         client {
             workingDirectory project.file('run')
@@ -37,7 +30,6 @@ minecraft {
                 }
             }
         }
-
         server {
             workingDirectory project.file('run')
             ideaModule "${rootProject.name}.${project.name}.main"
@@ -57,7 +49,9 @@ minecraft {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     compileOnly project(":common")
-    annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
+
+    implementation 'org.spongepowered:mixin:0.8.4:processor'
+    annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 
     // compile against the JEI API but do not include it at runtime
     //compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
@@ -65,22 +59,17 @@ dependencies {
     // at runtime, use the full JEI jar for Forge
     //runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
     implementation(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
+
+    compileOnly group: 'com.google.auto.service', name: 'auto-service', version: auto_service_version
+    annotationProcessor group: 'com.google.auto.service', name: 'auto-service', version: auto_service_version
 }
 
-tasks.withType(JavaCompile).configureEach {
+tasks.withType(JavaCompile) {
     source(project(":common").sourceSets.main.allSource)
-}
-tasks.withType(Javadoc).configureEach {
-    source(project(":common").sourceSets.main.allJava)
 }
 
 processResources {
     from project(":common").sourceSets.main.resources
-    inputs.property "version", project.version
-
-    filesMatching("META-INF/mods.toml") {
-        expand "version": project.version
-    }
 }
 
 jar.finalizedBy('reobfJar')
