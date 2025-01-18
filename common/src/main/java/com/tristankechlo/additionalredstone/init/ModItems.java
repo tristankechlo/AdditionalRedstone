@@ -19,7 +19,8 @@ public final class ModItems {
     public static final RegistryObject<Item> CIRCUIT_MAKER_BLOCK_ITEM = create("circuit_maker", ModBlocks.CIRCUIT_MAKER_BLOCK);
     public static final RegistryObject<Item> OSCILLATOR_BLOCK_ITEM = create("oscillator", ModBlocks.OSCILLATOR_BLOCK);
     public static final RegistryObject<Item> TIMER_BLOCK_ITEM = create("timer", ModBlocks.TIMER_BLOCK);
-    public static final RegistryObject<Item> DIMMABLE_REDSTONE_LAMP = create("dimmable_redstone_lamp", ModBlocks.DIMMABLE_REDSTONE_LAMP);
+    public static final RegistryObject<Item> DIMMABLE_REDSTONE_LAMP_ITEM = create("dimmable_redstone_lamp", ModBlocks.DIMMABLE_REDSTONE_LAMP_BLOCK);
+    public static final RegistryObject<Item> LIGHT_DETECTOR_ITEM = create("light_detector", ModBlocks.LIGHT_DETECTOR_BLOCK);
 
     public static final RegistryObject<Item> NOT_GATE_BLOCK_ITEM = create("not_gate", ModBlocks.NOT_GATE_BLOCK);
     public static final RegistryObject<Item> AND_GATE_BLOCK_ITEM = create("and_gate", ModBlocks.AND_GATE_BLOCK);

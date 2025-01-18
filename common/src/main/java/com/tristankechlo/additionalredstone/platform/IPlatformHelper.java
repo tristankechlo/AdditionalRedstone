@@ -29,6 +29,8 @@ public interface IPlatformHelper {
 
     BlockEntityType.Builder<SuperGateBlockEntity> buildBlockEntityTypeSuperGate();
 
+    BlockEntityType.Builder<LightDetectorBlockEntity> buildBlockEntityTypeLightDetector();
+
     Supplier<MenuType<CircuitMakerContainer>> buildContainerCircuitMaker();
 
     Supplier<RecipeSerializer<CircuitMakerRecipe>> buildRecipeSerializer();

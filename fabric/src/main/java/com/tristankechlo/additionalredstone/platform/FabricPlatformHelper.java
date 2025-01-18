@@ -53,6 +53,11 @@ public final class FabricPlatformHelper implements IPlatformHelper {
     }
 
     @Override
+    public BlockEntityType.Builder<LightDetectorBlockEntity> buildBlockEntityTypeLightDetector() {
+        return BlockEntityType.Builder.of(LightDetectorBlockEntity::new, ModBlocks.LIGHT_DETECTOR_BLOCK.get());
+    }
+
+    @Override
     public Supplier<MenuType<CircuitMakerContainer>> buildContainerCircuitMaker() {
         return () -> new MenuType<>(CircuitMakerContainer::new);
     }

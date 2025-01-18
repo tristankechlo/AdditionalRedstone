@@ -55,6 +55,11 @@ public final class ForgePlatformHelper implements IPlatformHelper {
     }
 
     @Override
+    public BlockEntityType.Builder<LightDetectorBlockEntity> buildBlockEntityTypeLightDetector() {
+        return BlockEntityType.Builder.of(LightDetectorBlockEntity::new, ModBlocks.LIGHT_DETECTOR_BLOCK.get());
+    }
+
+    @Override
     public Supplier<MenuType<CircuitMakerContainer>> buildContainerCircuitMaker() {
         return () -> IForgeMenuType.create(CircuitMakerContainer::new);
     }

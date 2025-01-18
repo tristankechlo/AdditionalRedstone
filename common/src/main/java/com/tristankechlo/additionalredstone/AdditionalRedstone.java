@@ -62,7 +62,8 @@ public class AdditionalRedstone {
         output.add(ModItems.TIMER_BLOCK_ITEM.get().getDefaultInstance());
         output.add(ModItems.OSCILLATOR_BLOCK_ITEM.get().getDefaultInstance());
         output.add(ModItems.SUPERGATE_BLOCK_ITEM.get().getDefaultInstance());
-        output.add(ModItems.DIMMABLE_REDSTONE_LAMP.get().getDefaultInstance());
+        output.add(ModItems.DIMMABLE_REDSTONE_LAMP_ITEM.get().getDefaultInstance());
+        output.add(ModItems.LIGHT_DETECTOR_ITEM.get().getDefaultInstance());
     }
 
 }
