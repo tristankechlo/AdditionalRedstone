@@ -1,6 +1,7 @@
 package com.tristankechlo.additionalredstone;
 
 import com.tristankechlo.additionalredstone.init.*;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -8,6 +9,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
 import java.util.ServiceLoader;
 
 public class AdditionalRedstone {
@@ -40,6 +42,27 @@ public class AdditionalRedstone {
             return null;
         }
         return typeB == typeA ? (BlockEntityTicker<A>) ticker : null;
+    }
+
+    public static void fillItemGroup(List<ItemStack> output) {
+        output.add(ModItems.CIRCUIT_MAKER_BLOCK_ITEM.get().getDefaultInstance());
+        output.add(ModItems.CIRCUIT_BASE_BLOCK_ITEM.get().getDefaultInstance());
+        output.add(ModItems.NOT_GATE_BLOCK_ITEM.get().getDefaultInstance());
+        output.add(ModItems.AND_GATE_BLOCK_ITEM.get().getDefaultInstance());
+        output.add(ModItems.NAND_GATE_BLOCK_ITEM.get().getDefaultInstance());
+        output.add(ModItems.OR_GATE_BLOCK_ITEM.get().getDefaultInstance());
+        output.add(ModItems.NOR_GATE_BLOCK_ITEM.get().getDefaultInstance());
+        output.add(ModItems.XOR_GATE_BLOCK_ITEM.get().getDefaultInstance());
+        output.add(ModItems.XNOR_GATE_BLOCK_ITEM.get().getDefaultInstance());
+        output.add(ModItems.T_FLIP_FLOP_BLOCK_ITEM.get().getDefaultInstance());
+        output.add(ModItems.TOGGLE_LATCH_BLOCK_ITEM.get().getDefaultInstance());
+        output.add(ModItems.SR_LATCH_BLOCK_ITEM.get().getDefaultInstance());
+        output.add(ModItems.RS_LATCH_BLOCK_ITEM.get().getDefaultInstance());
+        output.add(ModItems.SEQUENCER_BLOCK_ITEM.get().getDefaultInstance());
+        output.add(ModItems.TIMER_BLOCK_ITEM.get().getDefaultInstance());
+        output.add(ModItems.OSCILLATOR_BLOCK_ITEM.get().getDefaultInstance());
+        output.add(ModItems.SUPERGATE_BLOCK_ITEM.get().getDefaultInstance());
+        output.add(ModItems.DIMMABLE_REDSTONE_LAMP.get().getDefaultInstance());
     }
 
 }

@@ -19,6 +19,8 @@ public final class ModItems {
     public static final RegistryObject<Item> CIRCUIT_MAKER_BLOCK_ITEM = create("circuit_maker", ModBlocks.CIRCUIT_MAKER_BLOCK);
     public static final RegistryObject<Item> OSCILLATOR_BLOCK_ITEM = create("oscillator", ModBlocks.OSCILLATOR_BLOCK);
     public static final RegistryObject<Item> TIMER_BLOCK_ITEM = create("timer", ModBlocks.TIMER_BLOCK);
+    public static final RegistryObject<Item> DIMMABLE_REDSTONE_LAMP = create("dimmable_redstone_lamp", ModBlocks.DIMMABLE_REDSTONE_LAMP);
+
     public static final RegistryObject<Item> NOT_GATE_BLOCK_ITEM = create("not_gate", ModBlocks.NOT_GATE_BLOCK);
     public static final RegistryObject<Item> AND_GATE_BLOCK_ITEM = create("and_gate", ModBlocks.AND_GATE_BLOCK);
     public static final RegistryObject<Item> NAND_GATE_BLOCK_ITEM = create("nand_gate", ModBlocks.NAND_GATE_BLOCK);
@@ -26,6 +28,7 @@ public final class ModItems {
     public static final RegistryObject<Item> NOR_GATE_BLOCK_ITEM = create("nor_gate", ModBlocks.NOR_GATE_BLOCK);
     public static final RegistryObject<Item> XOR_GATE_BLOCK_ITEM = create("xor_gate", ModBlocks.XOR_GATE_BLOCK);
     public static final RegistryObject<Item> XNOR_GATE_BLOCK_ITEM = create("xnor_gate", ModBlocks.XNOR_GATE_BLOCK);
+
     public static final RegistryObject<Item> T_FLIP_FLOP_BLOCK_ITEM = create("t_flip_flop", ModBlocks.T_FLIP_FLOP_BLOCK);
     public static final RegistryObject<Item> TOGGLE_LATCH_BLOCK_ITEM = create("toggle_latch", ModBlocks.TOGGLE_LATCH_BLOCK);
     public static final RegistryObject<Item> SR_LATCH_BLOCK_ITEM = create("sr_latch", ModBlocks.SR_LATCH_BLOCK);
