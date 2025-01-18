@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "": {
+            "model": "additionalredstone:block/circuit_base"
+        }
+    }
+}

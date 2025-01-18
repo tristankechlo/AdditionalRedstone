@@ -1,0 +1,36 @@
+{
+    "variants" : {
+        "facing=east,powered=false" : {
+            "model" : "additionalredstone:block/supergate",
+            "y" : 270
+        },
+        "facing=east,powered=true" : {
+            "model" : "additionalredstone:block/supergate_powered",
+            "y" : 270
+        },
+        "facing=north,powered=false" : {
+            "model" : "additionalredstone:block/supergate",
+            "y" : 180
+        },
+        "facing=north,powered=true" : {
+            "model" : "additionalredstone:block/supergate_powered",
+            "y" : 180
+        },
+        "facing=south,powered=false" : {
+            "model" : "additionalredstone:block/supergate",
+            "y" : 0
+        },
+        "facing=south,powered=true" : {
+            "model" : "additionalredstone:block/supergate_powered",
+            "y" : 0
+        },
+        "facing=west,powered=false" : {
+            "model" : "additionalredstone:block/supergate",
+            "y" : 90
+        },
+        "facing=west,powered=true" : {
+            "model" : "additionalredstone:block/supergate_powered",
+            "y" : 90
+        }
+    }
+}
