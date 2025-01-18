@@ -12,4 +12,5 @@ minecraft {
 
 dependencies {
     compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
+    compileOnly group: 'mezz.jei', name: "jei-${minecraft_version}-common-api", version: "${jei_version}"
 }

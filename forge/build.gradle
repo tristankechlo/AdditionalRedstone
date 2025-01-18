@@ -52,6 +52,8 @@ dependencies {
     implementation 'org.spongepowered:mixin:0.8.4:processor'
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 
+    implementation(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
+
     compileOnly group: 'com.google.auto.service', name: 'auto-service', version: auto_service_version
     annotationProcessor group: 'com.google.auto.service', name: 'auto-service', version: auto_service_version
 }
