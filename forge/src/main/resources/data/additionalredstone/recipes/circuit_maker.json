@@ -1,26 +1,26 @@
 {
-	"type" : "minecraft:crafting_shaped",
-	"pattern" : [
-		"###",
-		"GRG",
-		"SSS"
-	],
-	"key" : {
-		"#" : {
-			"tag" : "minecraft:planks"
-		},
-		"G" : {
-			"tag" : "forge:glass"
-		},
-		"R" : {
-			"item" : "minecraft:redstone_block"
-		},
-		"S" : {
-			"item" : "minecraft:stone"
-		}
-	},
-	"result" : {
-		"item" : "additionalredstone:circuit_maker",
-		"count" : 1
-	}
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "GRG",
+        "SSS"
+    ],
+    "key": {
+        "#": {
+            "tag": "minecraft:planks"
+        },
+        "G": {
+            "tag": "forge:glass"
+        },
+        "R": {
+            "item": "minecraft:redstone_block"
+        },
+        "S": {
+            "item": "minecraft:stone"
+        }
+    },
+    "result": {
+        "item": "additionalredstone:circuit_maker",
+        "count": 1
+    }
 }

@@ -1,6 +1,6 @@
 {
-	"replace" : false,
-	"values" : [
-		"additionalredstone:circuit_maker"
-	]
+    "replace": false,
+    "values": [
+        "additionalredstone:circuit_maker"
+    ]
 }
