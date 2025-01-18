@@ -1,6 +1,7 @@
 package com.tristankechlo.additionalredstone.init;
 
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
+import com.tristankechlo.additionalredstone.platform.IPlatformHelper;
 import com.tristankechlo.additionalredstone.platform.RegistrationProvider;
 import com.tristankechlo.additionalredstone.platform.RegistryObject;
 import com.tristankechlo.additionalredstone.recipe.CircuitMakerRecipe;
@@ -14,7 +15,7 @@ public final class ModRecipes {
     public static final RegistrationProvider<RecipeSerializer<?>> RECIPE_SERIALIZERS = RegistrationProvider.get(Registry.RECIPE_SERIALIZER, AdditionalRedstone.MOD_ID);
 
     public static final RegistryObject<RecipeType<CircuitMakerRecipe>> CIRCUIT_MAKER_RECIPE_TYPE = RECIPE_TYPES.register("circuit_maker", () -> new RecipeType<>() {});
-    public static final RegistryObject<RecipeSerializer<CircuitMakerRecipe>> CIRCUIT_MAKER_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("circuit_maker", CircuitMakerRecipe.Serializer::new);
+    public static final RegistryObject<RecipeSerializer<CircuitMakerRecipe>> CIRCUIT_MAKER_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("circuit_maker", IPlatformHelper.INSTANCE.buildRecipeSerializer());
 
     public static void load() {}
 

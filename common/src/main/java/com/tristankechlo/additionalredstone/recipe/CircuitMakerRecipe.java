@@ -81,7 +81,7 @@ public class CircuitMakerRecipe implements Recipe<Container> {
         return toastSymbol;
     }
 
-    public static class Serializer implements RecipeSerializer<CircuitMakerRecipe> {
+    public abstract static class Serializer implements RecipeSerializer<CircuitMakerRecipe> {
 
         @Override
         public CircuitMakerRecipe fromJson(ResourceLocation id, JsonObject json) {

@@ -5,10 +5,13 @@ import com.tristankechlo.additionalredstone.blockentity.*;
 import com.tristankechlo.additionalredstone.blocks.ThreeInputLogicGate;
 import com.tristankechlo.additionalredstone.client.screen.*;
 import com.tristankechlo.additionalredstone.container.CircuitMakerContainer;
+import com.tristankechlo.additionalredstone.init.ForgeRecipeSerializer;
 import com.tristankechlo.additionalredstone.init.ModBlocks;
+import com.tristankechlo.additionalredstone.recipe.CircuitMakerRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -54,6 +57,11 @@ public final class ForgePlatformHelper implements IPlatformHelper {
     @Override
     public Supplier<MenuType<CircuitMakerContainer>> buildContainerCircuitMaker() {
         return () -> IForgeMenuType.create(CircuitMakerContainer::new);
+    }
+
+    @Override
+    public Supplier<RecipeSerializer<CircuitMakerRecipe>> buildRecipeSerializer() {
+        return ForgeRecipeSerializer::new;
     }
 
     @Override

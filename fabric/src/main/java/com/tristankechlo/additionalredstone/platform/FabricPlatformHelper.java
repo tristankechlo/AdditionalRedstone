@@ -6,12 +6,14 @@ import com.tristankechlo.additionalredstone.blocks.ThreeInputLogicGate;
 import com.tristankechlo.additionalredstone.client.screen.*;
 import com.tristankechlo.additionalredstone.container.CircuitMakerContainer;
 import com.tristankechlo.additionalredstone.init.ModBlocks;
+import com.tristankechlo.additionalredstone.recipe.CircuitMakerRecipe;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import java.nio.file.Path;
@@ -53,6 +55,11 @@ public final class FabricPlatformHelper implements IPlatformHelper {
     @Override
     public Supplier<MenuType<CircuitMakerContainer>> buildContainerCircuitMaker() {
         return () -> new MenuType<>(CircuitMakerContainer::new);
+    }
+
+    @Override
+    public Supplier<RecipeSerializer<CircuitMakerRecipe>> buildRecipeSerializer() {
+        return () -> new CircuitMakerRecipe.Serializer() {};
     }
 
     @Override

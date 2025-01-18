@@ -31,6 +31,8 @@ public interface IPlatformHelper {
 
     Supplier<MenuType<CircuitMakerContainer>> buildContainerCircuitMaker();
 
+    Supplier<RecipeSerializer<CircuitMakerRecipe>> buildRecipeSerializer();
+
     void openOscillatorScreen(int ticksOn, int ticksOff, BlockPos pos);
 
     void openTimerScreen(int powerUp, int powerDown, int interval, BlockPos pos);
