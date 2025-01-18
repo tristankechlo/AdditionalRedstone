@@ -1,8 +1,12 @@
 package com.tristankechlo.additionalredstone.client.util;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 
@@ -52,4 +56,24 @@ public class OnOffButton extends AbstractButton {
     public void setConsumer(BiConsumer<Integer, Boolean> consumer) {
         this.consumer = consumer;
     }
+
+    @Override
+    public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+        Minecraft minecraft = Minecraft.getInstance();
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
+        int buttonType = this.getYImage(this.isHoveredOrFocused());
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.enableDepthTest();
+
+        this.blit(poseStack, x, y, 0, 46 + buttonType * 20, width / 2, height / 2); // top left
+        this.blit(poseStack, x + width / 2, y, 200 - width / 2, 46 + buttonType * 20, width / 2, height / 2); // top right
+        this.blit(poseStack, x, y + (height / 2), 0, 46 + (20 - height / 2) + buttonType * 20, width / 2, height / 2); // bottom left
+        this.blit(poseStack, x + width / 2, y + (height / 2), 200 - width / 2, 46 + (20 - height / 2) + buttonType * 20, width / 2, height / 2); // bottom right
+
+        drawCenteredString(poseStack, minecraft.font, this.getMessage(), x + width / 2, y + (height - 8) / 2, 0);
+    }
+
 }
