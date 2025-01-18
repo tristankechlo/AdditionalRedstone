@@ -1,6 +1,10 @@
 package com.tristankechlo.additionalredstone;
 
 import com.tristankechlo.additionalredstone.init.*;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,6 +32,14 @@ public class AdditionalRedstone {
                 .orElseThrow(() -> new NullPointerException("Failed to load service for " + clazz.getName()));
         LOGGER.debug("Loaded {} for service {}", loadedService, clazz);
         return loadedService;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTicker(Level level, BlockEntityType<A> typeA, BlockEntityType<E> typeB, BlockEntityTicker<? super E> ticker) {
+        if (level.isClientSide()) {
+            return null;
+        }
+        return typeB == typeA ? (BlockEntityTicker<A>) ticker : null;
     }
 
 }

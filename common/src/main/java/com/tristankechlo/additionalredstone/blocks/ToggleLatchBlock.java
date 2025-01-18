@@ -28,7 +28,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.ticks.TickPriority;
 
-import javax.annotation.Nullable;
 import java.util.Random;
 
 public class ToggleLatchBlock extends HorizontalDirectionalBlock {
@@ -102,7 +101,7 @@ public class ToggleLatchBlock extends HorizontalDirectionalBlock {
         }
     }
 
-    private void playSound(@Nullable Player playerIn, LevelAccessor worldIn, BlockPos pos, boolean hitByArrow) {
+    private void playSound(Player playerIn, LevelAccessor worldIn, BlockPos pos, boolean hitByArrow) {
         worldIn.playSound(playerIn, pos, SoundEvents.WOODEN_BUTTON_CLICK_OFF, SoundSource.BLOCKS, 0.3F, 0.6F);
     }
 
@@ -129,8 +128,7 @@ public class ToggleLatchBlock extends HorizontalDirectionalBlock {
     }
 
     private BlockState getDefaultDiodeState() {
-        return this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED_SIDE,
-                ToggleLatchSide.LEFT);
+        return this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED_SIDE, ToggleLatchSide.LEFT);
     }
 
     @Override

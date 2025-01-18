@@ -31,7 +31,6 @@ public class SetOscillatorValues {
         return new SetOscillatorValues(ticksOn, ticksOff, pos);
     }
 
-    @SuppressWarnings("deprecation")
     public static void handle(SetOscillatorValues msg, ServerLevel world) {
         if (world == null || !world.hasChunkAt(msg.pos)) {
             return;

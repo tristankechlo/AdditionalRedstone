@@ -32,7 +32,7 @@ public class CircuitMakerContainer extends AbstractContainerMenu {
     private final Slot resultSlot;
     public final Container container;
     private final ResultContainer resultContainer = new ResultContainer();
-    private NonNullList<ItemStack> inputs = NonNullList.withSize(3, ItemStack.EMPTY);
+    private final NonNullList<ItemStack> inputs = NonNullList.withSize(3, ItemStack.EMPTY);
 
     public CircuitMakerContainer(int id, Inventory playerInventory, FriendlyByteBuf buffer) {
         this(id, playerInventory, ContainerLevelAccess.NULL);
@@ -78,12 +78,6 @@ public class CircuitMakerContainer extends AbstractContainerMenu {
                 }
                 //TODO play sound
                 super.onTake(player, stack);
-            }
-
-            private List<ItemStack> getRelevantItems() {
-                return List.of(CircuitMakerContainer.this.inputSlot1.getItem(),
-                        CircuitMakerContainer.this.inputSlot2.getItem(),
-                        CircuitMakerContainer.this.inputSlotCircuitBase.getItem());
             }
         });
 

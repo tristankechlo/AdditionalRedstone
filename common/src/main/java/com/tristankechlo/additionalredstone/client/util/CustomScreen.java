@@ -3,6 +3,7 @@ package com.tristankechlo.additionalredstone.client.util;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
@@ -18,11 +19,11 @@ import java.util.function.Consumer;
 public abstract class CustomScreen extends Screen {
 
     public static final MutableComponent TEXT_SAVE = new TranslatableComponent("screen.additionalredstone.save");
-    public static final MutableComponent TOOLTIP_SAVE = new TranslatableComponent("screen.additionalredstone.save.tooltip");
+    private static final MutableComponent TOOLTIP_SAVE = new TranslatableComponent("screen.additionalredstone.save.tooltip");
     public static final MutableComponent TEXT_CANCEL = new TranslatableComponent("screen.additionalredstone.cancel");
-    public static final MutableComponent TOOLTIP_CANCEL = new TranslatableComponent("screen.additionalredstone.cancel.tooltip");
-    public static final MutableComponent TEXT_CLOSE = new TranslatableComponent("screen.additionalredstone.close");
-    public static final MutableComponent TOOLTIP_CLOSE = new TranslatableComponent("screen.additionalredstone.close.tooltip");
+    private static final MutableComponent TOOLTIP_CANCEL = new TranslatableComponent("screen.additionalredstone.cancel.tooltip");
+    protected final Button.OnTooltip ONTOOLTIP_SAVE = (b, poseStack, x, y) -> renderTooltip(poseStack, TOOLTIP_SAVE, x, y);
+    protected final Button.OnTooltip ONTOOLTIP_CANCEL = (b, poseStack, x, y) -> renderTooltip(poseStack, TOOLTIP_CANCEL, x, y);
     public static final int TEXT_COLOR_SCREEN = 4210752; // #404040
     protected static final MutableComponent TICK_DESCRIPTION = new TranslatableComponent("screen.additionalredstone.tick.description");
     private static final ResourceLocation ERROR_ICON = new ResourceLocation(AdditionalRedstone.MOD_ID, "textures/gui/icons.png");

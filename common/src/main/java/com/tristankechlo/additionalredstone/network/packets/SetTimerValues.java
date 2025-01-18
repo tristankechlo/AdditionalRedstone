@@ -35,7 +35,6 @@ public class SetTimerValues {
         return new SetTimerValues(ticksOn, ticksOff, interval, pos);
     }
 
-    @SuppressWarnings("deprecation")
     public static void handle(SetTimerValues msg, ServerLevel world) {
         if (world == null || !world.hasChunkAt(msg.pos)) {
             return;

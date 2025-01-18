@@ -120,7 +120,6 @@ public class CircuitMakerScreen extends AbstractContainerScreen<CircuitMakerCont
             int $$9 = $$2 + $$8 * RECIPES_IMAGE_SIZE_HEIGHT + 1;
             this.minecraft.getItemRenderer().renderAndDecorateItem(recipes.get(index).getResultItem(), $$7, $$9);
         }
-
     }
 
     @Override

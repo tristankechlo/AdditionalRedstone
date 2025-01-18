@@ -1,79 +1,51 @@
 package com.tristankechlo.additionalredstone.client.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
+import com.tristankechlo.additionalredstone.client.util.CustomScreen;
 import com.tristankechlo.additionalredstone.init.ModBlocks;
 import com.tristankechlo.additionalredstone.network.IPacketHandler;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
-public class SequencerScreen extends Screen {
+public class SequencerScreen extends CustomScreen {
 
     private static final Component TITLE = ModBlocks.SEQUENCER_BLOCK.get().getName().withStyle(ChatFormatting.BOLD);
     private static final Component INTERVAL = new TranslatableComponent("screen.additionalredstone.sequencer.interval");
-    private static final ResourceLocation ERROR = new ResourceLocation(AdditionalRedstone.MOD_ID,
-            "textures/other/icons.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(AdditionalRedstone.MOD_ID, "textures/gui/sequencer_screen.png");
+    private final BlockPos pos;
     private EditBox intervalWidget;
-    private Button saveButton;
-    private Button cancelButton;
-    private BlockPos pos;
-    private int interval;
+    private final int initialInterval;
     private boolean intervalError = false;
 
     public SequencerScreen(int interval, BlockPos pos) {
-        super(TITLE);
-        this.interval = interval;
+        super(TITLE, 256, 86);
+        this.initialInterval = interval;
         this.pos = pos;
-    }
-
-    @Override
-    public void tick() {
-        this.intervalWidget.tick();
-    }
-
-    @Override
-    public boolean isPauseScreen() {
-        // TODO adjustable via config
-        return false;
     }
 
     @Override
     protected void init() {
         super.init();
-        this.intervalWidget = new EditBox(this.font, this.width / 2 + 32, 60, 98, 20,
-                new TextComponent("sequencer_interval"));
-        this.addWidget(this.intervalWidget);
+        this.intervalWidget = new EditBox(this.font, this.leftPos + 176, this.topPos + 24, 70, 20, INTERVAL);
         this.intervalWidget.setMaxLength(10);
-        this.setInitialFocus(this.intervalWidget);
-        this.intervalWidget.setFocus(true);
-        this.intervalWidget.setValue(String.valueOf(this.interval));
+        this.intervalWidget.setValue(String.valueOf(this.initialInterval));
+        this.addRenderableWidget(this.intervalWidget);
 
-        this.saveButton = new Button(this.width / 2 - 110, 150, 100, 20, new TranslatableComponent("screen.additionalredstone.save"), (b) -> this.save());
-        this.cancelButton = new Button(this.width / 2 + 10, 150, 100, 20, new TranslatableComponent("screen.additionalredstone.cancel"), (b) -> this.cancel());
+        Button saveButton = new Button(this.leftPos + 9, this.topPos + 57, 116, 20, TEXT_SAVE, this::save, ONTOOLTIP_SAVE);
+        Button cancelButton = new Button(this.leftPos + 131, this.topPos + 57, 116, 20, TEXT_CANCEL, (b) -> this.onClose(), ONTOOLTIP_CANCEL);
         this.addRenderableWidget(saveButton);
         this.addRenderableWidget(cancelButton);
     }
 
-    private void save() {
-        int interval = 0;
-        try {
-            interval = Integer.parseInt(this.intervalWidget.getValue());
-            this.intervalError = false;
-        } catch (Exception e) {
-            this.intervalError = true;
-        }
+    private void save(Button button) {
+        int interval = getValueFromEditBox(this.intervalWidget, (bool) -> this.intervalError = bool);
+
         if (this.intervalError) {
             return;
         }
@@ -81,25 +53,40 @@ public class SequencerScreen extends Screen {
         this.onClose();
     }
 
-    private void cancel() {
-        this.onClose();
-    }
-
     @Override
     public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(matrixStack);
-        this.intervalWidget.render(matrixStack, mouseX, mouseY, partialTicks);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
 
-        drawCenteredString(matrixStack, this.font, new TranslatableComponent("screen.additionalredstone.sequencer.description"), this.width / 2, 30, 0);
+        // render title
+        drawString(matrixStack, this.font, TITLE, this.leftPos + 9, this.topPos + 6, TEXT_COLOR_SCREEN);
 
-        GuiComponent.drawString(matrixStack, this.font, new TranslatableComponent("screen.additionalredstone.sequencer.interval"), this.width / 2 - 130, 65, 0);
+        // render description for the edit boxes
+        drawString(matrixStack, this.font, INTERVAL, this.leftPos + 9, this.topPos + 30, TEXT_COLOR_SCREEN);
 
+        // render red cross next to the edit box
         if (this.intervalError) {
-            RenderSystem.setShaderTexture(0, ERROR);
-            this.blit(matrixStack, this.width / 2 + 140, 61, 1, 1, 18, 18);
+            this.renderErrorIcon(matrixStack, this.leftPos + 227, this.topPos + 25);
         }
 
+        // render tooltips over edit boxes when focused
+        if (this.intervalWidget.isMouseOver(mouseX, mouseY)) {
+            renderTooltip(matrixStack, TICK_DESCRIPTION, mouseX, mouseY);
+        }
+    }
+
+    @Override
+    public void renderBackground(PoseStack graphics) {
+        super.renderBackground(graphics);
+        this.renderTexture(graphics, TEXTURE);
+    }
+
+    @Override
+    public boolean keyPressed(int $$0, int $$1, int $$2) {
+        if (this.intervalWidget.isFocused()) {
+            this.intervalError = false;
+        }
+        return super.keyPressed($$0, $$1, $$2);
     }
 
 }

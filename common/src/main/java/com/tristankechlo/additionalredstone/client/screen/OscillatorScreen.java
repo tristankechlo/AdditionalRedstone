@@ -46,12 +46,8 @@ public class OscillatorScreen extends CustomScreen {
         this.addRenderableWidget(this.ticksOnWidget);
         this.addRenderableWidget(this.ticksOffWidget);
 
-        Button saveButton = new Button(this.leftPos + 9, this.topPos + 90, 116, 20, TEXT_SAVE, this::save, (button, poseStack, x, y) -> {
-            renderTooltip(poseStack, TOOLTIP_SAVE, x, y);
-        });
-        Button cancelButton = new Button(this.leftPos + 131, this.topPos + 90, 116, 20, TEXT_CANCEL, (b) -> this.onClose(), (button, poseStack, x, y) -> {
-            renderTooltip(poseStack, TOOLTIP_CANCEL, x, y);
-        });
+        Button saveButton = new Button(this.leftPos + 9, this.topPos + 90, 116, 20, TEXT_SAVE, this::save, ONTOOLTIP_SAVE);
+        Button cancelButton = new Button(this.leftPos + 131, this.topPos + 90, 116, 20, TEXT_CANCEL, (b) -> this.onClose(), ONTOOLTIP_CANCEL);
         this.addRenderableWidget(saveButton);
         this.addRenderableWidget(cancelButton);
     }

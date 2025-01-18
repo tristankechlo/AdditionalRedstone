@@ -27,7 +27,6 @@ public class SetSequencerValues {
         return new SetSequencerValues(interval, pos);
     }
 
-    @SuppressWarnings("deprecation")
     public static void handle(SetSequencerValues msg, ServerLevel world) {
         if (world == null || !world.hasChunkAt(msg.pos)) {
             return;

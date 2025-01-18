@@ -78,4 +78,5 @@ public class SequencerBlockEntity extends BlockEntity {
         this.interval = interval;
         this.tickCounter = 0;
     }
+
 }

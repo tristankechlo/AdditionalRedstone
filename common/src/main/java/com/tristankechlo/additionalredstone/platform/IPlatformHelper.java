@@ -4,9 +4,10 @@ import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.blockentity.*;
 import com.tristankechlo.additionalredstone.blocks.ThreeInputLogicGate;
 import com.tristankechlo.additionalredstone.container.CircuitMakerContainer;
+import com.tristankechlo.additionalredstone.recipe.CircuitMakerRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import java.nio.file.Path;
@@ -14,7 +15,7 @@ import java.util.function.Supplier;
 
 public interface IPlatformHelper {
 
-    public static final IPlatformHelper INSTANCE = AdditionalRedstone.load(IPlatformHelper.class);
+    IPlatformHelper INSTANCE = AdditionalRedstone.load(IPlatformHelper.class);
 
     Path getConfigDirectory();
 

@@ -1,9 +1,9 @@
 package com.tristankechlo.additionalredstone.blocks;
 
+import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.blockentity.SequencerBlockEntity;
 import com.tristankechlo.additionalredstone.init.ModBlockEntities;
 import com.tristankechlo.additionalredstone.platform.IPlatformHelper;
-import com.tristankechlo.additionalredstone.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -30,8 +30,6 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import javax.annotation.Nullable;
 
 public class SequencerBlock extends Block implements EntityBlock {
 
@@ -62,7 +60,7 @@ public class SequencerBlock extends Block implements EntityBlock {
         return InteractionResult.sidedSuccess(worldIn.isClientSide);
     }
 
-    private void playSound(@Nullable Player playerIn, LevelAccessor worldIn, BlockPos pos, boolean hitByArrow) {
+    private void playSound(Player playerIn, LevelAccessor worldIn, BlockPos pos, boolean hitByArrow) {
         worldIn.playSound(playerIn, pos, SoundEvents.WOODEN_BUTTON_CLICK_OFF, SoundSource.BLOCKS, 0.3F, 0.6F);
     }
 
@@ -126,7 +124,7 @@ public class SequencerBlock extends Block implements EntityBlock {
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return Utils.createTicker(level, type, ModBlockEntities.SEQUENCER_BLOCK_ENTITY.get(), SequencerBlockEntity::tick);
+        return AdditionalRedstone.createTicker(level, type, ModBlockEntities.SEQUENCER_BLOCK_ENTITY.get(), SequencerBlockEntity::tick);
     }
 
     public static void updatePower(BlockState state, Level level, BlockPos pos) {

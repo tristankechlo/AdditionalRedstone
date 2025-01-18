@@ -27,7 +27,6 @@ public class SetSupergateValues {
         return new SetSupergateValues(configuration, pos);
     }
 
-    @SuppressWarnings("deprecation")
     public static void handle(SetSupergateValues msg, ServerLevel world) {
         if (world == null || !world.hasChunkAt(msg.pos)) {
             return;

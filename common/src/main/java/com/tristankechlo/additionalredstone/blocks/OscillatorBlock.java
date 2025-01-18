@@ -1,9 +1,9 @@
 package com.tristankechlo.additionalredstone.blocks;
 
+import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.blockentity.OscillatorBlockEntity;
 import com.tristankechlo.additionalredstone.init.ModBlockEntities;
 import com.tristankechlo.additionalredstone.platform.IPlatformHelper;
-import com.tristankechlo.additionalredstone.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -45,8 +45,7 @@ public class OscillatorBlock extends BaseEntityBlock {
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos,
-                                boolean isMoving) {
+    public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
         if (!state.canSurvive(worldIn, pos)) {
             BlockEntity tileentity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
             dropResources(state, worldIn, pos, tileentity);
@@ -106,7 +105,7 @@ public class OscillatorBlock extends BaseEntityBlock {
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return Utils.createTicker(level, type, ModBlockEntities.OSCILLATOR_BLOCK_ENTITY.get(), OscillatorBlockEntity::tick);
+        return AdditionalRedstone.createTicker(level, type, ModBlockEntities.OSCILLATOR_BLOCK_ENTITY.get(), OscillatorBlockEntity::tick);
     }
 
     @Override
