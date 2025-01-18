@@ -1,6 +1,5 @@
 {
 	"parent": "additionalredstone:block/base_gate",
-	"render_type": "minecraft:cutout",
 	"textures": {
 		"symbol": "additionalredstone:block/nand_gate"
 	}
