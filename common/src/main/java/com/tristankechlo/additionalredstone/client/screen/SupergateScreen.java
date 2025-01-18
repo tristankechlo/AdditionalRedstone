@@ -1,5 +1,6 @@
 package com.tristankechlo.additionalredstone.client.screen;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.blockentity.SuperGateBlockEntity;
@@ -31,16 +32,14 @@ public class SupergateScreen extends CustomScreen {
 
         for (int i = 0; i < AdditionalRedstone.INPUT_STATES.length; i++) {
             int y = this.topPos + 29 + i * 13;
-            OnOffButton button = new OnOffButton(this.leftPos + 139, y, 43, 12, i);
+            OnOffButton button = new OnOffButton(this.leftPos + 139, y, 42, 12, i);
             button.setToggled(this.configuration[i]);
             button.setConsumer(this::setConfig);
             this.addRenderableWidget(button);
         }
 
-        Button saveButton = new Button(this.leftPos + 9, this.topPos + 139, 84, 20, TEXT_SAVE, this::save, ONTOOLTIP_SAVE);
-        Button cancelButton = new Button(this.leftPos + 99, this.topPos + 139, 84, 20, TEXT_CANCEL, (b) -> this.onClose(), ONTOOLTIP_CANCEL);
-        this.addRenderableWidget(saveButton);
-        this.addRenderableWidget(cancelButton);
+        this.addSaveButton(this.leftPos + 9, this.topPos + 139, 84, 20, this::save);
+        this.addCancelButton(this.leftPos + 98, this.topPos + 139, 84, 20);
     }
 
     private void setConfig(int i, boolean toggled) {
@@ -55,20 +54,20 @@ public class SupergateScreen extends CustomScreen {
     }
 
     @Override
-    public void render(PoseStack graphics, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(graphics);
-        super.render(graphics, mouseX, mouseY, partialTicks);
+    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(poseStack);
+        super.render(poseStack, mouseX, mouseY, partialTicks);
 
         // render title
-        drawString(graphics, this.font, this.title, this.leftPos + 9, this.topPos + 5, TEXT_COLOR_SCREEN);
+        this.font.draw(poseStack, this.title, this.leftPos + 9, this.topPos + 5, TEXT_COLOR_SCREEN);
 
         // render the input and output labels
         int x = this.leftPos + 12;
         int y = this.topPos + 18;
-        drawString(graphics, this.font, TruthtableScreen.INPUT_A, x + 1, y, 0);
-        drawString(graphics, this.font, TruthtableScreen.INPUT_B, x + 44, y, 0);
-        drawString(graphics, this.font, TruthtableScreen.INPUT_C, x + 88, y, 0);
-        drawString(graphics, this.font, TruthtableScreen.OUTPUT, x + 133, y, 0);
+        this.font.draw(poseStack, TruthtableScreen.INPUT_A, x + 1, y, 0);
+        this.font.draw(poseStack, TruthtableScreen.INPUT_B, x + 44, y, 0);
+        this.font.draw(poseStack, TruthtableScreen.INPUT_C, x + 88, y, 0);
+        this.font.draw(poseStack, TruthtableScreen.OUTPUT, x + 133, y, 0);
 
         // render the input states
         for (int i = 0; i < AdditionalRedstone.INPUT_STATES.length; i++) {
@@ -76,15 +75,21 @@ public class SupergateScreen extends CustomScreen {
             y = topPos + 31 + i * 13;
             for (int j = 0; j < input.length; j++) {
                 int width = this.font.width(input[j] ? OnOffButton.ON : OnOffButton.OFF);
-                drawString(graphics, this.font, input[j] ? OnOffButton.ON : OnOffButton.OFF, x + j * 43 + (int) (21F - width / 2F), y, 0);
+                this.font.draw(poseStack, input[j] ? OnOffButton.ON : OnOffButton.OFF, x + j * 43 + (int) (21F - width / 2F), y, 0);
             }
         }
+        this.renderCustomButtonTooltips(poseStack, mouseX, mouseY);
     }
 
     @Override
-    public void renderBackground(PoseStack graphics) {
-        super.renderBackground(graphics);
-        this.renderTexture(graphics, TruthtableScreen.TEXTURE);
+    public void renderBackground(PoseStack poseStack) {
+        super.renderBackground(poseStack);
+        // special rendering of this texture to accommodate un-mirrored texture
+        // basically skips a single pixel row of the texture
+        // noticeable, because buttons can only have an even width of pixels
+        RenderSystem.setShaderTexture(0, TruthtableScreen.TEXTURE);
+        blit(poseStack, this.leftPos, this.topPos, 0, 0, 181, this.imageHeight);
+        blit(poseStack, this.leftPos + 181, this.topPos, 182, 0, this.imageWidth - 182, this.imageHeight);
     }
 
 }

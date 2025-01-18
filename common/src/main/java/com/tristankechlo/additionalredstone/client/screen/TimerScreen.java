@@ -61,10 +61,8 @@ public class TimerScreen extends CustomScreen {
         this.addRenderableWidget(this.powerDownWidget);
         this.addRenderableWidget(this.intervalWidget);
 
-        Button saveButton = new Button(this.leftPos + 9, this.topPos + 123, 116, 20, TEXT_SAVE, this::save, ONTOOLTIP_SAVE);
-        Button cancelButton = new Button(this.leftPos + 131, this.topPos + 123, 116, 20, TEXT_CANCEL, (b) -> this.onClose(), ONTOOLTIP_CANCEL);
-        this.addRenderableWidget(saveButton);
-        this.addRenderableWidget(cancelButton);
+        this.addSaveButton(this.leftPos + 9, this.topPos + 123, this::save);
+        this.addCancelButton(this.leftPos + 131, this.topPos + 123);
     }
 
     private void save(Button button) {
@@ -80,42 +78,43 @@ public class TimerScreen extends CustomScreen {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(matrixStack);
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
+    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(poseStack);
+        super.render(poseStack, mouseX, mouseY, partialTicks);
 
         // render title
-        drawString(matrixStack, this.font, this.title, this.leftPos + 9, this.topPos + 6, TEXT_COLOR_SCREEN);
+        this.font.draw(poseStack, this.title, this.leftPos + 9, this.topPos + 6, TEXT_COLOR_SCREEN);
 
         // render description for the edit boxes
-        drawString(matrixStack, this.font, POWER_ON, this.leftPos + 9, this.topPos + 30, TEXT_COLOR_SCREEN);
-        drawString(matrixStack, this.font, POWER_OFF, this.leftPos + 9, this.topPos + 63, TEXT_COLOR_SCREEN);
-        drawString(matrixStack, this.font, INTERVAL, this.leftPos + 9, this.topPos + 96, TEXT_COLOR_SCREEN);
+        this.font.draw(poseStack, POWER_ON, this.leftPos + 9, this.topPos + 30, TEXT_COLOR_SCREEN);
+        this.font.draw(poseStack, POWER_OFF, this.leftPos + 9, this.topPos + 63, TEXT_COLOR_SCREEN);
+        this.font.draw(poseStack, INTERVAL, this.leftPos + 9, this.topPos + 96, TEXT_COLOR_SCREEN);
 
         // render red cross next to the edit box
         if (this.powerUpError) {
-            this.renderErrorIcon(matrixStack, this.leftPos + 227, this.topPos + 25);
+            this.renderErrorIcon(poseStack, this.leftPos + 227, this.topPos + 25);
         }
         if (this.powerDownError) {
-            this.renderErrorIcon(matrixStack, this.leftPos + 227, this.topPos + 58);
+            this.renderErrorIcon(poseStack, this.leftPos + 227, this.topPos + 58);
         }
         if (this.intervalError) {
-            this.renderErrorIcon(matrixStack, this.leftPos + 227, this.topPos + 91);
+            this.renderErrorIcon(poseStack, this.leftPos + 227, this.topPos + 91);
         }
 
         // render tooltips over edit boxes when focused
         if (this.intervalWidget.isMouseOver(mouseX, mouseY)) {
-            renderTooltip(matrixStack, TICK_DESCRIPTION, mouseX, mouseY);
+            renderTooltip(poseStack, TICK_DESCRIPTION, mouseX, mouseY);
         }
         if (this.powerUpWidget.isMouseOver(mouseX, mouseY) || this.powerDownWidget.isMouseOver(mouseX, mouseY)) {
-            renderTooltip(matrixStack, DESCRIPTION, mouseX, mouseY);
+            renderTooltip(poseStack, DESCRIPTION, mouseX, mouseY);
         }
+        this.renderCustomButtonTooltips(poseStack, mouseX, mouseY);
     }
 
     @Override
-    public void renderBackground(PoseStack graphics) {
-        super.renderBackground(graphics);
-        this.renderTexture(graphics, TEXTURE);
+    public void renderBackground(PoseStack poseStack) {
+        super.renderBackground(poseStack);
+        this.renderTexture(poseStack, TEXTURE);
     }
 
     @Override

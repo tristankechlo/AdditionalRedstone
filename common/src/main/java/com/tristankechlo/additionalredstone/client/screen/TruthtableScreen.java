@@ -8,7 +8,6 @@ import com.tristankechlo.additionalredstone.client.util.CustomScreen;
 import com.tristankechlo.additionalredstone.client.util.OnOffButton;
 import com.tristankechlo.additionalredstone.client.util.TruthTableHelper;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -40,25 +39,24 @@ public class TruthtableScreen extends CustomScreen {
     @Override
     protected void init() {
         super.init();
-        Button cancelButton = new Button(this.leftPos + 9, this.topPos + 139, 174, 20, TEXT_CANCEL, (b) -> this.onClose());
-        this.addRenderableWidget(cancelButton);
+        this.addCancelButton(this.leftPos + 9, this.topPos + 139, 174, 20);
     }
 
     @Override
-    public void render(PoseStack graphics, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(graphics); // render texture and transparent background
-        super.render(graphics, mouseX, mouseY, partialTicks); // render buttons and labels
+    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(poseStack); // render texture and transparent background
+        super.render(poseStack, mouseX, mouseY, partialTicks); // render buttons and labels
 
         // render title
-        drawString(graphics, this.font, this.getTitle(), this.leftPos + 8, this.topPos + 5, 4210752);
+        this.font.draw(poseStack, this.getTitle(), this.leftPos + 8, this.topPos + 5, 4210752);
 
         // render the input and output labels
         int x = this.leftPos + 12;
         int y = this.topPos + 18;
-        drawString(graphics, this.font, INPUT_A, x + 1, y, 0);
-        drawString(graphics, this.font, INPUT_B, x + 44, y, 0);
-        drawString(graphics, this.font, INPUT_C, x + 88, y, 0);
-        drawString(graphics, this.font, OUTPUT, x + 133, y, 0);
+        this.font.draw(poseStack, INPUT_A, x + 1, y, 0);
+        this.font.draw(poseStack, INPUT_B, x + 44, y, 0);
+        this.font.draw(poseStack, INPUT_C, x + 88, y, 0);
+        this.font.draw(poseStack, OUTPUT, x + 133, y, 0);
 
         // render the input and output states
         for (int i = 0; i < AdditionalRedstone.INPUT_STATES.length; i++) {
@@ -68,26 +66,27 @@ public class TruthtableScreen extends CustomScreen {
             // render input states
             for (int j = 0; j < input.length; j++) {
                 int width = this.font.width(input[j] ? OnOffButton.ON : OnOffButton.OFF);
-                drawString(graphics, this.font, input[j] ? OnOffButton.ON : OnOffButton.OFF, x + j * 43 + (int) (21F - width / 2F), y, 0);
+                this.font.draw(poseStack, input[j] ? OnOffButton.ON : OnOffButton.OFF, x + j * 43 + (int) (21F - width / 2F), y, 0);
             }
             // render output state
             int width = this.font.width(output ? OnOffButton.ON : OnOffButton.OFF);
-            drawString(graphics, this.font, output ? OnOffButton.ON : OnOffButton.OFF, this.leftPos + 141 + (int) (21.5F - width / 2F), y, 0);
+            this.font.draw(poseStack, output ? OnOffButton.ON : OnOffButton.OFF, this.leftPos + 141 + (int) (21.5F - width / 2F), y, 0);
         }
 
         // render tooltip for the hovered tab
         for (int i = 0; i < 6; i++) {
             if (isMouseOverTab(i, mouseX, mouseY)) {
                 MutableComponent tooltip = TruthTableHelper.getAsComponent(i);
-                renderTooltip(graphics, tooltip, mouseX, mouseY);
+                renderTooltip(poseStack, tooltip, mouseX, mouseY);
                 break;
             }
         }
+        this.renderCustomButtonTooltips(poseStack, mouseX, mouseY);
     }
 
     @Override
-    public void renderBackground(PoseStack graphics) {
-        super.renderBackground(graphics);
+    public void renderBackground(PoseStack poseStack) {
+        super.renderBackground(poseStack);
 
         // render tabs
         int x = this.leftPos;
@@ -98,16 +97,16 @@ public class TruthtableScreen extends CustomScreen {
                 continue; // skip rendering the selected tab, will be rendered later
             }
             RenderSystem.setShaderTexture(0, TEXTURE);
-            blit(graphics, x + i * 24, y, 0, 204, 24, 24);
+            blit(poseStack, x + i * 24, y, 0, 204, 24, 24);
         }
 
         // render main texture
-        this.renderTexture(graphics, TEXTURE);
+        this.renderTexture(poseStack, TEXTURE);
 
         // render selected tab on top of the main texture
         int textureOffset = (this.index == 0) ? 0 : 24; // first tab has a different texture
         RenderSystem.setShaderTexture(0, TEXTURE);
-        blit(graphics, x + this.index * 24, y - 3, textureOffset, 228, 24, 28);
+        blit(poseStack, x + this.index * 24, y - 3, textureOffset, 228, 24, 28);
     }
 
     @Override

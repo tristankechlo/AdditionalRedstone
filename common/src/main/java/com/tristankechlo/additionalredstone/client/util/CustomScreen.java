@@ -3,6 +3,8 @@ package com.tristankechlo.additionalredstone.client.util;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
+import com.tristankechlo.additionalredstone.mixin.AbstractWidgetMixin;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -22,8 +24,6 @@ public abstract class CustomScreen extends Screen {
     private static final MutableComponent TOOLTIP_SAVE = new TranslatableComponent("screen.additionalredstone.save.tooltip");
     public static final MutableComponent TEXT_CANCEL = new TranslatableComponent("screen.additionalredstone.cancel");
     private static final MutableComponent TOOLTIP_CANCEL = new TranslatableComponent("screen.additionalredstone.cancel.tooltip");
-    protected final Button.OnTooltip ONTOOLTIP_SAVE = (b, poseStack, x, y) -> renderTooltip(poseStack, TOOLTIP_SAVE, x, y);
-    protected final Button.OnTooltip ONTOOLTIP_CANCEL = (b, poseStack, x, y) -> renderTooltip(poseStack, TOOLTIP_CANCEL, x, y);
     public static final int TEXT_COLOR_SCREEN = 4210752; // #404040
     protected static final MutableComponent TICK_DESCRIPTION = new TranslatableComponent("screen.additionalredstone.tick.description");
     private static final ResourceLocation ERROR_ICON = new ResourceLocation(AdditionalRedstone.MOD_ID, "textures/gui/icons.png");
@@ -32,6 +32,8 @@ public abstract class CustomScreen extends Screen {
     protected final int imageHeight;
     protected int topPos;
     protected int leftPos;
+    protected Button saveButton = null;
+    protected Button cancelButton = null;
 
     protected CustomScreen(Component title, int imageWidth, int imageHeight) {
         super(title);
@@ -55,6 +57,35 @@ public abstract class CustomScreen extends Screen {
         // can not be done in constructor, because the width and height are not set yet
         this.leftPos = (this.width - this.imageWidth) / 2;
         this.topPos = (this.height - this.imageHeight) / 2;
+    }
+
+    protected void addSaveButton(int x, int y, Button.OnPress onPress) {
+        this.saveButton = new Button(x, y, 116, 20, TEXT_SAVE, onPress);
+        this.addRenderableWidget(saveButton);
+    }
+
+    protected void addSaveButton(int x, int y, int width, int height, Button.OnPress onPress) {
+        this.saveButton = new Button(x, y, width, height, TEXT_SAVE, onPress);
+        this.addRenderableWidget(saveButton);
+    }
+
+    protected void addCancelButton(int x, int y) {
+        this.cancelButton = new Button(x, y, 116, 20, TEXT_CANCEL, (b) -> this.onClose());
+        this.addRenderableWidget(cancelButton);
+    }
+
+    protected void addCancelButton(int x, int y, int width, int height) {
+        this.cancelButton = new Button(x, y, width, height, TEXT_CANCEL, (b) -> this.onClose());
+        this.addRenderableWidget(cancelButton);
+    }
+
+    protected void renderCustomButtonTooltips(PoseStack poseStack, int mouseX, int mouseY) {
+        if (this.saveButton != null && this.saveButton.isMouseOver(mouseX, mouseY)) {
+            renderTooltip(poseStack, TOOLTIP_SAVE, mouseX, mouseY);
+        }
+        if (this.cancelButton != null && this.cancelButton.isMouseOver(mouseX, mouseY)) {
+            renderTooltip(poseStack, TOOLTIP_CANCEL, mouseX, mouseY);
+        }
     }
 
     protected void renderTexture(PoseStack poseStack, ResourceLocation texture) {
@@ -103,8 +134,8 @@ public abstract class CustomScreen extends Screen {
     @Override
     public boolean mouseClicked(double x, double y, int key) {
         for (GuiEventListener child : children()) {
-            if (!child.isMouseOver(x, y)) {
-                child.changeFocus(false);
+            if (!child.isMouseOver(x, y) && (child instanceof AbstractWidget widget)) {
+                ((AbstractWidgetMixin) widget).setFocused(false);
             }
         }
         return super.mouseClicked(x, y, key);

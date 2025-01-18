@@ -111,7 +111,7 @@ public class CircuitMakerScreen extends AbstractContainerScreen<CircuitMakerCont
         }
     }
 
-    private void renderRecipes(PoseStack graphics, int $$1, int $$2, int $$3) {
+    private void renderRecipes(PoseStack poseStack, int $$1, int $$2, int $$3) {
         List<CircuitMakerRecipe> recipes = (this.menu).getRecipes();
         for (int index = this.startIndex; index < $$3 && index < (this.menu).getNumRecipes(); ++index) {
             int $$6 = index - this.startIndex;

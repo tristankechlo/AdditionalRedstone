@@ -37,10 +37,8 @@ public class SequencerScreen extends CustomScreen {
         this.intervalWidget.setValue(String.valueOf(this.initialInterval));
         this.addRenderableWidget(this.intervalWidget);
 
-        Button saveButton = new Button(this.leftPos + 9, this.topPos + 57, 116, 20, TEXT_SAVE, this::save, ONTOOLTIP_SAVE);
-        Button cancelButton = new Button(this.leftPos + 131, this.topPos + 57, 116, 20, TEXT_CANCEL, (b) -> this.onClose(), ONTOOLTIP_CANCEL);
-        this.addRenderableWidget(saveButton);
-        this.addRenderableWidget(cancelButton);
+        this.addSaveButton(this.leftPos + 9, this.topPos + 57, this::save);
+        this.addCancelButton(this.leftPos + 131, this.topPos + 57);
     }
 
     private void save(Button button) {
@@ -59,10 +57,10 @@ public class SequencerScreen extends CustomScreen {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
 
         // render title
-        drawString(matrixStack, this.font, TITLE, this.leftPos + 9, this.topPos + 6, TEXT_COLOR_SCREEN);
+        this.font.draw(matrixStack, TITLE, this.leftPos + 9, this.topPos + 6, TEXT_COLOR_SCREEN);
 
         // render description for the edit boxes
-        drawString(matrixStack, this.font, INTERVAL, this.leftPos + 9, this.topPos + 30, TEXT_COLOR_SCREEN);
+        this.font.draw(matrixStack, INTERVAL, this.leftPos + 9, this.topPos + 30, TEXT_COLOR_SCREEN);
 
         // render red cross next to the edit box
         if (this.intervalError) {
@@ -73,12 +71,13 @@ public class SequencerScreen extends CustomScreen {
         if (this.intervalWidget.isMouseOver(mouseX, mouseY)) {
             renderTooltip(matrixStack, TICK_DESCRIPTION, mouseX, mouseY);
         }
+        this.renderCustomButtonTooltips(matrixStack, mouseX, mouseY);
     }
 
     @Override
-    public void renderBackground(PoseStack graphics) {
-        super.renderBackground(graphics);
-        this.renderTexture(graphics, TEXTURE);
+    public void renderBackground(PoseStack poseStack) {
+        super.renderBackground(poseStack);
+        this.renderTexture(poseStack, TEXTURE);
     }
 
     @Override

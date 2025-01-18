@@ -46,10 +46,8 @@ public class OscillatorScreen extends CustomScreen {
         this.addRenderableWidget(this.ticksOnWidget);
         this.addRenderableWidget(this.ticksOffWidget);
 
-        Button saveButton = new Button(this.leftPos + 9, this.topPos + 90, 116, 20, TEXT_SAVE, this::save, ONTOOLTIP_SAVE);
-        Button cancelButton = new Button(this.leftPos + 131, this.topPos + 90, 116, 20, TEXT_CANCEL, (b) -> this.onClose(), ONTOOLTIP_CANCEL);
-        this.addRenderableWidget(saveButton);
-        this.addRenderableWidget(cancelButton);
+        this.addSaveButton(this.leftPos + 9, this.topPos + 90, this::save);
+        this.addCancelButton(this.leftPos + 131, this.topPos + 90);
     }
 
     private void save(Button button) {
@@ -69,11 +67,11 @@ public class OscillatorScreen extends CustomScreen {
         super.render(poseStack, mouseX, mouseY, partialTicks); // render buttons and labels
 
         // render title
-        drawString(poseStack, this.font, this.title, this.leftPos + 9, this.topPos + 6, TEXT_COLOR_SCREEN);
+        this.font.draw(poseStack, this.title, this.leftPos + 9, this.topPos + 6, TEXT_COLOR_SCREEN);
 
         // render description for the edit boxes
-        drawString(poseStack, this.font, TICKS_ON, this.leftPos + 9, this.topPos + 30, TEXT_COLOR_SCREEN);
-        drawString(poseStack, this.font, TICKS_OFF, this.leftPos + 9, this.topPos + 63, TEXT_COLOR_SCREEN);
+        this.font.draw(poseStack, TICKS_ON, this.leftPos + 9, this.topPos + 30, TEXT_COLOR_SCREEN);
+        this.font.draw(poseStack, TICKS_OFF, this.leftPos + 9, this.topPos + 63, TEXT_COLOR_SCREEN);
 
         // render red cross next to the edit box
         if (this.ticksOnError) {
@@ -87,12 +85,13 @@ public class OscillatorScreen extends CustomScreen {
         if (this.ticksOnWidget.isMouseOver(mouseX, mouseY) || this.ticksOffWidget.isMouseOver(mouseX, mouseY)) {
             renderTooltip(poseStack, TICK_DESCRIPTION, mouseX, mouseY);
         }
+        this.renderCustomButtonTooltips(poseStack, mouseX, mouseY);
     }
 
     @Override
-    public void renderBackground(PoseStack graphics) {
-        super.renderBackground(graphics); // transparent background
-        this.renderTexture(graphics, TEXTURE);
+    public void renderBackground(PoseStack poseStack) {
+        super.renderBackground(poseStack); // transparent background
+        this.renderTexture(poseStack, TEXTURE);
     }
 
     @Override
