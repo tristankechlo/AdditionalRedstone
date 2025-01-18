@@ -2,6 +2,7 @@ package com.tristankechlo.additionalredstone.blocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -14,6 +15,11 @@ public class CircuitBaseBlock extends Block {
 
     public CircuitBaseBlock() {
         super(Properties.copy(Blocks.REPEATER));
+    }
+
+    @Override
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        return canSupportRigidBlock(level, pos.below());
     }
 
     @Override
