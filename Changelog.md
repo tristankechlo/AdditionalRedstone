@@ -21,9 +21,9 @@
     - output depends on the configuration for all input combinations
 - added new block `dimmable_redstone_lamp`
     - emitted light level depends on the strength on the input redstone signal
-    - strongest signal will be used
 - added new block `light_detector`
     - redstone strength is the light level at its position
+    - also detects block light, like torches
 
 ### Version 1.18.2 - 1.1.0
 
