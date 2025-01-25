@@ -24,6 +24,9 @@
 - added new block `light_detector`
     - redstone strength is the light level at its position
     - also detects block light, like torches
+- add new block `led`
+    - only passes redstone signal one way
+    - produces light similar to the `dimmable_redstone_lamp`
 
 ### Version 1.18.2 - 1.1.0
 

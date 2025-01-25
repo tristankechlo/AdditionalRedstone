@@ -22,11 +22,10 @@ import java.util.Random;
 
 public abstract class BaseDiodeBlock extends DiodeBlock {
 
-    private static final VoxelShape BASE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D);
-    private static final VoxelShape SHAPE_N = Shapes.join(BASE, Block.box(4.0D, 2.0D, 3.0D, 12.0D, 4.0D, 11.0D), BooleanOp.OR);
-    private static final VoxelShape SHAPE_S = Shapes.join(BASE, Block.box(4.0D, 2.0D, 5.0D, 12.0D, 4.0D, 13.0D), BooleanOp.OR);
-    private static final VoxelShape SHAPE_E = Shapes.join(BASE, Block.box(5.0D, 2.0D, 4.0D, 13.0D, 4.0D, 12.0D), BooleanOp.OR);
-    private static final VoxelShape SHAPE_W = Shapes.join(BASE, Block.box(3.0D, 2.0D, 4.0D, 11.0D, 4.0D, 12.0D), BooleanOp.OR);
+    private static final VoxelShape SHAPE_N = Shapes.join(CircuitBaseBlock.BASE, Block.box(4.0D, 2.0D, 3.0D, 12.0D, 4.0D, 11.0D), BooleanOp.OR);
+    private static final VoxelShape SHAPE_S = Shapes.join(CircuitBaseBlock.BASE, Block.box(4.0D, 2.0D, 5.0D, 12.0D, 4.0D, 13.0D), BooleanOp.OR);
+    private static final VoxelShape SHAPE_E = Shapes.join(CircuitBaseBlock.BASE, Block.box(5.0D, 2.0D, 4.0D, 13.0D, 4.0D, 12.0D), BooleanOp.OR);
+    private static final VoxelShape SHAPE_W = Shapes.join(CircuitBaseBlock.BASE, Block.box(3.0D, 2.0D, 4.0D, 11.0D, 4.0D, 12.0D), BooleanOp.OR);
 
     public BaseDiodeBlock() {
         super(Properties.copy(Blocks.REPEATER));

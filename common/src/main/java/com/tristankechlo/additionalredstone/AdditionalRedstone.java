@@ -58,10 +58,11 @@ public class AdditionalRedstone {
         output.add(ModItems.TOGGLE_LATCH_BLOCK_ITEM.get().getDefaultInstance());
         output.add(ModItems.SR_LATCH_BLOCK_ITEM.get().getDefaultInstance());
         output.add(ModItems.RS_LATCH_BLOCK_ITEM.get().getDefaultInstance());
+        output.add(ModItems.SUPERGATE_BLOCK_ITEM.get().getDefaultInstance());
         output.add(ModItems.SEQUENCER_BLOCK_ITEM.get().getDefaultInstance());
         output.add(ModItems.TIMER_BLOCK_ITEM.get().getDefaultInstance());
+        output.add(ModItems.LED.get().getDefaultInstance());
         output.add(ModItems.OSCILLATOR_BLOCK_ITEM.get().getDefaultInstance());
-        output.add(ModItems.SUPERGATE_BLOCK_ITEM.get().getDefaultInstance());
         output.add(ModItems.DIMMABLE_REDSTONE_LAMP_ITEM.get().getDefaultInstance());
         output.add(ModItems.LIGHT_DETECTOR_ITEM.get().getDefaultInstance());
     }

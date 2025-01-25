@@ -20,6 +20,7 @@
     "block.additionalredstone.supergate": "Supergate",
     "block.additionalredstone.dimmable_redstone_lamp": "Dimmable Redstone Lamp",
     "block.additionalredstone.light_detector": "Light Detector",
+    "block.additionalredstone.led": "Light Emitting Diode (LED)",
 
     "screen.additionalredstone.save": "Save",
     "screen.additionalredstone.save.tooltip": "Save the changes and close the screen",

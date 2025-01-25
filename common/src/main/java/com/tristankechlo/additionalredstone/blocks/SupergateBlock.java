@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.ticks.TickPriority;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
@@ -73,7 +72,6 @@ public class SupergateBlock extends BaseDiodeBlock implements EntityBlock {
         return this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, Boolean.FALSE);
     }
 
-    @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new SuperGateBlockEntity(pos, state);

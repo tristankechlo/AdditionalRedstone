@@ -25,8 +25,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class LightDetectorBlock extends BaseEntityBlock {
 
-    public static final IntegerProperty POWER = BlockStateProperties.POWER;
-    protected static final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 6.0, 16.0);
+    private static final IntegerProperty POWER = BlockStateProperties.POWER;
+    private static final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 6.0, 16.0);
 
     public LightDetectorBlock() {
         super(Properties.copy(Blocks.DAYLIGHT_DETECTOR));

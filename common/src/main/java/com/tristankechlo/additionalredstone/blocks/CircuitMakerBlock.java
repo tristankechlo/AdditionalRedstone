@@ -32,7 +32,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class CircuitMakerBlock extends HorizontalDirectionalBlock {
 
     private static Component CONTAINER_NAME = null;
-    private static final VoxelShape SHAPE = Shapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D), Block.box(2.5D, 2.0D, 2.5D, 13.5D, 12.0D, 13.5D));
+    private static final VoxelShape SHAPE = Shapes.or(CircuitBaseBlock.BASE, Block.box(2.5D, 2.0D, 2.5D, 13.5D, 12.0D, 13.5D));
 
     public CircuitMakerBlock() {
         super(Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).strength(5F, 6F)

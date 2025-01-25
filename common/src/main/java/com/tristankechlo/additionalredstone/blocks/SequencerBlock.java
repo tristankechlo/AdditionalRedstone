@@ -33,8 +33,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class SequencerBlock extends Block implements EntityBlock {
 
-    public static final IntegerProperty POWERED_SIDE = IntegerProperty.create("output", 0, 3);
-    protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D);
+    private static final IntegerProperty POWERED_SIDE = IntegerProperty.create("output", 0, 3);
 
     public SequencerBlock() {
         super(Properties.copy(Blocks.REPEATER));
@@ -66,7 +65,7 @@ public class SequencerBlock extends Block implements EntityBlock {
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-        return SHAPE;
+        return CircuitBaseBlock.BASE;
     }
 
     @Override

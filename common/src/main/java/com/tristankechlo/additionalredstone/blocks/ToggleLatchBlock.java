@@ -32,8 +32,7 @@ import java.util.Random;
 
 public class ToggleLatchBlock extends HorizontalDirectionalBlock {
 
-    protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D);
-    public static final EnumProperty<ToggleLatchSide> POWERED_SIDE = EnumProperty.create("outputside", ToggleLatchSide.class);
+    private static final EnumProperty<ToggleLatchSide> POWERED_SIDE = EnumProperty.create("outputside", ToggleLatchSide.class);
 
     public ToggleLatchBlock() {
         super(Properties.copy(Blocks.REPEATER));
@@ -47,7 +46,7 @@ public class ToggleLatchBlock extends HorizontalDirectionalBlock {
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-        return SHAPE;
+        return CircuitBaseBlock.BASE;
     }
 
     @Override

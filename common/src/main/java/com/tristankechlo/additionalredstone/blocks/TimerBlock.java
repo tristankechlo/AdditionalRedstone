@@ -31,8 +31,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class TimerBlock extends BaseEntityBlock {
 
-    private static final VoxelShape SHAPE = Shapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D), Block.box(4.0D, 2.0D, 4.0D, 12.0D, 3.0D, 12.0D));
-    public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+    private static final VoxelShape SHAPE = Shapes.or(CircuitBaseBlock.BASE, Block.box(4.0D, 2.0D, 4.0D, 12.0D, 3.0D, 12.0D));
+    private static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     public TimerBlock() {
         super(Properties.copy(Blocks.REPEATER));

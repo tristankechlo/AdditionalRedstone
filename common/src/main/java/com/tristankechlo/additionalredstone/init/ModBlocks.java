@@ -18,6 +18,7 @@ public final class ModBlocks {
     public static final RegistryObject<Block> TIMER_BLOCK = BLOCKS.register("timer", TimerBlock::new);
     public static final RegistryObject<Block> DIMMABLE_REDSTONE_LAMP_BLOCK = BLOCKS.register("dimmable_redstone_lamp", DimmableRedstoneLampBlock::new);
     public static final RegistryObject<Block> LIGHT_DETECTOR_BLOCK = BLOCKS.register("light_detector", LightDetectorBlock::new);
+    public static final RegistryObject<Block> LED = BLOCKS.register("led", LedBlock::new);
 
     public static final RegistryObject<Block> AND_GATE_BLOCK = BLOCKS.register("and_gate", () -> new ThreeInputLogicGate(ThreeInputLogic::and));
     public static final RegistryObject<Block> NAND_GATE_BLOCK = BLOCKS.register("nand_gate", () -> new ThreeInputLogicGate(ThreeInputLogic::nand));

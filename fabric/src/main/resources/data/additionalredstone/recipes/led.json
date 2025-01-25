@@ -1,0 +1,12 @@
+{
+    "type": "additionalredstone:circuit_maker",
+    "input_1": {
+        "item": "additionalredstone:dimmable_redstone_lamp"
+    },
+    "input_2": {
+        "tag": "c:quartz"
+    },
+    "result": {
+        "item": "additionalredstone:led"
+    }
+}

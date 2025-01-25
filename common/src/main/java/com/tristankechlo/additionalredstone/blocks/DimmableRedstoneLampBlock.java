@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class DimmableRedstoneLampBlock extends Block {
 
-    public static final IntegerProperty POWER = BlockStateProperties.POWER;
+    private static final IntegerProperty POWER = BlockStateProperties.POWER;
 
     public DimmableRedstoneLampBlock() {
         super(Properties.copy(Blocks.REDSTONE_LAMP).lightLevel(DimmableRedstoneLampBlock::getLightLevel));
@@ -55,7 +55,7 @@ public class DimmableRedstoneLampBlock extends Block {
         builder.add(POWER);
     }
 
-    public static int getLightLevel(BlockState state) {
+    private static int getLightLevel(BlockState state) {
         if (state.hasProperty(POWER)) {
             return state.getValue(POWER);
         }
