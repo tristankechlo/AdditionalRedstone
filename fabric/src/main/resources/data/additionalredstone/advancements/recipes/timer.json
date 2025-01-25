@@ -16,7 +16,9 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "minecraft:clock"
+                        "items": [
+                            "minecraft:clock"
+                        ]
                     }
                 ]
             }
