@@ -22,7 +22,7 @@
             "model": "additionalredstone:block/dimmable_redstone_lamp_dim"
         },
         "power=7": {
-            "model": "additionalredstone:block/dimmable_redstone_lamp_dim"
+            "model": "additionalredstone:block/dimmable_redstone_lamp_on"
         },
         "power=8": {
             "model": "additionalredstone:block/dimmable_redstone_lamp_on"
