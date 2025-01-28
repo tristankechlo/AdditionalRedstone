@@ -27,6 +27,7 @@
 - add new block `led`
     - only passes redstone signal one way
     - produces light similar to the `dimmable_redstone_lamp`
+- fix bugs where the `toggle_latch` is not updated correctly
 
 ### Version 1.18.2 - 1.1.0
 

@@ -29,7 +29,7 @@ public abstract class BaseDiodeBlock extends DiodeBlock {
 
     public BaseDiodeBlock() {
         super(Properties.copy(Blocks.REPEATER));
-        this.registerDefaultState(this.getDefaultDiodeState());
+        this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH).setValue(POWERED, Boolean.FALSE));
     }
 
     @Override
@@ -50,25 +50,10 @@ public abstract class BaseDiodeBlock extends DiodeBlock {
         builder.add(FACING, POWERED);
     }
 
-    public static int getRedstonePowerForSide(Level worldIn, BlockPos pos, Direction direction) {
-        BlockPos blockpos = pos.relative(direction);
-        int i = worldIn.getSignal(blockpos, direction);
-        if (i >= 15) {
-            return i;
-        } else {
-            BlockState state = worldIn.getBlockState(blockpos);
-            return Math.max(i, state.is(Blocks.REDSTONE_WIRE) ? state.getValue(RedStoneWireBlock.POWER) : 0);
-        }
-    }
-
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
         BlockState state = super.getStateForPlacement(ctx);
         return state.setValue(POWERED, this.shouldTurnOn(ctx.getLevel(), ctx.getClickedPos(), state));
-    }
-
-    protected BlockState getDefaultDiodeState() {
-        return this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, Boolean.FALSE);
     }
 
     @Override
@@ -93,6 +78,25 @@ public abstract class BaseDiodeBlock extends DiodeBlock {
     @Override
     public PushReaction getPistonPushReaction(BlockState state) {
         return PushReaction.DESTROY;
+    }
+
+    /**
+     * check the redstone signal strength at a position relative to a given position
+     *
+     * @param level     level
+     * @param pos       the position of the logic-block
+     * @param direction the direction to check in relative from 'pos'
+     * @return the redstone signal strength
+     */
+    public static int getRedstonePowerRelative(Level level, BlockPos pos, Direction direction) {
+        BlockPos blockpos = pos.relative(direction);
+        int i = level.getSignal(blockpos, direction);
+        if (i >= 15) {
+            return i;
+        } else {
+            BlockState state = level.getBlockState(blockpos);
+            return Math.max(i, state.is(Blocks.REDSTONE_WIRE) ? state.getValue(RedStoneWireBlock.POWER) : 0);
+        }
     }
 
 }

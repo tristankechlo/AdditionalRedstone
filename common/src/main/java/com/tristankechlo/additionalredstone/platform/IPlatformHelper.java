@@ -31,6 +31,8 @@ public interface IPlatformHelper {
 
     BlockEntityType.Builder<LightDetectorBlockEntity> buildBlockEntityTypeLightDetector();
 
+    BlockEntityType.Builder<ToggleLatchBlockEntity> buildBlockEntityTypeToggleLatch();
+
     Supplier<MenuType<CircuitMakerContainer>> buildContainerCircuitMaker();
 
     Supplier<RecipeSerializer<CircuitMakerRecipe>> buildRecipeSerializer();

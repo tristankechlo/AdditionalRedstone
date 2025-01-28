@@ -60,6 +60,11 @@ public final class ForgePlatformHelper implements IPlatformHelper {
     }
 
     @Override
+    public BlockEntityType.Builder<ToggleLatchBlockEntity> buildBlockEntityTypeToggleLatch() {
+        return BlockEntityType.Builder.of(ToggleLatchBlockEntity::new, ModBlocks.TOGGLE_LATCH_BLOCK.get());
+    }
+
+    @Override
     public Supplier<MenuType<CircuitMakerContainer>> buildContainerCircuitMaker() {
         return () -> IForgeMenuType.create(CircuitMakerContainer::new);
     }

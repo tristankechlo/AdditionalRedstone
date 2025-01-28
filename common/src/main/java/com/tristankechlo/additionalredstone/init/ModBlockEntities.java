@@ -18,6 +18,7 @@ public final class ModBlockEntities {
     public static final RegistryObject<BlockEntityType<TFlipFlopBlockEntity>> T_FLIP_FLOP_BLOCK_ENTITY = BLOCK_ENTITIES.register("t_flip_flop", () -> IPlatformHelper.INSTANCE.buildBlockEntityTypeTFlipFlop().build(null));
     public static final RegistryObject<BlockEntityType<SuperGateBlockEntity>> SUPERGATE_BLOCK_ENTITY = BLOCK_ENTITIES.register("supergate", () -> IPlatformHelper.INSTANCE.buildBlockEntityTypeSuperGate().build(null));
     public static final RegistryObject<BlockEntityType<LightDetectorBlockEntity>> LIGHT_DETECTOR_BLOCK_ENTITY = BLOCK_ENTITIES.register("light_detector", () -> IPlatformHelper.INSTANCE.buildBlockEntityTypeLightDetector().build(null));
+    public static final RegistryObject<BlockEntityType<ToggleLatchBlockEntity>> TOGGLE_LATCH_BLOCK_ENTITY = BLOCK_ENTITIES.register("toggle_latch", () -> IPlatformHelper.INSTANCE.buildBlockEntityTypeToggleLatch().build(null));
 
     public static void load() {}
 
