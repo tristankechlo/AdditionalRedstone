@@ -91,8 +91,8 @@ public class LightDetectorBlock extends BaseEntityBlock {
     }
 
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> $$2) {
-        return AdditionalRedstone.createTicker(level, $$2, ModBlockEntities.LIGHT_DETECTOR_BLOCK_ENTITY.get(), LightDetectorBlock::tickEntity);
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return AdditionalRedstone.createTicker(level, type, ModBlockEntities.LIGHT_DETECTOR_BLOCK_ENTITY.get(), LightDetectorBlock::tickEntity);
     }
 
 }

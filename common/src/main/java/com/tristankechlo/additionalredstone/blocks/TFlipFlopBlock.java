@@ -14,34 +14,34 @@ import java.util.Random;
 public class TFlipFlopBlock extends BaseDiodeBlock implements EntityBlock {
 
     @Override
-    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand) {
-        boolean inputPowered = this.getInputSignal(worldIn, pos, state) > 0;
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand) {
+        boolean inputPowered = this.getInputSignal(level, pos, state) > 0;
         if (inputPowered) {
-            worldIn.setBlock(pos, state.cycle(POWERED), 2);
+            level.setBlock(pos, state.cycle(POWERED), 2);
         }
-        this.updateNeighborsInFront(worldIn, pos, state);
+        this.updateNeighborsInFront(level, pos, state);
     }
 
     @Override
-    protected void checkTickOnNeighbor(Level worldIn, BlockPos pos, BlockState state) {
-        BlockEntity tileentity = worldIn.getBlockEntity(pos);
+    protected void checkTickOnNeighbor(Level level, BlockPos pos, BlockState state) {
+        BlockEntity tileentity = level.getBlockEntity(pos);
         boolean change = false;
         if (tileentity instanceof TFlipFlopBlockEntity) {
-            boolean input = this.getInputSignal(worldIn, pos, state) > 0;
+            boolean input = this.getInputSignal(level, pos, state) > 0;
             change = ((TFlipFlopBlockEntity) tileentity).shouldBePowered(input);
         }
-        if (change && !worldIn.getBlockTicks().willTickThisTick(pos, this)) {
+        if (change && !level.getBlockTicks().willTickThisTick(pos, this)) {
             TickPriority tickpriority = TickPriority.HIGH;
-            if (this.shouldPrioritize(worldIn, pos, state)) {
+            if (this.shouldPrioritize(level, pos, state)) {
                 tickpriority = TickPriority.EXTREMELY_HIGH;
             }
-            worldIn.scheduleTick(pos, this, this.getDelay(state), tickpriority);
+            level.scheduleTick(pos, this, this.getDelay(state), tickpriority);
         }
     }
 
     @Override
-    protected boolean shouldTurnOn(Level worldIn, BlockPos pos, BlockState state) {
-        boolean inputPowered = this.getInputSignal(worldIn, pos, state) > 0;
+    protected boolean shouldTurnOn(Level level, BlockPos pos, BlockState state) {
+        boolean inputPowered = this.getInputSignal(level, pos, state) > 0;
         if (inputPowered) {
             return !state.getValue(POWERED);
         }

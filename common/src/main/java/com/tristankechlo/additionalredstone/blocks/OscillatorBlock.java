@@ -40,18 +40,18 @@ public class OscillatorBlock extends BaseEntityBlock {
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-        if (!state.canSurvive(worldIn, pos)) {
-            BlockEntity tileentity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
-            dropResources(state, worldIn, pos, tileentity);
-            worldIn.removeBlock(pos, false);
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+        if (!state.canSurvive(level, pos)) {
+            BlockEntity blockEntity = state.hasBlockEntity() ? level.getBlockEntity(pos) : null;
+            dropResources(state, level, pos, blockEntity);
+            level.removeBlock(pos, false);
             for (Direction direction : Direction.values()) {
-                worldIn.updateNeighborsAt(pos.relative(direction), this);
+                level.updateNeighborsAt(pos.relative(direction), this);
             }
         }
     }

@@ -113,4 +113,5 @@ public class OscillatorBlockEntity extends BlockEntity {
         this.ticksOff = ticksOff;
         this.tickCounter = 0;
     }
+
 }

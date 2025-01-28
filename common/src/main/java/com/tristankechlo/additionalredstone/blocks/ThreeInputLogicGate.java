@@ -20,13 +20,13 @@ public class ThreeInputLogicGate extends BaseDiodeBlock {
     }
 
     @Override
-    protected boolean shouldTurnOn(Level worldIn, BlockPos pos, BlockState state) {
+    protected boolean shouldTurnOn(Level level, BlockPos pos, BlockState state) {
         Direction input = state.getValue(FACING);
         Direction left = state.getValue(FACING).getClockWise();
         Direction right = state.getValue(FACING).getCounterClockWise();
-        boolean i = getRedstonePowerForSide(worldIn, pos, input) > 0;
-        boolean j = getRedstonePowerForSide(worldIn, pos, left) > 0;
-        boolean k = getRedstonePowerForSide(worldIn, pos, right) > 0;
+        boolean i = getRedstonePowerRelative(level, pos, input) > 0;
+        boolean j = getRedstonePowerRelative(level, pos, left) > 0;
+        boolean k = getRedstonePowerRelative(level, pos, right) > 0;
         return this.logic.apply(i, j, k);
     }
 

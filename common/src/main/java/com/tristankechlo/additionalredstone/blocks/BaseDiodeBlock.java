@@ -33,7 +33,7 @@ public abstract class BaseDiodeBlock extends DiodeBlock {
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         Direction facing = state.getValue(FACING);
         if (facing == Direction.NORTH) {
             return SHAPE_N;
@@ -62,16 +62,16 @@ public abstract class BaseDiodeBlock extends DiodeBlock {
     }
 
     @Override
-    public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {
-        if (stateIn.getValue(POWERED)) {
-            Direction direction = stateIn.getValue(FACING);
+    public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
+        if (state.getValue(POWERED)) {
+            Direction direction = state.getValue(FACING);
             double x = (double) pos.getX() + 0.5D + (rand.nextDouble() - 0.5D) * 0.2D;
             double y = (double) pos.getY() + 0.4D + (rand.nextDouble() - 0.5D) * 0.2D;
             double z = (double) pos.getZ() + 0.5D + (rand.nextDouble() - 0.5D) * 0.2D;
             float f = -5.0F / 16.0F;
             double xOffset = (double) (f * (float) direction.getStepX());
             double zOffset = (double) (f * (float) direction.getStepZ());
-            worldIn.addParticle(DustParticleOptions.REDSTONE, x + xOffset, y, z + zOffset, 0.0D, 0.0D, 0.0D);
+            level.addParticle(DustParticleOptions.REDSTONE, x + xOffset, y, z + zOffset, 0.0D, 0.0D, 0.0D);
         }
     }
 

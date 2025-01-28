@@ -43,12 +43,12 @@ public class ToggleLatchBlock extends HorizontalDirectionalBlock implements Enti
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
-        return canSupportRigidBlock(worldIn, pos.below());
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        return canSupportRigidBlock(level, pos.below());
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return CircuitBaseBlock.BASE;
     }
 
@@ -166,7 +166,7 @@ public class ToggleLatchBlock extends HorizontalDirectionalBlock implements Enti
     }
 
     @Override
-    public PushReaction getPistonPushReaction(BlockState p_60584_) {
+    public PushReaction getPistonPushReaction(BlockState state) {
         return PushReaction.DESTROY;
     }
 
@@ -176,12 +176,12 @@ public class ToggleLatchBlock extends HorizontalDirectionalBlock implements Enti
     }
 
     @Override // client only
-    public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {
+    public void animateTick(BlockState stateIn, Level level, BlockPos pos, Random rand) {
         boolean leftSide = stateIn.getValue(POWERED_SIDE) == ToggleLatchSide.LEFT;
-        this.spawnParticle(stateIn, worldIn, pos, rand, leftSide);
+        this.spawnParticle(stateIn, level, pos, rand, leftSide);
     }
 
-    public void spawnParticle(BlockState state, Level world, BlockPos pos, Random rand, boolean left) {
+    public void spawnParticle(BlockState state, Level level, BlockPos pos, Random rand, boolean left) {
         double offset = left ? -0.25D : 0.25D;
         Direction direction = state.getValue(FACING);
 
@@ -199,7 +199,7 @@ public class ToggleLatchBlock extends HorizontalDirectionalBlock implements Enti
         xOffset += offset * (double) direction.getStepZ();
         zOffset -= offset * (double) direction.getStepX();
 
-        world.addParticle(DustParticleOptions.REDSTONE, x + xOffset, y, z + zOffset, 0.0D, 0.0D, 0.0D);
+        level.addParticle(DustParticleOptions.REDSTONE, x + xOffset, y, z + zOffset, 0.0D, 0.0D, 0.0D);
     }
 
     public enum ToggleLatchSide implements StringRepresentable {

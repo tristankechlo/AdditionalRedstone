@@ -41,36 +41,36 @@ public class SequencerBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (player.isShiftKeyDown()) {
             if (!player.getAbilities().mayBuild) {
                 return InteractionResult.PASS;
             } else {
-                worldIn.setBlock(pos, state.cycle(POWERED_SIDE), 3);
-                this.playSound(player, worldIn, pos, true);
-                return InteractionResult.sidedSuccess(worldIn.isClientSide);
+                level.setBlock(pos, state.cycle(POWERED_SIDE), 3);
+                this.playSound(player, level, pos);
+                return InteractionResult.sidedSuccess(level.isClientSide);
             }
         }
-        BlockEntity tile = worldIn.getBlockEntity(pos);
-        if ((tile instanceof SequencerBlockEntity sequencer) && worldIn.isClientSide) {
+        BlockEntity tile = level.getBlockEntity(pos);
+        if ((tile instanceof SequencerBlockEntity sequencer) && level.isClientSide) {
             int interval = sequencer.getInterval();
             IPlatformHelper.INSTANCE.openSequencerScreen(interval, pos);
         }
-        return InteractionResult.sidedSuccess(worldIn.isClientSide);
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
-    private void playSound(Player playerIn, LevelAccessor worldIn, BlockPos pos, boolean hitByArrow) {
-        worldIn.playSound(playerIn, pos, SoundEvents.WOODEN_BUTTON_CLICK_OFF, SoundSource.BLOCKS, 0.3F, 0.6F);
+    private void playSound(Player player, LevelAccessor level, BlockPos pos) {
+        level.playSound(player, pos, SoundEvents.WOODEN_BUTTON_CLICK_OFF, SoundSource.BLOCKS, 0.3F, 0.6F);
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return CircuitBaseBlock.BASE;
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
-        return canSupportRigidBlock(worldIn, pos.below());
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        return canSupportRigidBlock(level, pos.below());
     }
 
     @Override
@@ -90,13 +90,13 @@ public class SequencerBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public int getDirectSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
-        return this.getSignal(blockState, blockAccess, pos, side);
+    public int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        return this.getSignal(state, level, pos, direction);
     }
 
     @Override
-    public int getSignal(BlockState state, BlockGetter blockAccess, BlockPos pos, Direction side) {
-        return side.get2DDataValue() == state.getValue(POWERED_SIDE) ? 15 : 0;
+    public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        return direction.get2DDataValue() == state.getValue(POWERED_SIDE) ? 15 : 0;
     }
 
     @Override
@@ -105,13 +105,13 @@ public class SequencerBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
-        if (!state.canSurvive(world, pos)) {
-            BlockEntity tileentity = state.hasBlockEntity() ? world.getBlockEntity(pos) : null;
-            dropResources(state, world, pos, tileentity);
-            world.removeBlock(pos, false);
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+        if (!state.canSurvive(level, pos)) {
+            BlockEntity tileentity = state.hasBlockEntity() ? level.getBlockEntity(pos) : null;
+            dropResources(state, level, pos, tileentity);
+            level.removeBlock(pos, false);
             for (Direction direction : Direction.values()) {
-                world.updateNeighborsAt(pos.relative(direction), this);
+                level.updateNeighborsAt(pos.relative(direction), this);
             }
         }
     }

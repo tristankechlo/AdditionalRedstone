@@ -23,7 +23,7 @@ public class CircuitBaseBlock extends Block {
     }
 
     @Override
-    public VoxelShape getShape(BlockState $$0, BlockGetter $$1, BlockPos $$2, CollisionContext $$3) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return BASE;
     }
 
