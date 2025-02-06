@@ -64,6 +64,8 @@ tasks.withType(JavaCompile) {
 
 processResources {
     from project(":common").sourceSets.main.resources
+    // file only used in dev-common and fabric
+    exclude("${mod_id}.accesswidener")
 }
 
 jar.finalizedBy('reobfJar')

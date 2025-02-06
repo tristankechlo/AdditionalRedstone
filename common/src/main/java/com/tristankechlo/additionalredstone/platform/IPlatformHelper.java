@@ -1,13 +1,14 @@
 package com.tristankechlo.additionalredstone.platform;
 
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
-import com.tristankechlo.additionalredstone.blockentity.*;
 import com.tristankechlo.additionalredstone.blocks.ThreeInputLogicGate;
 import com.tristankechlo.additionalredstone.container.CircuitMakerContainer;
 import com.tristankechlo.additionalredstone.recipe.CircuitMakerRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import java.nio.file.Path;
@@ -17,21 +18,7 @@ public interface IPlatformHelper {
 
     IPlatformHelper INSTANCE = AdditionalRedstone.load(IPlatformHelper.class);
 
-    Path getConfigDirectory();
-
-    BlockEntityType.Builder<OscillatorBlockEntity> buildBETypeOscillator();
-
-    BlockEntityType.Builder<SequencerBlockEntity> buildBlockEntityTypeSequencer();
-
-    BlockEntityType.Builder<TFlipFlopBlockEntity> buildBlockEntityTypeTFlipFlop();
-
-    BlockEntityType.Builder<TimerBlockEntity> buildBlockEntityTypeTimer();
-
-    BlockEntityType.Builder<SuperGateBlockEntity> buildBlockEntityTypeSuperGate();
-
-    BlockEntityType.Builder<LightDetectorBlockEntity> buildBlockEntityTypeLightDetector();
-
-    BlockEntityType.Builder<ToggleLatchBlockEntity> buildBlockEntityTypeToggleLatch();
+    <T extends BlockEntity> Supplier<BlockEntityType<T>> makeBlockEntityType(BlockEntityType.BlockEntitySupplier<T> supplier, Block block);
 
     Supplier<MenuType<CircuitMakerContainer>> buildContainerCircuitMaker();
 

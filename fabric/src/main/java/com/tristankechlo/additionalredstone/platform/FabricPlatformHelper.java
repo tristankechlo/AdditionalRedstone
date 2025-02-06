@@ -1,65 +1,28 @@
 package com.tristankechlo.additionalredstone.platform;
 
 import com.google.auto.service.AutoService;
-import com.tristankechlo.additionalredstone.blockentity.*;
 import com.tristankechlo.additionalredstone.blocks.ThreeInputLogicGate;
 import com.tristankechlo.additionalredstone.client.screen.*;
 import com.tristankechlo.additionalredstone.container.CircuitMakerContainer;
-import com.tristankechlo.additionalredstone.init.ModBlocks;
 import com.tristankechlo.additionalredstone.recipe.CircuitMakerRecipe;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
-import java.nio.file.Path;
 import java.util.function.Supplier;
 
 @AutoService(IPlatformHelper.class)
 public final class FabricPlatformHelper implements IPlatformHelper {
 
     @Override
-    public Path getConfigDirectory() {
-        return FabricLoader.getInstance().getConfigDir();
-    }
-
-    @Override
-    public BlockEntityType.Builder<OscillatorBlockEntity> buildBETypeOscillator() {
-        return BlockEntityType.Builder.of(OscillatorBlockEntity::new, ModBlocks.OSCILLATOR_BLOCK.get());
-    }
-
-    @Override
-    public BlockEntityType.Builder<SequencerBlockEntity> buildBlockEntityTypeSequencer() {
-        return BlockEntityType.Builder.of(SequencerBlockEntity::new, ModBlocks.SEQUENCER_BLOCK.get());
-    }
-
-    @Override
-    public BlockEntityType.Builder<TFlipFlopBlockEntity> buildBlockEntityTypeTFlipFlop() {
-        return BlockEntityType.Builder.of(TFlipFlopBlockEntity::new, ModBlocks.T_FLIP_FLOP_BLOCK.get());
-    }
-
-    @Override
-    public BlockEntityType.Builder<TimerBlockEntity> buildBlockEntityTypeTimer() {
-        return BlockEntityType.Builder.of(TimerBlockEntity::new, ModBlocks.TIMER_BLOCK.get());
-    }
-
-    @Override
-    public BlockEntityType.Builder<SuperGateBlockEntity> buildBlockEntityTypeSuperGate() {
-        return BlockEntityType.Builder.of(SuperGateBlockEntity::new, ModBlocks.SUPERGATE_BLOCK.get());
-    }
-
-    @Override
-    public BlockEntityType.Builder<LightDetectorBlockEntity> buildBlockEntityTypeLightDetector() {
-        return BlockEntityType.Builder.of(LightDetectorBlockEntity::new, ModBlocks.LIGHT_DETECTOR_BLOCK.get());
-    }
-
-    @Override
-    public BlockEntityType.Builder<ToggleLatchBlockEntity> buildBlockEntityTypeToggleLatch() {
-        return BlockEntityType.Builder.of(ToggleLatchBlockEntity::new, ModBlocks.TOGGLE_LATCH_BLOCK.get());
+    public <T extends BlockEntity> Supplier<BlockEntityType<T>> makeBlockEntityType(BlockEntityType.BlockEntitySupplier<T> supplier, Block block) {
+        return () -> BlockEntityType.Builder.of(supplier, block).build(null);
     }
 
     @Override

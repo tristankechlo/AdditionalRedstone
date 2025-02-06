@@ -12,13 +12,13 @@ public final class ModBlockEntities {
 
     public static final RegistrationProvider<BlockEntityType<?>> BLOCK_ENTITIES = RegistrationProvider.get(Registry.BLOCK_ENTITY_TYPE, AdditionalRedstone.MOD_ID);
 
-    public static final RegistryObject<BlockEntityType<OscillatorBlockEntity>> OSCILLATOR_BLOCK_ENTITY = BLOCK_ENTITIES.register("oscillator", () -> IPlatformHelper.INSTANCE.buildBETypeOscillator().build(null));
-    public static final RegistryObject<BlockEntityType<TimerBlockEntity>> TIMER_BLOCK_ENTITY = BLOCK_ENTITIES.register("timer", () -> IPlatformHelper.INSTANCE.buildBlockEntityTypeTimer().build(null));
-    public static final RegistryObject<BlockEntityType<SequencerBlockEntity>> SEQUENCER_BLOCK_ENTITY = BLOCK_ENTITIES.register("sequencer", () -> IPlatformHelper.INSTANCE.buildBlockEntityTypeSequencer().build(null));
-    public static final RegistryObject<BlockEntityType<TFlipFlopBlockEntity>> T_FLIP_FLOP_BLOCK_ENTITY = BLOCK_ENTITIES.register("t_flip_flop", () -> IPlatformHelper.INSTANCE.buildBlockEntityTypeTFlipFlop().build(null));
-    public static final RegistryObject<BlockEntityType<SuperGateBlockEntity>> SUPERGATE_BLOCK_ENTITY = BLOCK_ENTITIES.register("supergate", () -> IPlatformHelper.INSTANCE.buildBlockEntityTypeSuperGate().build(null));
-    public static final RegistryObject<BlockEntityType<LightDetectorBlockEntity>> LIGHT_DETECTOR_BLOCK_ENTITY = BLOCK_ENTITIES.register("light_detector", () -> IPlatformHelper.INSTANCE.buildBlockEntityTypeLightDetector().build(null));
-    public static final RegistryObject<BlockEntityType<ToggleLatchBlockEntity>> TOGGLE_LATCH_BLOCK_ENTITY = BLOCK_ENTITIES.register("toggle_latch", () -> IPlatformHelper.INSTANCE.buildBlockEntityTypeToggleLatch().build(null));
+    public static final RegistryObject<BlockEntityType<OscillatorBlockEntity>> OSCILLATOR_BLOCK_ENTITY = BLOCK_ENTITIES.register("oscillator", IPlatformHelper.INSTANCE.makeBlockEntityType(OscillatorBlockEntity::new, ModBlocks.OSCILLATOR_BLOCK.get()));
+    public static final RegistryObject<BlockEntityType<TimerBlockEntity>> TIMER_BLOCK_ENTITY = BLOCK_ENTITIES.register("timer", IPlatformHelper.INSTANCE.makeBlockEntityType(TimerBlockEntity::new, ModBlocks.TIMER_BLOCK.get()));
+    public static final RegistryObject<BlockEntityType<SequencerBlockEntity>> SEQUENCER_BLOCK_ENTITY = BLOCK_ENTITIES.register("sequencer", IPlatformHelper.INSTANCE.makeBlockEntityType(SequencerBlockEntity::new, ModBlocks.SEQUENCER_BLOCK.get()));
+    public static final RegistryObject<BlockEntityType<TFlipFlopBlockEntity>> T_FLIP_FLOP_BLOCK_ENTITY = BLOCK_ENTITIES.register("t_flip_flop", IPlatformHelper.INSTANCE.makeBlockEntityType(TFlipFlopBlockEntity::new, ModBlocks.T_FLIP_FLOP_BLOCK.get()));
+    public static final RegistryObject<BlockEntityType<SuperGateBlockEntity>> SUPERGATE_BLOCK_ENTITY = BLOCK_ENTITIES.register("supergate", IPlatformHelper.INSTANCE.makeBlockEntityType(SuperGateBlockEntity::new, ModBlocks.SUPERGATE_BLOCK.get()));
+    public static final RegistryObject<BlockEntityType<LightDetectorBlockEntity>> LIGHT_DETECTOR_BLOCK_ENTITY = BLOCK_ENTITIES.register("light_detector", IPlatformHelper.INSTANCE.makeBlockEntityType(LightDetectorBlockEntity::new, ModBlocks.LIGHT_DETECTOR_BLOCK.get()));
+    public static final RegistryObject<BlockEntityType<ToggleLatchBlockEntity>> TOGGLE_LATCH_BLOCK_ENTITY = BLOCK_ENTITIES.register("toggle_latch", IPlatformHelper.INSTANCE.makeBlockEntityType(ToggleLatchBlockEntity::new, ModBlocks.TOGGLE_LATCH_BLOCK.get()));
 
     public static void load() {}
 
