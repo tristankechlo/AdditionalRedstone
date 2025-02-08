@@ -56,11 +56,11 @@ jobs:
         with:
           distribution: "temurin"
           java-version: ${{ needs.prepare.outputs.java-version }}
-          cache: "gradle"
-          cache-dependency-path: "gradle.properties"
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-disabled: true
 
       - name: make gradle wrapper executable
         run: chmod +x ./gradlew
