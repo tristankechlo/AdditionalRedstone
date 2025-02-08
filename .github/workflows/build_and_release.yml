@@ -13,7 +13,7 @@ env:
   MODRINTH_FEATURED: false # if this version should be featured on modrinth
   DISCORD_COLOR: 16711680
   DISCORD_MENTION: "<@&890143567421530162>"
-  DISCORD_TITLE: "New version for Additional Redstone just released :exclamation:"
+  DISCORD_TITLE: "New version for AdditionalRedstone just :exclamation:"
   DISCORD_THUMBNAIL: "https://cdn.modrinth.com/data/hhraLneG/b7fd70f056843b480ce15f03bd5522405aafba28_96.webp"
 
 jobs:
