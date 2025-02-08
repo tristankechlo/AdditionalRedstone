@@ -1,5 +1,7 @@
 package com.tristankechlo.additionalredstone.commands;
 
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import net.minecraft.ChatFormatting;
@@ -8,9 +10,7 @@ import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import static net.minecraft.commands.Commands.literal;
 
 public enum ProjectLinks {
 
@@ -22,7 +22,6 @@ public enum ProjectLinks {
     MODRINTH("Check out the Modrinth page here: ", "https://modrinth.com/mod/additional-redstone");
 
     private final MutableComponent message;
-    public static final List<String> ARGS = Stream.of(ProjectLinks.values()).map(e -> e.name().toLowerCase()).collect(Collectors.toList());
 
     ProjectLinks(String message, String link) {
         this.message = new TextComponent(message);
@@ -35,15 +34,24 @@ public enum ProjectLinks {
         return 0;
     }
 
-    public static MutableComponent start() {
+    private static MutableComponent start() {
         return new TextComponent("[" + AdditionalRedstone.MOD_NAME + "] ").withStyle(ChatFormatting.GOLD);
     }
 
-    public static MutableComponent clickableLink(String url, String displayText) {
+    private static MutableComponent clickableLink(String url, String displayText) {
         MutableComponent mutableComponent = new TextComponent(displayText);
         mutableComponent.withStyle(ChatFormatting.GREEN, ChatFormatting.UNDERLINE);
         mutableComponent.withStyle(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url)));
         return mutableComponent;
+    }
+
+    public static void registerAsCommand(CommandDispatcher<CommandSourceStack> dispatcher, boolean dedicated) {
+        LiteralArgumentBuilder<CommandSourceStack> command = literal(AdditionalRedstone.MOD_ID);
+        for (ProjectLinks option : values()) {
+            command.then(literal(option.name().toLowerCase()).executes(option::execute));
+        }
+        dispatcher.register(command);
+        AdditionalRedstone.LOGGER.info("Command '/{}' registered", AdditionalRedstone.MOD_ID);
     }
 
 }

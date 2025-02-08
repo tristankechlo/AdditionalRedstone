@@ -1,8 +1,9 @@
 package com.tristankechlo.additionalredstone;
 
-import com.tristankechlo.additionalredstone.commands.ModCommand;
+import com.tristankechlo.additionalredstone.commands.ProjectLinks;
 import com.tristankechlo.additionalredstone.init.ForgeItemGroup;
 import com.tristankechlo.additionalredstone.platform.ForgePacketHandler;
+import net.minecraft.commands.Commands;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -25,7 +26,7 @@ public class ForgeAdditionalRedstone {
     }
 
     private void registerCommands(RegisterCommandsEvent event) {
-        ModCommand.register(event.getDispatcher());
+        ProjectLinks.registerAsCommand(event.getDispatcher(), event.getEnvironment() == Commands.CommandSelection.DEDICATED);
     }
 
 }
