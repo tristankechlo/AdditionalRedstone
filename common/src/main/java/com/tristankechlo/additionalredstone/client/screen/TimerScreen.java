@@ -145,7 +145,7 @@ public class TimerScreen extends CustomScreen {
                 consumer.accept(true);
             }
         }
-        return Mth.clamp(returnTime, TimerBlockEntity.minTime, TimerBlockEntity.maxTime);
+        return Mth.clamp(returnTime, TimerBlockEntity.MIN_TIME, TimerBlockEntity.MAX_TIME);
     }
 
 }

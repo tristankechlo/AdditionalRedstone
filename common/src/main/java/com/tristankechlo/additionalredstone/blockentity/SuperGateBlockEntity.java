@@ -14,13 +14,11 @@ import net.minecraft.world.level.block.state.BlockState;
 public class SuperGateBlockEntity extends BlockEntity {
 
     private boolean[] configuration;
-    private static final String TAG_NAME = "configuration";
-    private static final int NUMBER_OF_BITS = AdditionalRedstone.INPUT_STATES.length;
 
     public SuperGateBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.SUPERGATE_BLOCK_ENTITY.get(), pos, state);
-        this.configuration = new boolean[NUMBER_OF_BITS];
-        for (int i = 0; i < AdditionalRedstone.INPUT_STATES.length; i++) {
+        this.configuration = new boolean[8];
+        for (int i = 0; i < 8; i++) {
             boolean[] input = AdditionalRedstone.INPUT_STATES[i];
             this.configuration[i] = shouldBePowered(null, input[0], input[1], input[2]);
         }
@@ -30,7 +28,7 @@ public class SuperGateBlockEntity extends BlockEntity {
         if (entity == null) {
             return ThreeInputLogic.and(left, middle, right); // default configuration when the block is placed for the first time
         }
-        for (int i = 0; i < AdditionalRedstone.INPUT_STATES.length; i++) {
+        for (int i = 0; i < 8; i++) {
             boolean[] input = AdditionalRedstone.INPUT_STATES[i];
             if (input[0] == left && input[1] == middle && input[2] == right) {
                 return entity.configuration[i];
@@ -42,7 +40,7 @@ public class SuperGateBlockEntity extends BlockEntity {
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        byte temp = tag.getByte(TAG_NAME);
+        byte temp = tag.getByte("Configuration");
         this.configuration = byteToBooleans(temp);
     }
 
@@ -50,7 +48,7 @@ public class SuperGateBlockEntity extends BlockEntity {
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         byte temp = booleansToByte(configuration);
-        tag.putByte(TAG_NAME, temp);
+        tag.putByte("Configuration", temp);
     }
 
     public void setConfiguration(byte configuration) {
@@ -74,8 +72,8 @@ public class SuperGateBlockEntity extends BlockEntity {
     }
 
     public static boolean[] byteToBooleans(byte b) {
-        boolean[] result = new boolean[NUMBER_OF_BITS];
-        for (int i = 0; i < NUMBER_OF_BITS; i++) {
+        boolean[] result = new boolean[8];
+        for (int i = 0; i < 8; i++) {
             result[i] = (b & (1 << i)) != 0;
         }
         return result;
@@ -83,9 +81,9 @@ public class SuperGateBlockEntity extends BlockEntity {
 
     public static byte booleansToByte(boolean[] b) {
         byte result = 0;
-        for (int i = 0; i < NUMBER_OF_BITS; i++) {
+        for (int i = 0; i < 8; i++) {
             if (b[i]) {
-                result |= 1 << i;
+                result |= (byte) (1 << i);
             }
         }
         return result;

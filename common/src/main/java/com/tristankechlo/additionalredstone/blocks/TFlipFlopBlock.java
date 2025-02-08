@@ -24,11 +24,11 @@ public class TFlipFlopBlock extends BaseDiodeBlock implements EntityBlock {
 
     @Override
     protected void checkTickOnNeighbor(Level level, BlockPos pos, BlockState state) {
-        BlockEntity tileentity = level.getBlockEntity(pos);
+        BlockEntity blockEntity = level.getBlockEntity(pos);
         boolean change = false;
-        if (tileentity instanceof TFlipFlopBlockEntity) {
+        if (blockEntity instanceof TFlipFlopBlockEntity) {
             boolean input = this.getInputSignal(level, pos, state) > 0;
-            change = ((TFlipFlopBlockEntity) tileentity).shouldBePowered(input);
+            change = ((TFlipFlopBlockEntity) blockEntity).shouldBePowered(input);
         }
         if (change && !level.getBlockTicks().willTickThisTick(pos, this)) {
             TickPriority tickpriority = TickPriority.HIGH;

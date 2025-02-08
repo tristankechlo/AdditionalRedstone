@@ -62,11 +62,11 @@ public class OscillatorBlockEntity extends BlockEntity {
     }
 
     private void updatePower(boolean powered) {
-        BlockState blockstate = this.getBlockState();
-        Block block = blockstate.getBlock();
-        if (block instanceof OscillatorBlock) {
+        BlockState state = this.getBlockState();
+        Block block = state.getBlock();
+        if ((block instanceof OscillatorBlock) && this.level != null) {
             this.powered = powered;
-            OscillatorBlock.setPowered(blockstate, this.level, this.worldPosition, powered);
+            OscillatorBlock.setPowered(state, this.level, this.worldPosition, powered);
         }
     }
 

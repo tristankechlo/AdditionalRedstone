@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.Mod;
 @Mod(AdditionalRedstone.MOD_ID)
 public class ForgeAdditionalRedstone {
 
+    // registers the creative tab
     public static final CreativeModeTab ITEM_GROUP = new ForgeItemGroup();
 
     public ForgeAdditionalRedstone() {

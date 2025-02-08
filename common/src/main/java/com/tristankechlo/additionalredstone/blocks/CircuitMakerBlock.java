@@ -47,8 +47,8 @@ public class CircuitMakerBlock extends HorizontalDirectionalBlock {
     @Override
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
         if (!state.canSurvive(level, pos)) {
-            BlockEntity tileentity = state.hasBlockEntity() ? level.getBlockEntity(pos) : null;
-            dropResources(state, level, pos, tileentity);
+            BlockEntity blockEntity = state.hasBlockEntity() ? level.getBlockEntity(pos) : null;
+            dropResources(state, level, pos, blockEntity);
             level.removeBlock(pos, false);
             for (Direction direction : Direction.values()) {
                 level.updateNeighborsAt(pos.relative(direction), this);

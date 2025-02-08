@@ -37,7 +37,7 @@ public class SequencerBlock extends Block implements EntityBlock {
 
     public SequencerBlock() {
         super(Properties.copy(Blocks.REPEATER));
-        this.registerDefaultState(this.stateDefinition.any().setValue(POWERED_SIDE, 0));
+        this.registerDefaultState(this.defaultBlockState().setValue(POWERED_SIDE, 0));
     }
 
     @Override
@@ -107,8 +107,8 @@ public class SequencerBlock extends Block implements EntityBlock {
     @Override
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
         if (!state.canSurvive(level, pos)) {
-            BlockEntity tileentity = state.hasBlockEntity() ? level.getBlockEntity(pos) : null;
-            dropResources(state, level, pos, tileentity);
+            BlockEntity blockEntity = state.hasBlockEntity() ? level.getBlockEntity(pos) : null;
+            dropResources(state, level, pos, blockEntity);
             level.removeBlock(pos, false);
             for (Direction direction : Direction.values()) {
                 level.updateNeighborsAt(pos.relative(direction), this);

@@ -36,7 +36,7 @@ public class OscillatorBlock extends BaseEntityBlock {
 
     public OscillatorBlock() {
         super(Properties.copy(Blocks.REPEATER));
-        this.registerDefaultState(this.stateDefinition.any().setValue(POWERED, Boolean.FALSE));
+        this.registerDefaultState(this.defaultBlockState().setValue(POWERED, Boolean.FALSE));
     }
 
     @Override
@@ -57,8 +57,8 @@ public class OscillatorBlock extends BaseEntityBlock {
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
-        return canSupportRigidBlock(worldIn, pos.below());
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        return canSupportRigidBlock(level, pos.below());
     }
 
     @Override
@@ -67,9 +67,9 @@ public class OscillatorBlock extends BaseEntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        BlockEntity tile = worldIn.getBlockEntity(pos);
-        if ((tile instanceof OscillatorBlockEntity oscillator) && worldIn.isClientSide) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+        BlockEntity tile = level.getBlockEntity(pos);
+        if ((tile instanceof OscillatorBlockEntity oscillator) && level.isClientSide) {
             int ticksOn = oscillator.getTicksOn();
             int ticksOff = oscillator.getTicksOff();
             IPlatformHelper.INSTANCE.openOscillatorScreen(ticksOn, ticksOff, pos);
@@ -84,8 +84,8 @@ public class OscillatorBlock extends BaseEntityBlock {
     }
 
     @Override
-    public int getSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
-        return blockState.getValue(POWERED) ? 15 : 0;
+    public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side) {
+        return state.getValue(POWERED) ? 15 : 0;
     }
 
     @Override

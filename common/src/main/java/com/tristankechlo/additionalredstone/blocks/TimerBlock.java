@@ -36,7 +36,7 @@ public class TimerBlock extends BaseEntityBlock {
 
     public TimerBlock() {
         super(Properties.copy(Blocks.REPEATER));
-        this.registerDefaultState(this.stateDefinition.any().setValue(POWERED, Boolean.FALSE));
+        this.registerDefaultState(this.defaultBlockState().setValue(POWERED, Boolean.FALSE));
     }
 
     @Override

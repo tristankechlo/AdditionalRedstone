@@ -17,8 +17,8 @@ public class TimerBlockEntity extends BlockEntity {
     private int powerDownTime = 2000;
     private int interval = 10;
     private boolean powered;
-    public static final int minTime = 0;
-    public static final int maxTime = 24000;
+    public static final int MIN_TIME = 0;
+    public static final int MAX_TIME = 24000;
 
     public TimerBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.TIMER_BLOCK_ENTITY.get(), pos, state);
@@ -48,7 +48,7 @@ public class TimerBlockEntity extends BlockEntity {
     }
 
     private boolean isInTargetTime() {
-        int time = (int) (level.getDayTime() % maxTime);
+        int time = (int) (level.getDayTime() % MAX_TIME);
         if (this.powerUpTime < powerDownTime) {
             if (time >= this.powerUpTime && time <= this.powerDownTime) {
                 return true;
@@ -64,7 +64,7 @@ public class TimerBlockEntity extends BlockEntity {
     private void updatePower(boolean powered) {
         BlockState blockstate = this.getBlockState();
         Block block = blockstate.getBlock();
-        if (block instanceof TimerBlock) {
+        if ((block instanceof TimerBlock) && this.level != null) {
             this.powered = powered;
             TimerBlock.setPowered(blockstate, this.level, this.worldPosition, powered);
         }
@@ -113,8 +113,8 @@ public class TimerBlockEntity extends BlockEntity {
     }
 
     public void setConfiguration(int powerUp, int powerDown, int interval) {
-        this.powerUpTime = Mth.clamp(powerUp, minTime, maxTime);
-        this.powerDownTime = Mth.clamp(powerDown, minTime, maxTime);
+        this.powerUpTime = Mth.clamp(powerUp, MIN_TIME, MAX_TIME);
+        this.powerDownTime = Mth.clamp(powerDown, MIN_TIME, MAX_TIME);
         this.interval = Mth.clamp(interval, 1, 1000);
     }
 

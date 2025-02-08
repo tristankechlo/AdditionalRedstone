@@ -30,7 +30,7 @@ public class LightDetectorBlock extends BaseEntityBlock {
 
     public LightDetectorBlock() {
         super(Properties.copy(Blocks.DAYLIGHT_DETECTOR));
-        this.registerDefaultState(this.stateDefinition.any().setValue(POWER, 0));
+        this.registerDefaultState(this.defaultBlockState().setValue(POWER, 0));
     }
 
     @Override

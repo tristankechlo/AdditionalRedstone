@@ -2,11 +2,11 @@ package com.tristankechlo.additionalredstone.blockentity;
 
 import com.tristankechlo.additionalredstone.blocks.SequencerBlock;
 import com.tristankechlo.additionalredstone.init.ModBlockEntities;
+import com.tristankechlo.additionalredstone.init.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -20,27 +20,16 @@ public class SequencerBlockEntity extends BlockEntity {
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, SequencerBlockEntity blockEntity) {
-        if (!level.isClientSide && pos.equals(blockEntity.worldPosition)) {
-            blockEntity.tick();
+        if (level.isClientSide || !pos.equals(blockEntity.worldPosition) || !state.is(ModBlocks.SEQUENCER_BLOCK.get())) {
+            return;
         }
-    }
-
-    private void tick() {
-        if (this.level != null && this.interval > 0) {
-            if (this.tickCounter >= this.interval) {
-                this.tickCounter = 0;
-                this.updatePower();
+        if (blockEntity.level != null && blockEntity.interval > 0) {
+            if (blockEntity.tickCounter >= blockEntity.interval) {
+                blockEntity.tickCounter = 0;
+                SequencerBlock.updatePower(state, level, blockEntity.worldPosition);
             } else {
-                this.tickCounter++;
+                blockEntity.tickCounter++;
             }
-        }
-    }
-
-    private void updatePower() {
-        BlockState blockstate = this.getBlockState();
-        Block block = blockstate.getBlock();
-        if (block instanceof SequencerBlock) {
-            SequencerBlock.updatePower(blockstate, level, worldPosition);
         }
     }
 
