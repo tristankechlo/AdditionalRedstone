@@ -23,8 +23,8 @@ import java.util.function.Supplier;
 public final class ForgePlatformHelper implements IPlatformHelper {
 
     @Override
-    public <T extends BlockEntity> Supplier<BlockEntityType<T>> makeBlockEntityType(BlockEntityType.BlockEntitySupplier<T> supplier, Block block) {
-        return () -> BlockEntityType.Builder.of(supplier, block).build(null);
+    public <T extends BlockEntity> Supplier<BlockEntityType<T>> makeBlockEntityType(BlockEntityType.BlockEntitySupplier<T> supplier, Supplier<Block> block) {
+        return () -> BlockEntityType.Builder.of(supplier, block.get()).build(null);
     }
 
     @Override

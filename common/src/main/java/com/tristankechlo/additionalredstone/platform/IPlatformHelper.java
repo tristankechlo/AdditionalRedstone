@@ -11,14 +11,13 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
-import java.nio.file.Path;
 import java.util.function.Supplier;
 
 public interface IPlatformHelper {
 
     IPlatformHelper INSTANCE = AdditionalRedstone.load(IPlatformHelper.class);
 
-    <T extends BlockEntity> Supplier<BlockEntityType<T>> makeBlockEntityType(BlockEntityType.BlockEntitySupplier<T> supplier, Block block);
+    <T extends BlockEntity> Supplier<BlockEntityType<T>> makeBlockEntityType(BlockEntityType.BlockEntitySupplier<T> supplier, Supplier<Block> block);
 
     Supplier<MenuType<CircuitMakerContainer>> buildContainerCircuitMaker();
 
