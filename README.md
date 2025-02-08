@@ -26,6 +26,10 @@
 - Toggle Latch
 - Timer
 - Circuit Maker
+- Supergate
+- Dimmable Redstone Lamp
+- Light Detector
+- LED
 
 #### Translations:
 
