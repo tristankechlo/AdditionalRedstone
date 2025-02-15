@@ -1,25 +1,15 @@
-buildscript {
-    repositories {
-        maven { url = 'https://maven.minecraftforge.net' }
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-    }
+plugins {
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
 }
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'eclipse'
 
-version = "forge-${mod_version}"
-group = 'com.tristankechlo.additionalredstone'
-archivesBaseName = 'additionalredstone'
+version = "${minecraft_version}-${mod_version}"
+archivesBaseName = "${mod_id}-forge"
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(8) // Mojang ships Java 8 to end users, so your mod should target Java 8.
-println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+java.toolchain.languageVersion = JavaLanguageVersion.of(java_version)
 
 minecraft {
-    mappings channel: 'official', version: project.mappings
-    
+    mappings channel: 'official', version: minecraft_version
+
     runs {
         client {
             workingDirectory project.file('run')
@@ -33,6 +23,7 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+            args '--nogui'
 
             mods { additionalredstone { source sourceSets.main } }
         }
@@ -40,20 +31,55 @@ minecraft {
 }
 
 repositories {
-    maven { url 'https://maven.blamejared.com' }
+    maven { url = "https://dvs1.progwml6.com/files/maven/" } //  maven that hosts JEI files before January 2023
+    maven { url = "https://maven.blamejared.com/" } // location of the maven that hosts JEI files since January 2023
+    maven { url = "https://modmaven.dev" } // location of a maven mirror for JEI files, as a fallback
 }
 
-dependencies {    
-    minecraft "net.minecraftforge:forge:${forge_version}"
+dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    // compile against the JEI API but do not include it at runtime
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
+    // at runtime, use the full JEI jar
+    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 }
 
 jar {
+    from rootProject.file('LICENSE')
     manifest {
         attributes([
-            "Specification-Title": "Additional Redstone",
-            "Implementation-Title": project.name,
-            "Implementation-Version": "${version}",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                'Specification-Title'     : mod_name,
+                'Specification-Vendor'    : mod_author,
+                'Specification-Version'   : project.jar.archiveVersion,
+                'Implementation-Title'    : project.name,
+                'Implementation-Version'  : project.jar.archiveVersion,
+                'Implementation-Vendor'   : mod_author,
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                'Timestamp'               : System.currentTimeMillis(),
+                'Built-On-Java'           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
+                'Build-On-Minecraft'      : minecraft_version
         ])
     }
+}
+
+jar.finalizedBy('reobfJar')
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+processResources {
+    def expandProps = [
+            "version"           : "${minecraft_version}-${mod_version}",
+            "version_range"     : version_range,
+            "minecraft_version" : minecraft_version,
+            "java_version"      : java_version,
+            "forge_loader_range": forge_loader_range
+    ]
+
+    filesMatching(['META-INF/mods.toml']) {
+        expand expandProps
+    }
+    inputs.properties(expandProps)
 }
