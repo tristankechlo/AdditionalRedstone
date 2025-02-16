@@ -1,0 +1,6 @@
+{
+    "parent": "additionalredstone:block/template/led",
+    "textures": {
+        "lamp": "additionalredstone:block/dimmable_redstone_lamp_dim"
+    }
+}

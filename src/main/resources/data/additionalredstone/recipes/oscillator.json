@@ -1,22 +1,12 @@
 {
-	"type" : "minecraft:crafting_shaped",
-	"pattern" : [
-		"#X#",
-		"SSS"
-	],
-	"key" : {
-		"#" : {
-			"tag" : "forge:dusts/redstone"
-		},
-		"X" : {
-			"item" : "minecraft:redstone_torch"
-		},
-		"S" : {
-			"item" : "minecraft:stone"
-		}
-	},
-	"result" : {
-		"item" : "additionalredstone:oscillator",
-		"count" : 1
-	}
+    "type": "additionalredstone:circuit_maker",
+    "input_1": {
+        "tag": "forge:dusts/redstone"
+    },
+    "input_2": {
+        "item": "minecraft:redstone_torch"
+    },
+    "result": {
+        "item": "additionalredstone:oscillator"
+    }
 }
