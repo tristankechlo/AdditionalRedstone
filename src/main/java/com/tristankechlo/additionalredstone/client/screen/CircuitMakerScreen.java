@@ -1,271 +1,205 @@
 package com.tristankechlo.additionalredstone.client.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.container.CircuitMakerContainer;
-import com.tristankechlo.additionalredstone.util.Circuits;
-
+import com.tristankechlo.additionalredstone.recipe.CircuitMakerRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 public class CircuitMakerScreen extends ContainerScreen<CircuitMakerContainer> {
 
-	private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(AdditionalRedstone.MOD_ID,
-			"textures/gui/container/circuit_maker.png");
-	private static final ResourceLocation ICONS = new ResourceLocation(AdditionalRedstone.MOD_ID,
-			"textures/other/icons.png");
-	private static final ItemStack[] STACKS = new ItemStack[] { new ItemStack(Items.REDSTONE),
-			new ItemStack(Items.QUARTZ), new ItemStack(Items.REDSTONE_TORCH), new ItemStack(Items.STONE_SLAB) };
-	private float sliderProgress;
-	private boolean clickedOnSroll;
-	private int recipeIndexOffset;
-	private boolean hasItemsInInputSlot;
-	private int buttonsPerRow = 4;
-	private int buttonSize = 18;
-	private boolean renderInputHelp = false;
+    private static final ResourceLocation BG_LOCATION = new ResourceLocation(AdditionalRedstone.MOD_ID, "textures/gui/container/circuit_maker.png");
+    private static final int SCROLLER_WIDTH = 12;
+    private static final int SCROLLER_HEIGHT = 15;
+    private static final int RECIPES_IMAGE_SIZE_WIDTH = 18;
+    private static final int RECIPES_IMAGE_SIZE_HEIGHT = 18;
+    private static final int SCROLLER_FULL_HEIGHT = 54;
+    private static final int RECIPES_X = 59;
+    private static final int RECIPES_Y = 16;
+    private float scrollOffs;
+    private boolean scrolling;
+    private int startIndex;
+    private boolean displayRecipes;
 
-	public CircuitMakerScreen(CircuitMakerContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
-		super(screenContainer, inv, titleIn);
-		this.imageWidth = 192;
-		this.imageHeight = 167;
-		this.titleLabelY -= 1;
-		this.titleLabelX -= 3;
-		this.inventoryLabelX -= 2;
-		this.inventoryLabelY += 2;
-		menu.setInventoryChangeListener(this::onInventoryChange);
-	}
+    public CircuitMakerScreen(CircuitMakerContainer screenContainer, PlayerInventory inv, ITextComponent title) {
+        super(screenContainer, inv, title);
+        this.imageWidth = 192;
+        this.imageHeight = 166;
+        this.titleLabelY -= 1;
+        this.titleLabelX -= 3;
+        this.inventoryLabelX += 8;
+        this.inventoryLabelY += 1;
+        menu.setInventoryChangeListener(this::containerChanged);
+    }
 
-	@Override
-	public boolean isPauseScreen() {
-		return super.isPauseScreen();
-	}
+    @Override
+    public void render(MatrixStack poseStack, int mouseX, int mouseY, float partialTicks) {
+        super.render(poseStack, mouseX, mouseY, partialTicks);
+        this.renderTooltip(poseStack, mouseX, mouseY);
+    }
 
-	@Override
-	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		super.render(matrixStack, mouseX, mouseY, partialTicks);
-		this.renderTooltip(matrixStack, mouseX, mouseY);
-	}
+    @Override
+    protected void renderBg(MatrixStack poseStack, float partialTicks, int x, int y) {
+        this.renderBackground(poseStack);
 
-	@Override
-	@SuppressWarnings("deprecation")
-	protected void renderBg(MatrixStack matrixStack, float partialTicks, int x, int y) {
-		this.renderBackground(matrixStack);
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.minecraft.getTextureManager().bind(BACKGROUND_TEXTURE);
-		int i = this.leftPos;
-		int j = this.topPos;
-		this.blit(matrixStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
+        //render background image
+        this.minecraft.getTextureManager().bind(BG_LOCATION);
+        this.blit(poseStack, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+        if (AdditionalRedstone.JEI_LOADED) {
+            this.blit(poseStack, this.leftPos + this.imageWidth - 3, this.topPos, 192, 0, 18, 22);
+        }
 
-		// render scrollbar
-		int k = (int) (41.0F * this.sliderProgress);
-		this.blit(matrixStack, i + 144, j + 16 + k, 232 + (this.canScroll() ? 0 : 12), 0, 12, 15);
+        //render scrollbar
+        int offset = (int) (39.0F * this.scrollOffs);
+        this.blit(poseStack, this.leftPos + 135, this.topPos + 16 + offset, 214 + (this.isScrollBarActive() ? 0 : SCROLLER_WIDTH), 0, SCROLLER_WIDTH, SCROLLER_HEIGHT);
 
-		// render buttons with items
-		if (this.hasItemsInInputSlot) {
-			int l = this.leftPos + 68;
-			int i1 = this.topPos + 15;
-			int j1 = this.recipeIndexOffset + 12;
-			this.renderButtons(matrixStack, x, y, l, i1, j1);
-			this.renderCraftableItems(l, i1, j1);
-		}
+        //render recipes and buttons
+        int $$7 = this.leftPos + RECIPES_X;
+        int $$8 = this.topPos + RECIPES_Y;
+        int $$9 = this.startIndex + SCROLLER_WIDTH;
+        this.renderButtons(poseStack, x, y, $$7, $$8, $$9);
+        this.renderRecipes(poseStack, $$7, $$8, $$9);
+    }
 
-		// render help for input slots
-		if (this.renderInputHelp) {
-			this.renderInputHelp(matrixStack, x, y);
-		} else {
-			int xx = this.leftPos - 25;
-			int yy = this.topPos;
-			this.minecraft.getTextureManager().bind(ICONS);
-			this.blit(matrixStack, xx, yy, 50, 0, 25, 25);
-			if (x >= xx && x < xx + 25 && y >= yy && y < yy + 25) {
-				ITextComponent helpText = new TranslationTextComponent(
-						"screen.additionalredstone.circuit_maker.show_recipe");
-				this.renderTooltip(matrixStack, helpText, x, y);
-			}
-		}
-	}
+    @Override
+    protected void renderTooltip(MatrixStack poseStack, int x, int y) {
+        super.renderTooltip(poseStack, x, y);
 
-	private void renderInputHelp(MatrixStack matrixStack, int mouseX, int mouseY) {
-		this.minecraft.getTextureManager().bind(BACKGROUND_TEXTURE);
-		this.blit(matrixStack, this.leftPos - 72, this.topPos, 18, 167, 72, 52);
-		final ItemRenderer renderer = this.minecraft.getItemRenderer();
-		for (int i = 0; i < 3; i++) {
-			int x = this.leftPos - 64 + (i * 20);
-			int y = this.topPos + 8;
-			renderer.renderGuiItem(STACKS[i], x, y);
-			if (mouseX >= x && mouseX < x + 16 && mouseY >= y && mouseY < y + 16) {
-				this.renderTooltip(matrixStack, STACKS[i], mouseX, mouseY);
-			}
-		}
-		for (int i = 0; i < 3; i++) {
-			int x = this.leftPos - 64 + (i * 20);
-			int y = this.topPos + 28;
-			renderer.renderGuiItem(STACKS[3], x, y);
-			if (mouseX >= x && mouseX < x + 16 && mouseY >= y && mouseY < y + 16) {
-				this.renderTooltip(matrixStack, STACKS[3], mouseX, mouseY);
-			}
-		}
-		int xx = this.leftPos - 97;
-		int yy = this.topPos;
-		this.minecraft.getTextureManager().bind(ICONS);
-		this.blit(matrixStack, xx, yy, 25, 0, 25, 25);
-		this.blit(matrixStack, xx + 3, yy + 4, 1, 1, 18, 18);
-		if (mouseX >= xx && mouseX < xx + 25 && mouseY >= yy && mouseY < yy + 25) {
-			ITextComponent helpText = new TranslationTextComponent("screen.additionalredstone.close");
-			this.renderTooltip(matrixStack, helpText, mouseX, mouseY);
-		}
-	}
+        // render tooltips for items in the buttons
+        if (this.displayRecipes) {
+            int $$3 = this.leftPos + RECIPES_X;
+            int $$4 = this.topPos + RECIPES_Y;
+            int $$5 = this.startIndex + SCROLLER_WIDTH;
+            List<CircuitMakerRecipe> recipes = this.menu.getRecipes();
 
-	@Override
-	protected void renderTooltip(MatrixStack matrixStack, int x, int y) {
-		super.renderTooltip(matrixStack, x, y);
+            for (int $$7 = this.startIndex; $$7 < $$5 && $$7 < (this.menu).getNumRecipes(); ++$$7) {
+                int $$8 = $$7 - this.startIndex;
+                int $$9 = $$3 + $$8 % 4 * RECIPES_IMAGE_SIZE_WIDTH;
+                int $$10 = $$4 + $$8 / 4 * RECIPES_IMAGE_SIZE_HEIGHT + 2;
+                if (x >= $$9 && x < $$9 + RECIPES_IMAGE_SIZE_WIDTH && y >= $$10 && y < $$10 + RECIPES_IMAGE_SIZE_HEIGHT) {
+                    renderTooltip(poseStack, recipes.get($$7).getResultItem(), x, y);
+                }
+            }
+        }
+    }
 
-		// render tooltips for items in the buttons
-		if (this.hasItemsInInputSlot) {
-			int i = this.leftPos + 68;
-			int j = this.topPos + 15;
-			int k = this.recipeIndexOffset + 12;
-			Circuits[] list = Circuits.values();
-			for (int l = this.recipeIndexOffset; l < k && l < Circuits.SIZE; ++l) {
-				int i1 = l - this.recipeIndexOffset;
-				int j1 = i + i1 % buttonsPerRow * buttonSize;
-				int k1 = j + i1 / buttonsPerRow * buttonSize + 2;
-				if (x >= j1 && x < j1 + buttonSize && y >= k1 && y < k1 + buttonSize) {
-					this.renderTooltip(matrixStack, list[l].getItemStack(), x, y);
-				}
-			}
-		}
-	}
+    private void renderButtons(MatrixStack poseStack, int x, int y, int $$3, int $$4, int $$5) {
+        for (int index = this.startIndex; index < $$5 && index < (this.menu).getNumRecipes(); ++index) {
+            int $$7 = index - this.startIndex;
+            int $$8 = $$3 + $$7 % 4 * RECIPES_IMAGE_SIZE_WIDTH;
+            int $$9 = $$7 / 4;
+            int $$10 = $$4 + $$9 * RECIPES_IMAGE_SIZE_HEIGHT + 1;
+            int yPosButtonTexture = 0;
+            if (index == (this.menu).getSelectedRecipe()) {
+                yPosButtonTexture += 18;
+            } else if (x >= $$8 && y >= $$10 && x < $$8 + RECIPES_IMAGE_SIZE_WIDTH && y < $$10 + RECIPES_IMAGE_SIZE_HEIGHT) {
+                yPosButtonTexture += 36;
+            }
 
-	private void renderButtons(MatrixStack matrixStack, int x, int y, int p1, int p2, int p3) {
-		for (int i = this.recipeIndexOffset; i < p3 && i < Circuits.SIZE; ++i) {
-			int j = i - this.recipeIndexOffset;
-			int k = p1 + j % buttonsPerRow * buttonSize;
-			int l = j / buttonsPerRow;
-			int i1 = p2 + l * buttonSize + 2;
-			int j1 = this.imageHeight;
-			if (i == this.menu.getSelectedRecipe() - 1) {
-				j1 += buttonSize;
-			} else if (x >= k && y >= i1 && x < k + buttonSize && y < i1 + buttonSize) {
-				j1 += (2 * buttonSize);
-			}
-			this.blit(matrixStack, k, i1 - 1, 0, j1, buttonSize, buttonSize);
-		}
-	}
+            blit(poseStack, $$8, $$10 - 1, 238, yPosButtonTexture, RECIPES_IMAGE_SIZE_WIDTH, RECIPES_IMAGE_SIZE_HEIGHT);
+        }
+    }
 
-	private void renderCraftableItems(int left, int top, int recipeIndexOffsetMax) {
-		Circuits[] list = Circuits.values();
-		for (int i = this.recipeIndexOffset; i < recipeIndexOffsetMax && i < Circuits.SIZE; ++i) {
-			int j = i - this.recipeIndexOffset;
-			int k = left + j % buttonsPerRow * buttonSize + 1;
-			int l = j / buttonsPerRow;
-			int i1 = top + l * buttonSize + 1;
-			this.minecraft.getItemRenderer().renderAndDecorateItem(list[i].getItemStack(), k, i1);
-		}
-	}
+    private void renderRecipes(MatrixStack poseStack, int $$1, int $$2, int $$3) {
+        List<CircuitMakerRecipe> recipes = (this.menu).getRecipes();
+        for (int index = this.startIndex; index < $$3 && index < (this.menu).getNumRecipes(); ++index) {
+            int $$6 = index - this.startIndex;
+            int $$7 = $$1 + $$6 % 4 * RECIPES_IMAGE_SIZE_WIDTH + 1;
+            int $$8 = $$6 / 4;
+            int $$9 = $$2 + $$8 * RECIPES_IMAGE_SIZE_HEIGHT + 1;
+            this.minecraft.getItemRenderer().renderAndDecorateItem(recipes.get(index).getResultItem(), $$7, $$9);
+        }
+    }
 
-	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		this.clickedOnSroll = false;
-		if (this.hasItemsInInputSlot) {
-			int i = this.leftPos + 68;
-			int j = this.topPos + 15;
-			int k = this.recipeIndexOffset + 12;
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int key) {
+        this.scrolling = false;
+        if (this.displayRecipes) {
+            int $$3 = this.leftPos + RECIPES_X;
+            int $$4 = this.topPos + RECIPES_Y;
+            int $$5 = this.startIndex + SCROLLER_WIDTH;
 
-			for (int l = this.recipeIndexOffset; l < k; ++l) {
-				int i1 = l - this.recipeIndexOffset;
-				double d0 = mouseX - (double) (i + i1 % buttonsPerRow * buttonSize);
-				double d1 = mouseY - (double) (j + i1 / buttonsPerRow * buttonSize);
-				double buttonSize2 = (double) this.buttonSize;
-				if (d0 >= 0.0D && d1 >= 0.0D && d0 < buttonSize2 && d1 < buttonSize2
-						&& this.menu.clickMenuButton(this.minecraft.player, l + 1)) {
-					Minecraft.getInstance().getSoundManager()
-							.play(SimpleSound.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
-					this.minecraft.gameMode.handleInventoryButtonClick((this.menu).containerId, l + 1);
-					return true;
-				}
-			}
-			// scroll bar start
-			i = this.leftPos + 152;
-			j = this.topPos + 14;
-			if (mouseX >= (double) i && mouseX < (double) (i + 12) && mouseY >= (double) j
-					&& mouseY < (double) (j + 54)) {
-				this.clickedOnSroll = true;
-			}
-		}
-		if (!this.renderInputHelp) {
-			int x = this.leftPos - 25;
-			int y = this.topPos;
-			if (mouseX >= x && mouseX < x + 25 && mouseY >= y && mouseY < y + 25) {
-				this.renderInputHelp = true;
-				Minecraft.getInstance().getSoundManager()
-						.play(SimpleSound.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
-			}
-		} else {
-			int x = this.leftPos - 97;
-			int y = this.topPos;
-			if (mouseX >= x && mouseX < x + 25 && mouseY >= y && mouseY < y + 25) {
-				this.renderInputHelp = false;
-				Minecraft.getInstance().getSoundManager()
-						.play(SimpleSound.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
-			}
-		}
-		return super.mouseClicked(mouseX, mouseY, button);
-	}
+            for (int $$6 = this.startIndex; $$6 < $$5; ++$$6) {
+                int $$7 = $$6 - this.startIndex;
+                double $$8 = mouseX - (double) ($$3 + $$7 % 4 * RECIPES_IMAGE_SIZE_WIDTH);
+                double $$9 = mouseY - (double) ($$4 + $$7 / 4 * RECIPES_IMAGE_SIZE_HEIGHT);
+                if ($$8 >= 0.0 && $$9 >= 0.0 && $$8 < RECIPES_IMAGE_SIZE_WIDTH && $$9 < RECIPES_IMAGE_SIZE_HEIGHT && (this.menu).clickMenuButton(this.minecraft.player, $$6)) {
+                    Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
+                    this.minecraft.gameMode.handleInventoryButtonClick((this.menu).containerId, $$6);
+                    return true;
+                }
+            }
 
-	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-		if (this.clickedOnSroll && this.canScroll()) {
-			int i = this.topPos + 14;
-			int j = i + 54;
-			this.sliderProgress = ((float) mouseY - (float) i - 7.5F) / ((float) (j - i) - 15.0F);
-			this.sliderProgress = MathHelper.clamp(this.sliderProgress, 0.0F, 1.0F);
-			this.recipeIndexOffset = (int) ((double) (this.sliderProgress * (float) this.getHiddenRows()) + 0.5D) * 4;
-			return true;
-		} else {
-			return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
-		}
-	}
+            $$3 = this.leftPos + 140;
+            $$4 = this.topPos + 16;
+            if (mouseX >= (double) $$3 && mouseX < (double) ($$3 + SCROLLER_WIDTH) && mouseY >= (double) $$4 && mouseY < (double) ($$4 + SCROLLER_FULL_HEIGHT)) {
+                this.scrolling = true;
+            }
+        }
 
-	@Override
-	public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-		if (this.canScroll()) {
-			int i = this.getHiddenRows();
-			this.sliderProgress = (float) ((double) this.sliderProgress - delta / (double) i);
-			this.sliderProgress = MathHelper.clamp(this.sliderProgress, 0.0F, 1.0F);
-			this.recipeIndexOffset = (int) ((double) (this.sliderProgress * (float) i) + 0.5D) * 4;
-		}
-		return true;
-	}
+        return super.mouseClicked(mouseX, mouseY, key);
+    }
 
-	private boolean canScroll() {
-		return this.hasItemsInInputSlot && Circuits.SIZE > 12;
-	}
+    @Override
+    public boolean mouseDragged(double mouseX, double mouseY, int key, double dragX, double dragY) {
+        if (this.scrolling && this.isScrollBarActive()) {
+            int startScrollBarY = this.topPos + RECIPES_Y;
+            int endScrollBarY = startScrollBarY + SCROLLER_FULL_HEIGHT;
+            this.scrollOffs = ((float) mouseY - (float) startScrollBarY - 7.5F) / ((float) (endScrollBarY - startScrollBarY) - 15.0F);
+            this.scrollOffs = MathHelper.clamp(this.scrollOffs, 0.0F, 1.0F);
+            this.startIndex = (int) ((double) (this.scrollOffs * (float) this.getOffscreenRows()) + 0.5) * 4;
+            return true;
+        } else {
+            return super.mouseDragged(mouseX, mouseY, key, dragX, dragY);
+        }
+    }
 
-	private int getHiddenRows() {
-		return (Circuits.SIZE + 4 - 1) / 4 - 3;
-	}
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+        if (this.isScrollBarActive()) {
+            int offscreenRows = this.getOffscreenRows();
+            float $$4 = (float) delta / (float) offscreenRows;
+            this.scrollOffs = MathHelper.clamp(this.scrollOffs - $$4, 0.0F, 1.0F);
+            this.startIndex = (int) ((double) (this.scrollOffs * (float) offscreenRows) + 0.5) * 4;
+        }
 
-	private void onInventoryChange() {
-		this.hasItemsInInputSlot = this.menu.hasEnoughItemsInSlots();
-		if (!this.hasItemsInInputSlot) {
-			this.sliderProgress = 0.0F;
-			this.recipeIndexOffset = 0;
-		}
-	}
+        return true;
+    }
+
+    private boolean isScrollBarActive() {
+        return this.displayRecipes && (this.menu).getNumRecipes() > SCROLLER_WIDTH;
+    }
+
+    protected int getOffscreenRows() {
+        return ((this.menu).getNumRecipes() + 4 - 1) / 4 - 3;
+    }
+
+    private void containerChanged() {
+        this.displayRecipes = (this.menu).hasInputItem();
+        if (!this.displayRecipes) {
+            this.scrollOffs = 0.0F;
+            this.startIndex = 0;
+        }
+    }
+
+    public int getStartX() {
+        return this.leftPos + this.imageWidth - 3;
+    }
+
+    public int getStartY() {
+        return this.topPos;
+    }
 
 }

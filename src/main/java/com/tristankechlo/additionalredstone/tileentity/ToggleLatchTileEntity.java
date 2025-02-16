@@ -1,6 +1,6 @@
 package com.tristankechlo.additionalredstone.tileentity;
 
-import com.tristankechlo.additionalredstone.blocks.TFlipFlopBlock;
+import com.tristankechlo.additionalredstone.blocks.ToggleLatchBlock;
 import com.tristankechlo.additionalredstone.init.ModTileEntities;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
@@ -8,17 +8,17 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 
-public class TFlipFlopTileEntity extends TileEntity {
+public class ToggleLatchTileEntity extends TileEntity {
 
     private boolean previousInput;
 
-    public TFlipFlopTileEntity() {
-        super(ModTileEntities.T_FLIP_FLOP_TILE_ENTITY.get());
+    public ToggleLatchTileEntity() {
+        super(ModTileEntities.TOGGLE_LATCH_TILE_ENTITY.get());
     }
 
     public boolean shouldBePowered(boolean input) {
         BlockState state = this.getBlockState();
-        if (!(state.getBlock() instanceof TFlipFlopBlock)) {
+        if (!(state.getBlock() instanceof ToggleLatchBlock)) {
             return false;
         }
         if (input && !this.previousInput) {
@@ -30,15 +30,15 @@ public class TFlipFlopTileEntity extends TileEntity {
     }
 
     @Override
-    public void load(BlockState state, CompoundNBT nbt) {
-        super.load(state, nbt);
-        this.previousInput = nbt.getBoolean("PreviousInput");
+    public void load(BlockState state, CompoundNBT tag) {
+        super.load(state, tag);
+        this.previousInput = tag.getBoolean("PreviousInput");
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
-        compound.putBoolean("PreviousInput", this.previousInput);
-        return super.save(compound);
+    public CompoundNBT save(CompoundNBT tag) {
+        tag.putBoolean("PreviousInput", this.previousInput);
+        return super.save(tag);
     }
 
     @Override

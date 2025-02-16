@@ -2,113 +2,94 @@ package com.tristankechlo.additionalredstone.client.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
+import com.tristankechlo.additionalredstone.client.util.CustomScreen;
+import com.tristankechlo.additionalredstone.init.ModBlocks;
 import com.tristankechlo.additionalredstone.network.PacketHandler;
 import com.tristankechlo.additionalredstone.network.packets.SetSequencerValues;
-import com.tristankechlo.additionalredstone.util.Utils;
-
-import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SequencerScreen extends Screen {
+public class SequencerScreen extends CustomScreen {
 
-	private static final ITextComponent TITLE = new TranslationTextComponent("screen.additionalredstone.sequencer");
-	private static final ResourceLocation ERROR = new ResourceLocation(AdditionalRedstone.MOD_ID,
-			"textures/other/icons.png");
-	private TextFieldWidget intervalWidget;
-	private Button saveButton;
-	private Button cancelButton;
-	private BlockPos pos;
-	private int interval;
-	private boolean intervalError = false;
+    private static final IFormattableTextComponent TITLE = ModBlocks.SEQUENCER_BLOCK.get().getName().withStyle(TextFormatting.BOLD);
+    private static final IFormattableTextComponent INTERVAL = new TranslationTextComponent("screen.additionalredstone.sequencer.interval");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(AdditionalRedstone.MOD_ID, "textures/gui/sequencer_screen.png");
+    private final BlockPos pos;
+    private TextFieldWidget intervalWidget;
+    private final int initialInterval;
+    private boolean intervalError = false;
 
-	public SequencerScreen(int interval, BlockPos pos) {
-		super(TITLE);
-		this.interval = interval;
-		this.pos = pos;
-	}
+    public SequencerScreen(int interval, BlockPos pos) {
+        super(TITLE, 256, 86);
+        this.initialInterval = interval;
+        this.pos = pos;
+    }
 
-	@Override
-	public void tick() {
-		this.intervalWidget.tick();
-	}
+    @Override
+    protected void init() {
+        super.init();
+        this.intervalWidget = new TextFieldWidget(this.font, this.leftPos + 176, this.topPos + 24, 70, 20, INTERVAL);
+        this.intervalWidget.setMaxLength(10);
+        this.intervalWidget.setValue(String.valueOf(this.initialInterval));
+        this.children.add(this.intervalWidget);
 
-	@Override
-	public boolean isPauseScreen() {
-		// TODO adjustable via config
-		return false;
-	}
+        this.addSaveButton(this.leftPos + 9, this.topPos + 57, this::save);
+        this.addCancelButton(this.leftPos + 131, this.topPos + 57);
+    }
 
-	@Override
-	protected void init() {
-		super.init();
-		this.intervalWidget = new TextFieldWidget(this.font, this.width / 2 + 32, 60, 98, 20,
-				new StringTextComponent("sequencer_interval"));
-		this.children.add(this.intervalWidget);
-		this.intervalWidget.setMaxLength(10);
-		this.setInitialFocus(this.intervalWidget);
-		this.intervalWidget.setFocus(true);
-		this.intervalWidget.setValue(String.valueOf(this.interval));
+    private void save(Button button) {
+        int interval = getValueFromEditBox(this.intervalWidget, (bool) -> this.intervalError = bool);
 
-		this.saveButton = new Button(this.width / 2 - 110, 150, 100, 20,
-				new TranslationTextComponent("screen.additionalredstone.save"), (b) -> {
-					this.save();
-				});
-		this.cancelButton = new Button(this.width / 2 + 10, 150, 100, 20,
-				new TranslationTextComponent("screen.additionalredstone.cancel"), (b) -> {
-					this.cancel();
-				});
-		this.addButton(saveButton);
-		this.addButton(cancelButton);
-	}
+        if (this.intervalError) {
+            return;
+        }
+        PacketHandler.INSTANCE.sendToServer(new SetSequencerValues(interval, pos));
+        this.onClose();
+    }
 
-	private void save() {
-		int interval = 0;
-		try {
-			interval = Integer.valueOf(this.intervalWidget.getValue());
-			this.intervalError = false;
-		} catch (Exception e) {
-			this.intervalError = true;
-		}
-		if (this.intervalError) {
-			return;
-		}
-		PacketHandler.INSTANCE.sendToServer(new SetSequencerValues(interval, pos));
-		this.onClose();
-	}
+    @Override
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(matrixStack);
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
 
-	private void cancel() {
-		this.onClose();
-	}
+        // render title
+        this.font.draw(matrixStack, TITLE, this.leftPos + 9, this.topPos + 6, TEXT_COLOR_SCREEN);
 
-	@Override
-	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(matrixStack);
-		this.intervalWidget.render(matrixStack, mouseX, mouseY, partialTicks);
-		super.render(matrixStack, mouseX, mouseY, partialTicks);
+        // render description for the edit boxes
+        this.font.draw(matrixStack, INTERVAL, this.leftPos + 9, this.topPos + 30, TEXT_COLOR_SCREEN);
 
-		drawCenteredString(matrixStack, this.font,
-				new TranslationTextComponent("screen.additionalredstone.sequencer.description"), this.width / 2, 30,
-				Utils.TEXT_COLOR_SCREEN);
+        // render red cross next to the edit box
+        if (this.intervalError) {
+            this.renderErrorIcon(matrixStack, this.leftPos + 227, this.topPos + 25);
+        }
 
-		AbstractGui.drawString(matrixStack, this.font,
-				new TranslationTextComponent("screen.additionalredstone.sequencer.interval"), this.width / 2 - 130, 65,
-				Utils.TEXT_COLOR_SCREEN);
+        // render tooltips over edit boxes when focused
+        if (this.intervalWidget.isMouseOver(mouseX, mouseY)) {
+            renderTooltip(matrixStack, TICK_DESCRIPTION, mouseX, mouseY);
+        }
+        this.renderCustomButtonTooltips(matrixStack, mouseX, mouseY);
+    }
 
-		if (this.intervalError) {
-			this.minecraft.getTextureManager().bind(ERROR);
-			this.blit(matrixStack, this.width / 2 + 140, 61, 1, 1, 18, 18);
-		}
+    @Override
+    public void renderBackground(MatrixStack poseStack) {
+        super.renderBackground(poseStack);
+        this.renderTexture(poseStack, TEXTURE);
+    }
 
-	}
+    @Override
+    public boolean keyPressed(int $$0, int $$1, int $$2) {
+        if (this.intervalWidget.isFocused()) {
+            this.intervalError = false;
+        }
+        return super.keyPressed($$0, $$1, $$2);
+    }
 
 }

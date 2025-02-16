@@ -1,220 +1,232 @@
 package com.tristankechlo.additionalredstone.blocks;
 
-import java.util.EnumSet;
-import java.util.Random;
-
-import javax.annotation.Nullable;
-
-import com.tristankechlo.additionalredstone.util.ToggleLatchSide;
-
+import com.tristankechlo.additionalredstone.tileentity.ToggleLatchTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalBlock;
-import net.minecraft.block.RedstoneWireBlock;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.TickPriority;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.ForgeEventFactory;
+
+import java.util.Random;
 
 public class ToggleLatchBlock extends HorizontalBlock {
 
-	protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D);
-	public static final EnumProperty<ToggleLatchSide> POWERED_SIDE = EnumProperty.create("outputside",
-			ToggleLatchSide.class);
+    private static final int DELAY = 0;
+    private static final EnumProperty<ToggleLatchSide> POWERED_SIDE = EnumProperty.create("outputside", ToggleLatchSide.class);
 
-	public ToggleLatchBlock() {
-		super(Properties.copy(Blocks.REPEATER));
-		this.registerDefaultState(this.getDefaultDiodeState());
-	}
+    public ToggleLatchBlock() {
+        super(Properties.copy(Blocks.REPEATER));
+        this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH).setValue(POWERED_SIDE, ToggleLatchSide.LEFT));
+    }
 
-	@Override
-	public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		return canSupportRigidBlock(worldIn, pos.below());
-	}
+    @Override
+    public boolean canSurvive(BlockState state, IWorldReader level, BlockPos pos) {
+        return canSupportRigidBlock(level, pos.below());
+    }
 
-	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return SHAPE;
-	}
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext context) {
+        return CircuitBaseBlock.BASE;
+    }
 
-	@Override
-	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-		boolean inputPowered = this.calculateInputStrength(worldIn, pos, state) > 0;
-		if (inputPowered) {
-			worldIn.setBlock(pos, state.cycle(POWERED_SIDE), 2);
-			this.notifyNeighbors(worldIn, pos, state);
-		}
-	}
+    @Override
+    public void tick(BlockState state, ServerWorld level, BlockPos pos, Random rand) {
+        Direction direction = state.getValue(FACING);
+        boolean inputPowered = BaseDiodeBlock.getRedstonePowerRelative(level, pos, direction) > 0;
+        if (inputPowered) {
+            level.setBlock(pos, state.cycle(POWERED_SIDE), 2); // update this block
 
-	private void updateState(World worldIn, BlockPos pos, BlockState state) {
-		if (!worldIn.getBlockTicks().willTickThisTick(pos, this)) {
-			TickPriority tickpriority = TickPriority.HIGH;
-			worldIn.getBlockTicks().scheduleTick(pos, this, this.getDelay(state), tickpriority);
-		}
-	}
+            // send block updates for neighbours
+            Direction right = state.getValue(FACING).getClockWise();
+            Direction left = state.getValue(FACING).getCounterClockWise();
+            this.updateNeighbours(level, pos, right);
+            this.updateNeighbours(level, pos, left);
+        }
+    }
 
-	@Override
-	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos,
-			boolean isMoving) {
-		// only allow blockupdates to have an effect when they are on the input side
-		Direction inputDirection = state.getValue(FACING);
-		BlockPos inputPos = pos.relative(inputDirection);
-		if (!inputPos.equals(fromPos)) {
-			return;
-		}
-		if (state.canSurvive(worldIn, pos)) {
-			this.updateState(worldIn, pos, state);
-		} else {
-			dropResources(state, worldIn, pos, null);
-			worldIn.removeBlock(pos, false);
-			for (Direction direction : Direction.values()) {
-				worldIn.updateNeighborsAt(pos.relative(direction), this);
-			}
-		}
-	}
+    private void updateNeighbours(World level, BlockPos pos, Direction direction) {
+        BlockPos blockpos = pos.relative(direction);
+        level.neighborChanged(blockpos, this, pos);
+        level.updateNeighborsAtExceptFromFacing(blockpos, this, direction.getOpposite());
+    }
 
-	@Override
-	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		return side != state.getValue(FACING);
-	}
+    private void checkTickOnNeighbor(World level, BlockPos pos, BlockState state) {
+        TileEntity blockEntity = level.getBlockEntity(pos);
+        boolean change = false;
+        if (blockEntity instanceof ToggleLatchTileEntity) {
+            Direction direction = state.getValue(FACING);
+            boolean input = BaseDiodeBlock.getRedstonePowerRelative(level, pos, direction) > 0;
+            change = ((ToggleLatchTileEntity) blockEntity).shouldBePowered(input);
+        }
+        if (change && !level.getBlockTicks().willTickThisTick(pos, this)) {
+            TickPriority tickpriority = TickPriority.HIGH;
+            if (this.shouldPrioritize(level, pos, state)) {
+                tickpriority = TickPriority.EXTREMELY_HIGH;
+            }
+            level.getBlockTicks().scheduleTick(pos, this, DELAY, tickpriority);
+        }
+    }
 
-	@Override
-	public boolean isSignalSource(BlockState state) {
-		return true;
-	}
+    @Override
+    public void neighborChanged(BlockState state, World level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+        // only allow blockupdates to have an effect when they are on the input side
+        Direction inputDirection = state.getValue(FACING);
+        BlockPos inputPos = pos.relative(inputDirection);
+        if (!inputPos.equals(fromPos)) {
+            return;
+        }
+        if (state.canSurvive(level, pos)) {
+            this.checkTickOnNeighbor(level, pos, state);
+        } else {
+            dropResources(state, level, pos, null);
+            level.removeBlock(pos, false);
 
-	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn,
-			BlockRayTraceResult hit) {
-		if (!player.abilities.mayBuild) {
-			return ActionResultType.PASS;
-		} else {
-			worldIn.setBlock(pos, state.cycle(POWERED_SIDE), 3);
-			this.playSound(player, worldIn, pos, true);
-			return ActionResultType.sidedSuccess(worldIn.isClientSide);
-		}
-	}
+            for (Direction direction : Direction.values()) {
+                level.updateNeighborsAt(pos.relative(direction), this);
+            }
+        }
+    }
 
-	private void playSound(@Nullable PlayerEntity playerIn, IWorld worldIn, BlockPos pos, boolean hitByArrow) {
-		worldIn.playSound(playerIn, pos, SoundEvents.WOODEN_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.6F);
-	}
+    /* when the state change is from the input side, the tick should get priority */
+    private boolean shouldPrioritize(World level, BlockPos pos, BlockState state) {
+        Direction direction = state.getValue(FACING).getOpposite();
+        BlockState neighbour = level.getBlockState(pos.relative(direction));
+        return neighbour.hasProperty(FACING) && neighbour.getValue(FACING) != direction;
+    }
 
-	@Override
-	public int getDirectSignal(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
-		return this.getSignal(blockState, blockAccess, pos, side);
-	}
+    @Override
+    public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
+        return side != state.getValue(FACING);
+    }
 
-	@Override
-	public int getSignal(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
-		Direction right = blockState.getValue(FACING).getClockWise();
-		Direction left = blockState.getValue(FACING).getCounterClockWise();
-		if (side == left && blockState.getValue(POWERED_SIDE) == ToggleLatchSide.LEFT) {
-			return 15;
-		} else if (side == right && blockState.getValue(POWERED_SIDE) == ToggleLatchSide.RIGHT) {
-			return 15;
-		}
-		return 0;
-	}
+    @Override
+    public boolean isSignalSource(BlockState state) {
+        return true;
+    }
 
-	@Override
-	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(FACING, POWERED_SIDE);
-	}
+    @Override
+    public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+        if (!player.abilities.mayBuild) {
+            return ActionResultType.PASS;
+        } else {
+            level.setBlock(pos, state.cycle(POWERED_SIDE), 3);
+            this.playSound(player, level, pos);
+            return ActionResultType.sidedSuccess(level.isClientSide);
+        }
+    }
 
-	private BlockState getDefaultDiodeState() {
-		return this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED_SIDE,
-				ToggleLatchSide.LEFT);
-	}
+    private void playSound(PlayerEntity player, IWorld level, BlockPos pos) {
+        level.playSound(player, pos, SoundEvents.WOODEN_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.6F);
+    }
 
-	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		Direction direction = ctx.getHorizontalDirection().getOpposite();
-		return this.defaultBlockState().setValue(FACING, direction).setValue(POWERED_SIDE, ToggleLatchSide.LEFT);
-	}
+    @Override
+    public int getDirectSignal(BlockState state, IBlockReader level, BlockPos pos, Direction side) {
+        return this.getSignal(state, level, pos, side);
+    }
 
-	private void notifyNeighbors(World worldIn, BlockPos pos, BlockState state) {
-		ToggleLatchSide side = state.getValue(POWERED_SIDE);
-		if (side == ToggleLatchSide.LEFT) {
-			Direction direction = state.getValue(FACING).getClockWise();
-			BlockPos blockpos = pos.relative(direction);
-			if (ForgeEventFactory
-					.onNeighborNotify(worldIn, pos, worldIn.getBlockState(pos), EnumSet.of(direction), false)
-					.isCanceled()) {
-				return;
-			}
-			worldIn.neighborChanged(blockpos, this, pos);
-			worldIn.updateNeighborsAtExceptFromFacing(blockpos, this, direction.getOpposite());
-		} else if (side == ToggleLatchSide.RIGHT) {
-			Direction direction = state.getValue(FACING).getCounterClockWise();
-			BlockPos blockpos = pos.relative(direction);
-			if (ForgeEventFactory
-					.onNeighborNotify(worldIn, pos, worldIn.getBlockState(pos), EnumSet.of(direction), false)
-					.isCanceled()) {
-				return;
-			}
-			worldIn.neighborChanged(blockpos, this, pos);
-			worldIn.updateNeighborsAtExceptFromFacing(blockpos, this, direction.getOpposite());
-		}
-	}
+    @Override
+    public int getSignal(BlockState state, IBlockReader level, BlockPos pos, Direction side) {
+        Direction right = state.getValue(FACING).getClockWise();
+        Direction left = state.getValue(FACING).getCounterClockWise();
+        if (side == left && state.getValue(POWERED_SIDE) == ToggleLatchSide.LEFT) {
+            return 15;
+        } else if (side == right && state.getValue(POWERED_SIDE) == ToggleLatchSide.RIGHT) {
+            return 15;
+        }
+        return 0;
+    }
 
-	private int getDelay(BlockState state) {
-		return 0;
-	}
+    @Override
+    protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
+        builder.add(FACING, POWERED_SIDE);
+    }
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
-		ToggleLatchSide side = stateIn.getValue(POWERED_SIDE);
-		if (side == ToggleLatchSide.LEFT) {
-			this.spawnParticle(stateIn, worldIn, pos, rand, true);
-		} else if (side == ToggleLatchSide.RIGHT) {
-			this.spawnParticle(stateIn, worldIn, pos, rand, false);
-		}
-	}
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext ctx) {
+        Direction direction = ctx.getHorizontalDirection().getOpposite();
+        return this.defaultBlockState().setValue(FACING, direction).setValue(POWERED_SIDE, ToggleLatchSide.LEFT);
+    }
 
-	@OnlyIn(Dist.CLIENT)
-	public void spawnParticle(BlockState state, World world, BlockPos pos, Random rand, boolean left) {
-		double xOff = left ? 0.25D : 0.75D;
-		Direction direction = state.getValue(FACING);
-		double x = (double) pos.getX() + xOff + (rand.nextDouble() - 0.5D) * 0.2D;
-		double y = (double) pos.getY() + 0.4D + (rand.nextDouble() - 0.5D) * 0.2D;
-		double z = (double) pos.getZ() + 0.65D + (rand.nextDouble() - 0.5D) * 0.2D;
-		float f = -5.0F / 16.0F;
-		double xOffset = (double) (f * (float) direction.getStepX());
-		double zOffset = (double) (f * (float) direction.getStepZ());
-		world.addParticle(RedstoneParticleData.REDSTONE, x + xOffset, y, z + zOffset, 0.0D, 0.0D, 0.0D);
-	}
+    @Override
+    public PushReaction getPistonPushReaction(BlockState state) {
+        return PushReaction.DESTROY;
+    }
 
-	private int calculateInputStrength(World worldIn, BlockPos pos, BlockState state) {
-		Direction direction = state.getValue(FACING);
-		BlockPos blockpos = pos.relative(direction);
-		int i = worldIn.getSignal(blockpos, direction);
-		if (i >= 15) {
-			return i;
-		} else {
-			BlockState blockstate = worldIn.getBlockState(blockpos);
-			return Math.max(i, blockstate.is(Blocks.REDSTONE_WIRE) ? blockstate.getValue(RedstoneWireBlock.POWER) : 0);
-		}
-	}
+    @Override
+    public boolean hasTileEntity(BlockState state) {
+        return true;
+    }
+
+    @Override
+    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+        return new ToggleLatchTileEntity();
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void animateTick(BlockState state, World level, BlockPos pos, Random rand) {
+        boolean leftSide = state.getValue(POWERED_SIDE) == ToggleLatchSide.LEFT;
+        this.spawnParticle(state, level, pos, rand, leftSide);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void spawnParticle(BlockState state, World level, BlockPos pos, Random rand, boolean left) {
+        double offset = left ? -0.25D : 0.25D;
+        Direction direction = state.getValue(FACING);
+
+        // center of the block
+        double x = (double) pos.getX() + 0.5D + (rand.nextDouble() - 0.5D) * 0.2D;
+        double y = (double) pos.getY() + 0.4D + (rand.nextDouble() - 0.5D) * 0.2D;
+        double z = (double) pos.getZ() + 0.5D + (rand.nextDouble() - 0.5D) * 0.2D;
+
+        // offset to the side its facing
+        float f = -3.0F / 16.0F;
+        double xOffset = f * (float) direction.getStepX();
+        double zOffset = f * (float) direction.getStepZ();
+
+        // offset to left or right side
+        xOffset += offset * (double) direction.getStepZ();
+        zOffset -= offset * (double) direction.getStepX();
+
+        level.addParticle(RedstoneParticleData.REDSTONE, x + xOffset, y, z + zOffset, 0.0D, 0.0D, 0.0D);
+    }
+
+    public enum ToggleLatchSide implements IStringSerializable {
+
+        LEFT("left"),
+        RIGHT("right");
+
+        private final String name;
+
+        ToggleLatchSide(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return this.name;
+        }
+
+        @Override
+        public String getSerializedName() {
+            return this.name;
+        }
+
+    }
 
 }

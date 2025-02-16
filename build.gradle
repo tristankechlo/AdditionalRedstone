@@ -9,6 +9,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(java_version)
 
 minecraft {
     mappings channel: 'official', version: minecraft_version
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
         client {

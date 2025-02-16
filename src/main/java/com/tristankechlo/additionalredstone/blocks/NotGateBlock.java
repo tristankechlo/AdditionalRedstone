@@ -11,21 +11,22 @@ import net.minecraft.world.World;
 
 public class NotGateBlock extends BaseDiodeBlock {
 
-	@Override
-	protected boolean shouldTurnOn(World worldIn, BlockPos pos, BlockState state) {
-		return this.getInputSignal(worldIn, pos, state) <= 0;
-	}
 
-	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return RedstoneDiodeBlock.SHAPE;
-	}
+    @Override
+    protected boolean shouldTurnOn(World level, BlockPos pos, BlockState state) {
+        return this.getInputSignal(level, pos, state) <= 0;
+    }
 
-	@Override
-	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		Direction front = state.getValue(FACING);
-		Direction back = state.getValue(FACING).getOpposite();
-		return side == front || side == back;
-	}
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext context) {
+        return RedstoneDiodeBlock.SHAPE;
+    }
+
+    @Override
+    public boolean canConnectRedstone(BlockState state, IBlockReader level, BlockPos pos, Direction side) {
+        Direction front = state.getValue(FACING);
+        Direction back = state.getValue(FACING).getOpposite();
+        return side == front || side == back;
+    }
 
 }

@@ -18,8 +18,8 @@ public class TimerTileEntity extends TileEntity implements ITickableTileEntity {
 	private int powerDownTime = 2000;
 	private int interval = 10;
 	private boolean powered;
-	public static final int minTime = 0;
-	public static final int maxTime = 24000;
+	public static final int MIN_TIME = 0;
+	public static final int MAX_TIME = 24000;
 
 	public TimerTileEntity() {
 		super(ModTileEntities.TIMER_TILE_ENTITY.get());
@@ -44,23 +44,18 @@ public class TimerTileEntity extends TileEntity implements ITickableTileEntity {
 	}
 
 	private boolean isInTargetTime() {
-		int time = (int) (level.getDayTime() % maxTime);
+		int time = (int) (level.getDayTime() % MAX_TIME);
 		if (this.powerUpTime < powerDownTime) {
-			if (time >= this.powerUpTime && time <= this.powerDownTime) {
-				return true;
-			}
+            return time >= this.powerUpTime && time <= this.powerDownTime;
 		} else {
-			if (time <= this.powerDownTime || time >= this.powerUpTime) {
-				return true;
-			}
+            return time <= this.powerDownTime || time >= this.powerUpTime;
 		}
-		return false;
-	}
+    }
 
 	private void updatePower(boolean powered) {
 		BlockState blockstate = this.getBlockState();
 		Block block = blockstate.getBlock();
-		if (block instanceof TimerBlock) {
+		if ((block instanceof TimerBlock) && this.level != null) {
 			this.powered = powered;
 			TimerBlock.setPowered(blockstate, this.level, this.worldPosition, powered);
 		}
@@ -122,8 +117,8 @@ public class TimerTileEntity extends TileEntity implements ITickableTileEntity {
 	}
 
 	public void setConfiguration(int powerUp, int powerDown, int interval) {
-		this.powerUpTime = MathHelper.clamp(powerUp, minTime, maxTime);
-		this.powerDownTime = MathHelper.clamp(powerDown, minTime, maxTime);
+		this.powerUpTime = MathHelper.clamp(powerUp, MIN_TIME, MAX_TIME);
+		this.powerDownTime = MathHelper.clamp(powerDown, MIN_TIME, MAX_TIME);
 		this.interval = MathHelper.clamp(interval, 1, 1000);
 	}
 
