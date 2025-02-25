@@ -84,12 +84,12 @@ public class CircuitMakerContainer extends AbstractContainerMenu {
         // player inv
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 9; ++j) {
-                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 16 + j * 18, 85 + i * 18));
+                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 16 + j * 18, 84 + i * 18));
             }
         }
         // player hotbar
         for (int k = 0; k < 9; ++k) {
-            this.addSlot(new Slot(playerInventory, k, 16 + k * 18, 143));
+            this.addSlot(new Slot(playerInventory, k, 16 + k * 18, 142));
         }
 
         this.addDataSlot(this.selectedRecipe);
