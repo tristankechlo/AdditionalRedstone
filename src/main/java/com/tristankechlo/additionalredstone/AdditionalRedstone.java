@@ -3,6 +3,7 @@ package com.tristankechlo.additionalredstone;
 import com.tristankechlo.additionalredstone.commands.ProjectLinks;
 import com.tristankechlo.additionalredstone.init.*;
 import com.tristankechlo.additionalredstone.network.PacketHandler;
+import net.minecraft.item.ItemGroup;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -19,6 +20,7 @@ public class AdditionalRedstone {
     public static final String MOD_ID = "additionalredstone";
     public static final boolean[][] INPUT_STATES = new boolean[][]{{false, false, false}, {false, false, true}, {false, true, false}, {false, true, true}, {true, false, false}, {true, false, true}, {true, true, false}, {true, true, true}};
     public static boolean JEI_LOADED = false;
+    public static final ItemGroup GENERAL = new ModItemGroup();
 
     public AdditionalRedstone() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
