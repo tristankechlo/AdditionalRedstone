@@ -58,6 +58,7 @@ public class SequencerScreen extends CustomScreen {
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(matrixStack);
+        this.intervalWidget.render(matrixStack, mouseX, mouseY, partialTicks);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
 
         // render title

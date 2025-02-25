@@ -38,7 +38,7 @@ public class SupergateScreen extends CustomScreen {
             OnOffButton button = new OnOffButton(this.leftPos + 139, y, 42, 12, i);
             button.setToggled(this.configuration[i]);
             button.setConsumer(this::setConfig);
-            this.children.add(button);
+            this.addButton(button);
         }
 
         this.addSaveButton(this.leftPos + 9, this.topPos + 139, 84, 20, this::save);

@@ -68,6 +68,8 @@ public class OscillatorScreen extends CustomScreen {
     @Override
     public void render(MatrixStack poseStack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(poseStack); // render texture and transparent background
+        this.ticksOnWidget.render(poseStack, mouseX, mouseY, partialTicks);
+        this.ticksOffWidget.render(poseStack, mouseX, mouseY, partialTicks);
         super.render(poseStack, mouseX, mouseY, partialTicks); // render buttons and labels
 
         // render title

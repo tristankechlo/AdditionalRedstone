@@ -84,6 +84,9 @@ public class TimerScreen extends CustomScreen {
     @Override
     public void render(MatrixStack poseStack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(poseStack);
+        this.powerUpWidget.render(poseStack, mouseX, mouseY, partialTicks);
+        this.powerDownWidget.render(poseStack, mouseX, mouseY, partialTicks);
+        this.intervalWidget.render(poseStack, mouseX, mouseY, partialTicks);
         super.render(poseStack, mouseX, mouseY, partialTicks);
 
         // render title

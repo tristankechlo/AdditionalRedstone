@@ -57,7 +57,6 @@ public class OnOffButton extends AbstractButton {
     @Override
     public void renderButton(MatrixStack poseStack, int mouseX, int mouseY, float partialTicks) {
         Minecraft minecraft = Minecraft.getInstance();
-        FontRenderer fontrenderer = minecraft.font;
         minecraft.getTextureManager().bind(WIDGETS_LOCATION);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, this.alpha);
         int buttonType = this.getYImage(this.isHovered());
