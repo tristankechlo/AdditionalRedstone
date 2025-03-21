@@ -19,11 +19,10 @@ public class LightDetectorTileEntity extends TileEntity implements ITickableTile
     @Override
     public void tick() {
         BlockState state = this.getBlockState();
-        if (level.getGameTime() % 20L == 0L) {
+        if (this.level != null && !this.level.isClientSide && this.level.getGameTime() % 20L == 0L) {
             int skyLevel = skyLevel(level, worldPosition);
             int blockLevel = level.getBrightness(LightType.BLOCK, worldPosition);
             int value = Math.max(skyLevel, blockLevel);
-            value = MathHelper.clamp(value, 0, 15);
 
             LightDetectorBlock.setPowered(state, level, worldPosition, value);
         }
