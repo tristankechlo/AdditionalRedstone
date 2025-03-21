@@ -23,7 +23,7 @@ import net.minecraft.world.server.ServerWorld;
 
 import java.util.Random;
 
-public class LedBlock extends HorizontalFaceBlock {
+public class LedBlock extends HorizontalBlock {
 
     private static final int DELAY = 2;
     private static final IntegerProperty POWER = BlockStateProperties.POWER;
