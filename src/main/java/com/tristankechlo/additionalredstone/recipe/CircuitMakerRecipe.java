@@ -1,6 +1,7 @@
 package com.tristankechlo.additionalredstone.recipe;
 
 import com.google.gson.JsonObject;
+import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.init.ModBlocks;
 import com.tristankechlo.additionalredstone.init.ModRecipes;
 import net.minecraft.inventory.IInventory;
@@ -14,6 +15,7 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 
 public class CircuitMakerRecipe implements IRecipe<IInventory> {
 
+    public static final ResourceLocation TYPE_ID = new ResourceLocation(AdditionalRedstone.MOD_ID, "circuit_maker");
     private final ResourceLocation id;
     private final Ingredient input_1;
     private final Ingredient input_2;
@@ -71,7 +73,7 @@ public class CircuitMakerRecipe implements IRecipe<IInventory> {
 
     @Override
     public IRecipeType<?> getType() {
-        return ModRecipes.CIRCUIT_MAKER_RECIPE_TYPE.get();
+        return ModRecipes.CIRCUIT_MAKER_RECIPE_TYPE;
     }
 
     @Override
@@ -80,6 +82,13 @@ public class CircuitMakerRecipe implements IRecipe<IInventory> {
             toastSymbol = new ItemStack(ModBlocks.CIRCUIT_MAKER_BLOCK.get());
         }
         return toastSymbol;
+    }
+
+    public static class CircuitMakerRecipeType implements IRecipeType<CircuitMakerRecipe> {
+        @Override
+        public String toString() {
+            return TYPE_ID.toString();
+        }
     }
 
     public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<CircuitMakerRecipe> {

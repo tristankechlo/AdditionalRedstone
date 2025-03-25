@@ -19,7 +19,7 @@ public class CircuitBaseBlock extends Block {
 
     @Override
     public boolean canSurvive(BlockState state, IWorldReader level, BlockPos pos) {
-        return canSupportRigidBlock(level, pos);
+        return canSupportRigidBlock(level, pos.below());
     }
 
     @Override

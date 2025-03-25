@@ -81,7 +81,7 @@ public class JustEnoughItemsPlugin implements IModPlugin {
         ClientWorld world = minecraft.level;
         Objects.requireNonNull(world, "minecraft world");
         RecipeManager recipeManager = world.getRecipeManager();
-        return recipeManager.getAllRecipesFor(ModRecipes.CIRCUIT_MAKER_RECIPE_TYPE.get());
+        return recipeManager.getAllRecipesFor(ModRecipes.CIRCUIT_MAKER_RECIPE_TYPE);
     }
 
 }
