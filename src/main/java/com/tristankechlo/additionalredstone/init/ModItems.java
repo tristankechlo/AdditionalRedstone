@@ -5,6 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.Properties;
+import net.minecraft.item.ItemGroup;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -39,7 +40,7 @@ public class ModItems {
     public static final RegistryObject<Item> SUPERGATE_BLOCK_ITEM = create("supergate", ModBlocks.SUPERGATE_BLOCK);
 
     private static RegistryObject<Item> create(String name, Supplier<Block> block) {
-        return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Properties()));
+        return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Properties().tab(ItemGroup.TAB_SEARCH)));
     }
 
 }
