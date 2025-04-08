@@ -75,6 +75,9 @@ public class LightDetectorBlock extends BaseEntityBlock {
     }
 
     private static int skyLevel(Level level, BlockPos pos) {
+        if (!level.dimensionType().hasSkyLight()) {
+            return 0;
+        }
         int value = level.getBrightness(LightLayer.SKY, pos) - level.getSkyDarken();
         float sunAngle = level.getSunAngle(1.0F);
         if (value > 0) {

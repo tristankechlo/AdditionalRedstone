@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 1.18.2 - 1.2.1
+
+- fix light detector recognizing skylight in dimensions without a sky
+
 ### Version 1.18.2 - 1.2.0
 
 - port to fabric
