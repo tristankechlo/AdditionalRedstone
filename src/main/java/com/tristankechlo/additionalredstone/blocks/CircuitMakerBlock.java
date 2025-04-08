@@ -25,6 +25,7 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -99,7 +100,7 @@ public class CircuitMakerBlock extends HorizontalBlock {
 
     public static IFormattableTextComponent getContainerName() {
         if (CONTAINER_NAME == null) {
-            CONTAINER_NAME = ModBlocks.CIRCUIT_MAKER_BLOCK.get().getName();
+            CONTAINER_NAME = new TranslationTextComponent(ModBlocks.CIRCUIT_MAKER_BLOCK.get().getDescriptionId());
         }
         return CONTAINER_NAME;
     }
