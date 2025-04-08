@@ -29,10 +29,13 @@ public class LightDetectorTileEntity extends TileEntity implements ITickableTile
     }
 
     private static int skyLevel(World level, BlockPos pos) {
+        if (!level.dimensionType().hasSkyLight()) {
+            return 0;
+        }
         int value = level.getBrightness(LightType.SKY, pos) - level.getSkyDarken();
         float sunAngle = level.getSunAngle(1.0F);
         if (value > 0) {
-            float v = sunAngle < (float) Math.PI ? 0.0F : (float) (Math.PI * 2);
+            float v = sunAngle < 3.1415927F ? 0.0F : 6.2831855F;
             sunAngle += (v - sunAngle) * 0.2F;
             value = Math.round((float) value * MathHelper.cos(sunAngle));
         }

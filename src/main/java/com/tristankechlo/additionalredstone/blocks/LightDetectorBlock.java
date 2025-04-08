@@ -1,7 +1,10 @@
 package com.tristankechlo.additionalredstone.blocks;
 
 import com.tristankechlo.additionalredstone.tileentity.LightDetectorTileEntity;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -14,7 +17,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class LightDetectorBlock extends Block implements ITileEntityProvider {
+public class LightDetectorBlock extends Block {
 
     private static final IntegerProperty POWER = BlockStateProperties.POWER;
     private static final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 6.0, 16.0);
@@ -54,12 +57,19 @@ public class LightDetectorBlock extends Block implements ITileEntityProvider {
         builder.add(POWER);
     }
 
-    public static void setPowered(BlockState state, World world, BlockPos pos, int powered) {
-        world.setBlock(pos, state.setValue(POWER, MathHelper.clamp(powered, 0, 15)), 3);
+    public static void setPowered(BlockState state, World world, BlockPos pos, int power) {
+        if (state.getValue(POWER) != power) {
+            world.setBlock(pos, state.setValue(POWER, MathHelper.clamp(power, 0, 15)), 3);
+        }
     }
 
     @Override
-    public TileEntity newBlockEntity(IBlockReader world) {
+    public boolean hasTileEntity(BlockState state) {
+        return true;
+    }
+
+    @Override
+    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
         return new LightDetectorTileEntity();
     }
 
