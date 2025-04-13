@@ -9,7 +9,6 @@
         "RedstoneWireBlockMixin"
     ],
     "client": [
-        "client.AbstractButtonMixin",
         "client.AbstractWidgetMixin"
     ],
     "server": [

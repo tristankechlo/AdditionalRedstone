@@ -2,7 +2,6 @@ package com.tristankechlo.additionalredstone.client.util;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.tristankechlo.additionalredstone.mixin.client.AbstractButtonMixin;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractButton;
@@ -64,7 +63,7 @@ public class OnOffButton extends AbstractButton {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
-        int buttonType = ((AbstractButtonMixin) this).getTextureY();
+        int buttonType = this.getTextureY();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableDepthTest();
