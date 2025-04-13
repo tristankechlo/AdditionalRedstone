@@ -17,6 +17,7 @@ import net.minecraftforge.network.simple.SimpleChannel;
 
 import java.util.function.Supplier;
 
+@SuppressWarnings("removal") // ignore here, removed in 1.21.4+
 @AutoService(IPacketHandler.class)
 public final class ForgePacketHandler implements IPacketHandler {
 
@@ -24,7 +25,6 @@ public final class ForgePacketHandler implements IPacketHandler {
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(AdditionalRedstone.MOD_ID, "main"),
             () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
-
 
     public static void registerPackets() {
         INSTANCE.registerMessage(0, SetOscillatorValues.class,
