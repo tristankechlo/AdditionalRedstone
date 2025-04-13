@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "RRR",
+        "RGR",
+        "RRR"
+    ],
+    "key": {
+        "R": {
+            "tag": "forge:dusts/redstone"
+        },
+        "G": {
+            "item": "minecraft:glowstone"
+        }
+    },
+    "result": {
+        "item": "additionalredstone:dimmable_redstone_lamp"
+    }
+}
