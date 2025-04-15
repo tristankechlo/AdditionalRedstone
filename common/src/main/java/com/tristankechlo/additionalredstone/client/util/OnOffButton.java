@@ -68,10 +68,10 @@ public class OnOffButton extends AbstractButton {
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableDepthTest();
 
-        blit(poseStack, getX(), getY(), 0, 46 + buttonType * 20, width / 2, height / 2); // top left
-        blit(poseStack, getX() + width / 2, getY(), 200 - width / 2, 46 + buttonType * 20, width / 2, height / 2); // top right
-        blit(poseStack, getX(), getY() + (height / 2), 0, 46 + (20 - height / 2) + buttonType * 20, width / 2, height / 2); // bottom left
-        blit(poseStack, getX() + width / 2, getY() + (height / 2), 200 - width / 2, 46 + (20 - height / 2) + buttonType * 20, width / 2, height / 2); // bottom right
+        blit(poseStack, getX(), getY(), 0, buttonType, width / 2, height / 2); // top left
+        blit(poseStack, getX() + width / 2, getY(), 200 - width / 2, buttonType, width / 2, height / 2); // top right
+        blit(poseStack, getX(), getY() + (height / 2), 0, (20 - height / 2) + buttonType, width / 2, height / 2); // bottom left
+        blit(poseStack, getX() + width / 2, getY() + (height / 2), 200 - width / 2, (20 - height / 2) + buttonType, width / 2, height / 2); // bottom right
 
         drawCenteredString(poseStack, minecraft.font, this.getMessage(), getX() + width / 2, getY() + (height - 8) / 2, 0);
     }
