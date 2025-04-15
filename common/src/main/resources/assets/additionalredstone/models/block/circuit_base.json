@@ -1,6 +1,7 @@
 {
     "credit": "Made with Blockbench",
     "ambientocclusion": false,
+    "render_type": "minecraft:cutout",
     "textures": {
         "particle": "block/smooth_stone",
         "base": "block/smooth_stone"

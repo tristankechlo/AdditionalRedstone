@@ -1,5 +1,6 @@
 {
 	"ambientocclusion": false,
+	"render_type": "minecraft:cutout",
 	"textures": {
 		"particle": "additionalredstone:block/circuit_maker",
 		"top": "additionalredstone:block/circuit_maker",
@@ -17,7 +18,7 @@
 				"east": {"uv": [0, 14, 16, 16], "texture": "#base", "cullface": "east"},
 				"south": {"uv": [0, 14, 16, 16], "texture": "#base", "cullface": "south"},
 				"west": {"uv": [0, 14, 16, 16], "texture": "#base", "cullface": "west"},
-				"up": {"uv": [0, 0, 16, 16], "texture": "#top"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#top", "cullface": "top"},
 				"down": {"uv": [0, 0, 16, 16], "texture": "#base", "cullface": "down"}
 			}
 		},

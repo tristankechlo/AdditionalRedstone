@@ -1,5 +1,6 @@
 {
 	"ambientocclusion": false,
+	"render_type": "minecraft:cutout",
 	"textures": {
 		"body": "minecraft:block/smooth_stone",
 		"top": "additionalredstone:block/not_gate_input",

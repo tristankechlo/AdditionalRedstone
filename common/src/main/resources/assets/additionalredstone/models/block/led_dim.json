@@ -1,5 +1,6 @@
 {
     "parent": "additionalredstone:block/template/led",
+    "render_type": "minecraft:cutout",
     "textures": {
         "lamp": "additionalredstone:block/dimmable_redstone_lamp_dim"
     }
