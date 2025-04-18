@@ -4,7 +4,7 @@ import com.tristankechlo.additionalredstone.commands.ProjectLinks;
 import com.tristankechlo.additionalredstone.init.ModItems;
 import com.tristankechlo.additionalredstone.platform.FabricPacketHandler;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.resources.ResourceLocation;
 

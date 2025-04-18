@@ -5,7 +5,9 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import net.minecraft.ChatFormatting;
+import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -45,7 +47,7 @@ public enum ProjectLinks {
         return mutableComponent;
     }
 
-    public static void registerAsCommand(CommandDispatcher<CommandSourceStack> dispatcher, boolean dedicated) {
+    public static void registerAsCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context, Commands.CommandSelection selection) {
         LiteralArgumentBuilder<CommandSourceStack> command = literal(AdditionalRedstone.MOD_ID);
         for (ProjectLinks option : values()) {
             command.then(literal(option.name().toLowerCase()).executes(option::execute));

@@ -3,7 +3,6 @@ package com.tristankechlo.additionalredstone;
 import com.tristankechlo.additionalredstone.commands.ProjectLinks;
 import com.tristankechlo.additionalredstone.init.ModItems;
 import com.tristankechlo.additionalredstone.platform.ForgePacketHandler;
-import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
@@ -32,7 +31,7 @@ public class ForgeAdditionalRedstone {
     }
 
     private void registerCommands(RegisterCommandsEvent event) {
-        ProjectLinks.registerAsCommand(event.getDispatcher(), event.getCommandSelection() == Commands.CommandSelection.DEDICATED);
+        ProjectLinks.registerAsCommand(event.getDispatcher(), event.getBuildContext(), event.getCommandSelection());
     }
 
 
