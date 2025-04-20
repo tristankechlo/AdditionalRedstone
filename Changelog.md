@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.18.2 - 1.2.2
+
+- remove logging from SupergateScreen
+
 ### Version 1.18.2 - 1.2.1
 
 - fix light detector recognizing skylight in dimensions without a sky

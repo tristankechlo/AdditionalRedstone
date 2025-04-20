@@ -12,8 +12,6 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.MutableComponent;
 
-import java.util.Arrays;
-
 public class SupergateScreen extends CustomScreen {
 
     private static final MutableComponent TITLE = ModBlocks.SUPERGATE_BLOCK.get().getName();
@@ -49,7 +47,6 @@ public class SupergateScreen extends CustomScreen {
     private void save(Button b) {
         byte data = SuperGateBlockEntity.booleansToByte(this.configuration);
         IPacketHandler.INSTANCE.sendPacketSetSupergateValues(data, this.pos);
-        AdditionalRedstone.LOGGER.info(Arrays.toString(this.configuration));
         this.onClose();
     }
 

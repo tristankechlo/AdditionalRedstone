@@ -72,7 +72,9 @@ jobs:
         uses: shogo82148/actions-upload-release-asset@v1.7.5
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: "./(forge|fabric)/build/libs/${{ env.MODID }}-*.jar"
+          asset_path: |
+            ./forge/build/libs/${{ env.MODID }}-*.jar
+            ./fabric/build/libs/${{ env.MODID }}-*.jar
           overwrite: true
 
       - name: publish mod files
