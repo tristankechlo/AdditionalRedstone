@@ -68,23 +68,15 @@ jobs:
       - name: Execute Gradle build
         run: ./gradlew build
 
-      - name: copy jar-files
-        shell: bash
-        run: |
-          mkdir ./dist
-          mv ./forge/build/libs/${{ env.MODID }}-*.jar ./dist
-          mv ./fabric/build/libs/${{ env.MODID }}-*.jar ./dist
-          echo -e "$(ls -lahG ./dist)"
-
       - name: Add files to GitHub-Release
         uses: shogo82148/actions-upload-release-asset@v1.7.5
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: "./dist/${{ env.MODID }}-*.jar"
+          asset_path: "./(forge|fabric)/build/libs/${{ env.MODID }}-*.jar"
           overwrite: true
 
       - name: publish mod files
-        uses: tristankechlo/publish-mc-mod@v1.0.0
+        uses: tristankechlo/publish-mc-mod@v2.0.0
         if: ${{ contains(github.event.release.name, '[RELEASE]') }}
         with:
           mc-version: ${{ needs.prepare.outputs.mc-version }}
@@ -92,10 +84,7 @@ jobs:
           curseforge-id: ${{ env.CURSEFORGE_ID }}
           modrinth-id: ${{ env.MODRINTH_ID }}
           changelog: ${{ github.event.release.body }}
-          featured: ${{ env.MODRINTH_FEATURED }}
-          forge: true
-          fabric: true
-          neoforge: false
+          loaders: forge,fabric
           version-range: ${{ needs.prepare.outputs.version-range }}
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
