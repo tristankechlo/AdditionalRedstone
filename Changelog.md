@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.19.4 - 1.2.2
+
+- remove logging from SupergateScreen
+
 ### Version 1.19.4 - 1.2.1
 
 - port to fabric
