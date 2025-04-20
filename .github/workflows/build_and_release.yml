@@ -95,7 +95,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Make embed
-        uses: tristankechlo/create-discord-embed@v1.0.1
+        uses: tristankechlo/create-discord-embed@v1.0.2
         with:
           released: ${{ contains(github.event.release.name, '[RELEASE]') }}
           changelog: "${{ github.event.release.body }}"
