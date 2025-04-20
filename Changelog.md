@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.16.5 - 1.2.2
+
+- remove logging from SupergateScreen
+
 ### Version 1.16.5 - 1.2.0
 
 - backport changed from 1.18.2

@@ -52,7 +52,6 @@ public class SupergateScreen extends CustomScreen {
     private void save(Button b) {
         byte data = SupergateTileEntity.booleansToByte(this.configuration);
         PacketHandler.INSTANCE.sendToServer(new SetSupergateValues(data, this.pos));
-        AdditionalRedstone.LOGGER.info(Arrays.toString(this.configuration));
         this.onClose();
     }
 
