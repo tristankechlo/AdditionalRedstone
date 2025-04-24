@@ -13,7 +13,7 @@ env:
   MODRINTH_FEATURED: false # if this version should be featured on modrinth
   DISCORD_COLOR: 16711680
   DISCORD_MENTION: "<@&890143567421530162>"
-  DISCORD_TITLE: "New version for AdditionalRedstone just released :exclamation:"
+  DISCORD_TITLE: "New version for AdditionalRedstone released :exclamation:"
   DISCORD_THUMBNAIL: "https://cdn.modrinth.com/data/hhraLneG/b7fd70f056843b480ce15f03bd5522405aafba28_96.webp"
 
 jobs:
@@ -68,23 +68,17 @@ jobs:
       - name: Execute Gradle build
         run: ./gradlew build
 
-      - name: copy jar-files
-        shell: bash
-        run: |
-          mkdir ./dist
-          mv ./forge/build/libs/${{ env.MODID }}-*.jar ./dist
-          mv ./fabric/build/libs/${{ env.MODID }}-*.jar ./dist
-          echo -e "$(ls -lahG ./dist)"
-
       - name: Add files to GitHub-Release
         uses: shogo82148/actions-upload-release-asset@v1.7.5
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: "./dist/${{ env.MODID }}-*.jar"
+          asset_path: |
+            ./forge/build/libs/${{ env.MODID }}-*.jar
+            ./fabric/build/libs/${{ env.MODID }}-*.jar
           overwrite: true
 
       - name: publish mod files
-        uses: tristankechlo/publish-mc-mod@v1.0.0
+        uses: tristankechlo/publish-mc-mod@v2.0.0
         if: ${{ contains(github.event.release.name, '[RELEASE]') }}
         with:
           mc-version: ${{ needs.prepare.outputs.mc-version }}
@@ -92,10 +86,7 @@ jobs:
           curseforge-id: ${{ env.CURSEFORGE_ID }}
           modrinth-id: ${{ env.MODRINTH_ID }}
           changelog: ${{ github.event.release.body }}
-          featured: ${{ env.MODRINTH_FEATURED }}
-          forge: true
-          fabric: true
-          neoforge: false
+          loaders: forge,fabric
           version-range: ${{ needs.prepare.outputs.version-range }}
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
@@ -111,7 +102,7 @@ jobs:
           changelog: "${{ github.event.release.body }}"
           version: "${{ needs.prepare.outputs.mc-version }} - ${{ needs.prepare.outputs.mod-version }}"
           color: ${{ env.DISCORD_COLOR }}
-          content: "${{ contains(github.event.release.name, '[RELEASE]') && env.DISCORD_MENTION || 'This update will not be published!'}}"
+          content: "${{ contains(github.event.release.name, '[RELEASE]') && env.DISCORD_MENTION || ''}}"
           title: ${{ env.DISCORD_TITLE }}
           description: "${{ contains(github.event.release.name, '[RELEASE]') && 'The update is available for *Forge* and *Fabric*' || 'The update will *not* be released to Curseforge or Modrinth'}}"
           curseforge: ${{ env.CURSEFORGE_LINK }}

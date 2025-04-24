@@ -60,14 +60,8 @@ public class TimerScreen extends CustomScreen {
         this.addRenderableWidget(this.powerDownWidget);
         this.addRenderableWidget(this.intervalWidget);
 
-        Button saveButton = new Button.Builder(TEXT_SAVE, this::save)
-                .pos(this.leftPos + 9, this.topPos + 123).size(116, 20)
-                .tooltip(TOOLTIP_SAVE.get()).build();
-        Button cancelButton = new Button.Builder(TEXT_CANCEL, (b) -> this.onClose())
-                .pos(this.leftPos + 131, this.topPos + 123).size(116, 20)
-                .tooltip(TOOLTIP_CANCEL.get()).build();
-        this.addRenderableWidget(saveButton);
-        this.addRenderableWidget(cancelButton);
+        this.addSaveButton(this.leftPos + 9, this.topPos + 123, this::save);
+        this.addCancelButton(this.leftPos + 131, this.topPos + 123);
     }
 
     private void save(Button button) {
@@ -113,6 +107,7 @@ public class TimerScreen extends CustomScreen {
         if (this.powerUpWidget.isMouseOver(mouseX, mouseY) || this.powerDownWidget.isMouseOver(mouseX, mouseY)) {
             graphics.renderTooltip(this.font, DESCRIPTION, mouseX, mouseY);
         }
+        this.renderCustomButtonTooltips(graphics, mouseX, mouseY);
     }
 
     @Override
@@ -149,7 +144,7 @@ public class TimerScreen extends CustomScreen {
                 consumer.accept(true);
             }
         }
-        return Mth.clamp(returnTime, TimerBlockEntity.minTime, TimerBlockEntity.maxTime);
+        return Mth.clamp(returnTime, TimerBlockEntity.MIN_TIME, TimerBlockEntity.MAX_TIME);
     }
 
 }

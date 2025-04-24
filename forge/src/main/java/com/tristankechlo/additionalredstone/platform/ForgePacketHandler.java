@@ -9,6 +9,7 @@ import com.tristankechlo.additionalredstone.network.packets.SetSupergateValues;
 import com.tristankechlo.additionalredstone.network.packets.SetTimerValues;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
@@ -16,14 +17,14 @@ import net.minecraftforge.network.simple.SimpleChannel;
 
 import java.util.function.Supplier;
 
+@SuppressWarnings("removal") // ignore here, removed in 1.21.4+
 @AutoService(IPacketHandler.class)
-public class ForgePacketHandler implements IPacketHandler {
+public final class ForgePacketHandler implements IPacketHandler {
 
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(AdditionalRedstone.MOD_ID, "main"),
             () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
-
 
     public static void registerPackets() {
         INSTANCE.registerMessage(0, SetOscillatorValues.class,
@@ -55,7 +56,7 @@ public class ForgePacketHandler implements IPacketHandler {
             if (player == null) {
                 return;
             }
-            SetOscillatorValues.handle(msg, player.serverLevel());
+            SetOscillatorValues.handle(msg, (ServerLevel) player.level());
         });
         context.get().setPacketHandled(true);
     }
@@ -71,7 +72,7 @@ public class ForgePacketHandler implements IPacketHandler {
             if (player == null) {
                 return;
             }
-            SetSequencerValues.handle(msg, player.serverLevel());
+            SetSequencerValues.handle(msg, (ServerLevel) player.level());
         });
         context.get().setPacketHandled(true);
     }
@@ -87,7 +88,7 @@ public class ForgePacketHandler implements IPacketHandler {
             if (player == null) {
                 return;
             }
-            SetTimerValues.handle(msg, player.serverLevel());
+            SetTimerValues.handle(msg, (ServerLevel) player.level());
         });
         context.get().setPacketHandled(true);
     }
@@ -103,7 +104,7 @@ public class ForgePacketHandler implements IPacketHandler {
             if (player == null) {
                 return;
             }
-            SetSupergateValues.handle(msg, player.serverLevel());
+            SetSupergateValues.handle(msg, (ServerLevel) player.level());
         });
         contextSupplier.get().setPacketHandled(true);
     }

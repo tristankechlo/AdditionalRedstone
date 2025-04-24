@@ -9,13 +9,11 @@ import com.tristankechlo.additionalredstone.network.IPacketHandler;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
-
-import java.util.Arrays;
+import net.minecraft.network.chat.MutableComponent;
 
 public class SupergateScreen extends CustomScreen {
 
-    private static final Component TITLE = ModBlocks.SUPERGATE_BLOCK.get().getName();
+    private static final MutableComponent TITLE = ModBlocks.SUPERGATE_BLOCK.get().getName();
     private final boolean[] configuration;
     private final BlockPos pos;
 
@@ -31,21 +29,14 @@ public class SupergateScreen extends CustomScreen {
 
         for (int i = 0; i < AdditionalRedstone.INPUT_STATES.length; i++) {
             int y = this.topPos + 29 + i * 13;
-            OnOffButton button = new OnOffButton(this.leftPos + 139, y, 43, 12, i);
+            OnOffButton button = new OnOffButton(this.leftPos + 139, y, 42, 12, i);
             button.setToggled(this.configuration[i]);
             button.setConsumer(this::setConfig);
             this.addRenderableWidget(button);
         }
 
-        Button saveButton = new Button.Builder(CustomScreen.TEXT_SAVE, this::save)
-                .bounds(this.leftPos + 9, this.topPos + 139, 84, 20)
-                .tooltip(CustomScreen.TOOLTIP_SAVE.get()).build();
-        this.addRenderableWidget(saveButton);
-
-        Button cancelButton = new Button.Builder(CustomScreen.TEXT_CANCEL, (b) -> this.onClose())
-                .bounds(this.leftPos + 99, this.topPos + 139, 84, 20)
-                .tooltip(CustomScreen.TOOLTIP_CANCEL.get()).build();
-        this.addRenderableWidget(cancelButton);
+        this.addSaveButton(this.leftPos + 9, this.topPos + 139, 84, 20, this::save);
+        this.addCancelButton(this.leftPos + 98, this.topPos + 139, 84, 20);
     }
 
     private void setConfig(int i, boolean toggled) {
@@ -55,7 +46,6 @@ public class SupergateScreen extends CustomScreen {
     private void save(Button b) {
         byte data = SuperGateBlockEntity.booleansToByte(this.configuration);
         IPacketHandler.INSTANCE.sendPacketSetSupergateValues(data, this.pos);
-        AdditionalRedstone.LOGGER.info(Arrays.toString(this.configuration));
         this.onClose();
     }
 
@@ -84,11 +74,17 @@ public class SupergateScreen extends CustomScreen {
                 graphics.drawString(this.font, input[j] ? OnOffButton.ON : OnOffButton.OFF, x + j * 43 + (int) (21F - width / 2F), y, 0, false);
             }
         }
+        this.renderCustomButtonTooltips(graphics, mouseX, mouseY);
     }
 
     @Override
     public void renderBackground(GuiGraphics graphics) {
         super.renderBackground(graphics);
-        this.renderTexture(graphics, TruthtableScreen.TEXTURE);
+        // special rendering of this texture to accommodate un-mirrored texture
+        // basically skips a single pixel row of the texture
+        // noticeable, because buttons can only have an even width of pixels
+        graphics.blit(TruthtableScreen.TEXTURE, this.leftPos, this.topPos, 0, 0, 181, this.imageHeight);
+        graphics.blit(TruthtableScreen.TEXTURE, this.leftPos + 181, this.topPos, 182, 0, this.imageWidth - 182, this.imageHeight);
     }
+
 }

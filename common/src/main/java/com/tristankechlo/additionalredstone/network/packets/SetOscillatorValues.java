@@ -43,4 +43,5 @@ public class SetOscillatorValues {
             oscillator.setChanged();
         }
     }
+
 }

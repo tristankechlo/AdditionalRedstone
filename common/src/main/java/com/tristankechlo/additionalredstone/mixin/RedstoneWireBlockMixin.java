@@ -22,7 +22,7 @@ public abstract class RedstoneWireBlockMixin {
         BlockPos blockpos = pos.relative(direction);
         BlockState state = world.getBlockState(blockpos);
 
-        if (state.is(ModBlocks.NOT_GATE_BLOCK.get()) || state.is(ModBlocks.T_FLIP_FLOP_BLOCK.get())) {
+        if (state.is(ModBlocks.NOT_GATE_BLOCK.get()) || state.is(ModBlocks.T_FLIP_FLOP_BLOCK.get()) || state.is(ModBlocks.LED.get())) {
             //only connect front and back
             Direction front = state.getValue(HorizontalDirectionalBlock.FACING).getOpposite();
             Direction back = state.getValue(HorizontalDirectionalBlock.FACING);

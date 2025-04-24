@@ -1,5 +1,6 @@
 package com.tristankechlo.additionalredstone.blocks;
 
+import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.blockentity.OscillatorBlockEntity;
 import com.tristankechlo.additionalredstone.init.ModBlockEntities;
 import com.tristankechlo.additionalredstone.platform.IPlatformHelper;
@@ -29,34 +30,34 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class OscillatorBlock extends BaseEntityBlock {
 
-    private static final VoxelShape SHAPE = Shapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D), Block.box(4.5D, 2.0D, 4.5D, 11.5D, 12.0D, 11.5D));
-    public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+    private static final VoxelShape SHAPE = Shapes.or(CircuitBaseBlock.BASE, Block.box(4.5D, 2.0D, 4.5D, 11.5D, 12.0D, 11.5D));
+    private static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     public OscillatorBlock() {
         super(Properties.copy(Blocks.REPEATER));
-        this.registerDefaultState(this.stateDefinition.any().setValue(POWERED, Boolean.FALSE));
+        this.registerDefaultState(this.defaultBlockState().setValue(POWERED, Boolean.FALSE));
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-        if (!state.canSurvive(worldIn, pos)) {
-            BlockEntity tileentity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
-            dropResources(state, worldIn, pos, tileentity);
-            worldIn.removeBlock(pos, false);
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+        if (!state.canSurvive(level, pos)) {
+            BlockEntity blockEntity = state.hasBlockEntity() ? level.getBlockEntity(pos) : null;
+            dropResources(state, level, pos, blockEntity);
+            level.removeBlock(pos, false);
             for (Direction direction : Direction.values()) {
-                worldIn.updateNeighborsAt(pos.relative(direction), this);
+                level.updateNeighborsAt(pos.relative(direction), this);
             }
         }
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
-        return canSupportRigidBlock(worldIn, pos.below());
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        return canSupportRigidBlock(level, pos.below());
     }
 
     @Override
@@ -65,9 +66,9 @@ public class OscillatorBlock extends BaseEntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        BlockEntity tile = worldIn.getBlockEntity(pos);
-        if ((tile instanceof OscillatorBlockEntity oscillator) && worldIn.isClientSide) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+        BlockEntity tile = level.getBlockEntity(pos);
+        if ((tile instanceof OscillatorBlockEntity oscillator) && level.isClientSide) {
             int ticksOn = oscillator.getTicksOn();
             int ticksOff = oscillator.getTicksOff();
             IPlatformHelper.INSTANCE.openOscillatorScreen(ticksOn, ticksOff, pos);
@@ -82,8 +83,8 @@ public class OscillatorBlock extends BaseEntityBlock {
     }
 
     @Override
-    public int getSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
-        return blockState.getValue(POWERED) ? 15 : 0;
+    public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side) {
+        return state.getValue(POWERED) ? 15 : 0;
     }
 
     @Override
@@ -103,7 +104,7 @@ public class OscillatorBlock extends BaseEntityBlock {
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide() ? null : createTickerHelper(type, ModBlockEntities.OSCILLATOR_BLOCK_ENTITY.get(), OscillatorBlockEntity::tick);
+        return AdditionalRedstone.createTicker(level, type, ModBlockEntities.OSCILLATOR_BLOCK_ENTITY.get(), OscillatorBlockEntity::tick);
     }
 
 }

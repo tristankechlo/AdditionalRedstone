@@ -1,0 +1,25 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "GGG",
+        "RQR",
+        "WWW"
+    ],
+    "key": {
+        "Q": {
+            "tag": "c:quartz"
+        },
+        "R": {
+            "tag": "c:redstone_dusts"
+        },
+        "G": {
+            "tag": "c:glass_blocks"
+        },
+        "W": {
+            "tag": "minecraft:wooden_slabs"
+        }
+    },
+    "result": {
+        "item": "additionalredstone:light_detector"
+    }
+}

@@ -52,7 +52,6 @@ subprojects {
     }
 
     processResources {
-        // replace placeholders
         def expandProps = [
                 "version"                   : "${minecraft_version}-${mod_version}",
                 "version_range"             : version_range,
@@ -63,7 +62,8 @@ subprojects {
                 "fabric_range_max_exclusive": fabric_range_max_exclusive,
                 "forge_loader_range"        : forge_loader_range
         ]
-        filesMatching(['pack.mcmeta', 'fabric.mod.json', 'META-INF/mods.toml', '*.mixins.json']) {
+
+        filesMatching(['fabric.mod.json', 'META-INF/mods.toml']) {
             expand expandProps
         }
         inputs.properties(expandProps)

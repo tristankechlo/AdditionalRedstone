@@ -1,9 +1,11 @@
 package com.tristankechlo.additionalredstone.client.util;
 
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
+import com.tristankechlo.additionalredstone.mixin.client.AbstractWidgetMixin;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -13,17 +15,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public abstract class CustomScreen extends Screen {
 
     public static final MutableComponent TEXT_SAVE = Component.translatable("screen.additionalredstone.save");
-    public static final Supplier<Tooltip> TOOLTIP_SAVE = () -> Tooltip.create(Component.translatable("screen.additionalredstone.save.tooltip"));
+    private static final MutableComponent TOOLTIP_SAVE = Component.translatable("screen.additionalredstone.save.tooltip");
     public static final MutableComponent TEXT_CANCEL = Component.translatable("screen.additionalredstone.cancel");
-    public static final Supplier<Tooltip> TOOLTIP_CANCEL = () -> Tooltip.create(Component.translatable("screen.additionalredstone.cancel.tooltip"));
-    public static final MutableComponent TEXT_CLOSE = Component.translatable("screen.additionalredstone.close");
-    public static final Supplier<Tooltip> TOOLTIP_CLOSE = () -> Tooltip.create(Component.translatable("screen.additionalredstone.close.tooltip"));
-    public static final int TEXT_COLOR_SCREEN = 4210752;
+    private static final MutableComponent TOOLTIP_CANCEL = Component.translatable("screen.additionalredstone.cancel.tooltip");
+    public static final int TEXT_COLOR_SCREEN = 4210752; // #404040
     protected static final MutableComponent TICK_DESCRIPTION = Component.translatable("screen.additionalredstone.tick.description");
     private static final ResourceLocation ERROR_ICON = new ResourceLocation(AdditionalRedstone.MOD_ID, "textures/gui/icons.png");
     private Component customTitle;
@@ -31,6 +30,8 @@ public abstract class CustomScreen extends Screen {
     protected final int imageHeight;
     protected int topPos;
     protected int leftPos;
+    protected Button saveButton = null;
+    protected Button cancelButton = null;
 
     protected CustomScreen(Component title, int imageWidth, int imageHeight) {
         super(title);
@@ -56,6 +57,35 @@ public abstract class CustomScreen extends Screen {
         this.topPos = (this.height - this.imageHeight) / 2;
     }
 
+    protected void addSaveButton(int x, int y, Button.OnPress onPress) {
+        this.saveButton = new Button.Builder(TEXT_SAVE, onPress).bounds(x, y, 116, 20).build();
+        this.addRenderableWidget(saveButton);
+    }
+
+    protected void addSaveButton(int x, int y, int width, int height, Button.OnPress onPress) {
+        this.saveButton = new Button.Builder(TEXT_SAVE, onPress).bounds(x, y, width, height).build();
+        this.addRenderableWidget(saveButton);
+    }
+
+    protected void addCancelButton(int x, int y) {
+        this.cancelButton = new Button.Builder(TEXT_CANCEL, (b) -> this.onClose()).bounds(x, y, 116, 20).build();
+        this.addRenderableWidget(cancelButton);
+    }
+
+    protected void addCancelButton(int x, int y, int width, int height) {
+        this.cancelButton = new Button.Builder(TEXT_CANCEL, (b) -> this.onClose()).bounds(x, y, width, height).build();
+        this.addRenderableWidget(cancelButton);
+    }
+
+    protected void renderCustomButtonTooltips(GuiGraphics graphics, int mouseX, int mouseY) {
+        if (this.saveButton != null && this.saveButton.isMouseOver(mouseX, mouseY)) {
+            graphics.renderTooltip(this.font, TOOLTIP_SAVE, mouseX, mouseY);
+        }
+        if (this.cancelButton != null && this.cancelButton.isMouseOver(mouseX, mouseY)) {
+            graphics.renderTooltip(this.font, TOOLTIP_CANCEL, mouseX, mouseY);
+        }
+    }
+
     protected void renderTexture(GuiGraphics graphics, ResourceLocation texture) {
         graphics.blit(texture, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
     }
@@ -68,7 +98,9 @@ public abstract class CustomScreen extends Screen {
     public boolean keyPressed(int $$0, int $$1, int $$2) {
         // close screen when inventory key is pressed
         if (this.minecraft != null && this.minecraft.options.keyInventory.matches($$0, $$1)) {
-            boolean anyFocused = children().stream().anyMatch((child) -> child.isFocused() && (child instanceof EditBox));
+            boolean anyFocused = children().stream().anyMatch((child) -> {
+                return (child instanceof EditBox) && ((EditBox) child).isHoveredOrFocused();
+            });
             if (!anyFocused) {
                 this.onClose();
                 return true;
@@ -98,10 +130,11 @@ public abstract class CustomScreen extends Screen {
     @Override
     public boolean mouseClicked(double x, double y, int key) {
         for (GuiEventListener child : children()) {
-            if (!child.isMouseOver(x, y)) {
-                child.setFocused(false);
+            if (!child.isMouseOver(x, y) && (child instanceof AbstractWidget widget)) {
+                ((AbstractWidgetMixin) widget).setFocused(false);
             }
         }
         return super.mouseClicked(x, y, key);
     }
+
 }

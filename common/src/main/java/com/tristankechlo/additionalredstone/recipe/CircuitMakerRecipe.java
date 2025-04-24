@@ -3,7 +3,6 @@ package com.tristankechlo.additionalredstone.recipe;
 import com.google.gson.JsonObject;
 import com.tristankechlo.additionalredstone.init.ModBlocks;
 import com.tristankechlo.additionalredstone.init.ModRecipes;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;

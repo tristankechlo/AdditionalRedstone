@@ -12,8 +12,7 @@ public final class ModContainer {
 
     public static final RegistrationProvider<MenuType<?>> CONTAINER_TYPES = RegistrationProvider.get(BuiltInRegistries.MENU, AdditionalRedstone.MOD_ID);
 
-    public static final RegistryObject<MenuType<CircuitMakerContainer>> CIRCUIT_MAKER_CONTAINER = CONTAINER_TYPES.register("circuit_maker",
-            IPlatformHelper.INSTANCE.buildContainerCircuitMaker());
+    public static final RegistryObject<MenuType<CircuitMakerContainer>> CIRCUIT_MAKER_CONTAINER = CONTAINER_TYPES.register("circuit_maker", IPlatformHelper.INSTANCE.buildContainerCircuitMaker());
 
     public static void load() {}
 

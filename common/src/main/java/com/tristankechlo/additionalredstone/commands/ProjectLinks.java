@@ -1,12 +1,18 @@
 package com.tristankechlo.additionalredstone.commands;
 
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import net.minecraft.ChatFormatting;
+import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+
+import static net.minecraft.commands.Commands.literal;
 
 public enum ProjectLinks {
 
@@ -27,18 +33,27 @@ public enum ProjectLinks {
 
     public int execute(CommandContext<CommandSourceStack> sender) {
         sender.getSource().sendSuccess(() -> start().append(message), false);
-        return 1;
+        return 0;
     }
 
-    public static MutableComponent start() {
+    private static MutableComponent start() {
         return Component.literal("[" + AdditionalRedstone.MOD_NAME + "] ").withStyle(ChatFormatting.GOLD);
     }
 
-    public static MutableComponent clickableLink(String url, String displayText) {
+    private static MutableComponent clickableLink(String url, String displayText) {
         MutableComponent mutableComponent = Component.literal(displayText);
         mutableComponent.withStyle(ChatFormatting.GREEN, ChatFormatting.UNDERLINE);
         mutableComponent.withStyle(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url)));
         return mutableComponent;
+    }
+
+    public static void registerAsCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context, Commands.CommandSelection selection) {
+        LiteralArgumentBuilder<CommandSourceStack> command = literal(AdditionalRedstone.MOD_ID);
+        for (ProjectLinks option : values()) {
+            command.then(literal(option.name().toLowerCase()).executes(option::execute));
+        }
+        dispatcher.register(command);
+        AdditionalRedstone.LOGGER.info("Command '/{}' registered", AdditionalRedstone.MOD_ID);
     }
 
 }

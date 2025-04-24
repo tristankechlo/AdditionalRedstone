@@ -32,10 +32,9 @@ public class CircuitMakerContainer extends AbstractContainerMenu {
     private final Slot resultSlot;
     public final Container container;
     private final ResultContainer resultContainer = new ResultContainer();
-    private NonNullList<ItemStack> inputs = NonNullList.withSize(3, ItemStack.EMPTY);
+    private final NonNullList<ItemStack> inputs = NonNullList.withSize(3, ItemStack.EMPTY);
 
-
-    public CircuitMakerContainer(int id, Inventory playerInventory, FriendlyByteBuf extraData) {
+    public CircuitMakerContainer(int id, Inventory playerInventory, FriendlyByteBuf buffer) {
         this(id, playerInventory, ContainerLevelAccess.NULL);
     }
 
@@ -91,12 +90,12 @@ public class CircuitMakerContainer extends AbstractContainerMenu {
         // player inv
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 9; ++j) {
-                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 16 + j * 18, 85 + i * 18));
+                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 16 + j * 18, 84 + i * 18));
             }
         }
         // player hotbar
         for (int k = 0; k < 9; ++k) {
-            this.addSlot(new Slot(playerInventory, k, 16 + k * 18, 143));
+            this.addSlot(new Slot(playerInventory, k, 16 + k * 18, 142));
         }
 
         this.addDataSlot(this.selectedRecipe);
@@ -244,6 +243,7 @@ public class CircuitMakerContainer extends AbstractContainerMenu {
         });
     }
 
+    @Override
     public void removed(Player player) {
         super.removed(player);
         this.resultContainer.removeItemNoUpdate(1);

@@ -15,32 +15,31 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.ticks.TickPriority;
-import org.jetbrains.annotations.Nullable;
 
 public class SupergateBlock extends BaseDiodeBlock implements EntityBlock {
 
     @Override
-    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource rand) {
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {
         boolean isPowered = state.getValue(POWERED);
-        boolean shouldBeOn = this.shouldTurnOn(worldIn, pos, state);
+        boolean shouldBeOn = this.shouldTurnOn(level, pos, state);
 
         if (isPowered && !shouldBeOn) {
-            worldIn.setBlock(pos, state.setValue(POWERED, Boolean.FALSE), 2);
-            this.updateNeighborsInFront(worldIn, pos, state);
+            level.setBlock(pos, state.setValue(POWERED, Boolean.FALSE), 2);
+            this.updateNeighborsInFront(level, pos, state);
         } else if (!isPowered && shouldBeOn) {
-            worldIn.setBlock(pos, state.setValue(POWERED, Boolean.TRUE), 2);
-            this.updateNeighborsInFront(worldIn, pos, state);
+            level.setBlock(pos, state.setValue(POWERED, Boolean.TRUE), 2);
+            this.updateNeighborsInFront(level, pos, state);
         }
     }
 
     @Override
-    protected void checkTickOnNeighbor(Level worldIn, BlockPos pos, BlockState state) {
-        if (!worldIn.getBlockTicks().willTickThisTick(pos, this)) {
+    protected void checkTickOnNeighbor(Level level, BlockPos pos, BlockState state) {
+        if (!level.getBlockTicks().willTickThisTick(pos, this)) {
             TickPriority tickpriority = TickPriority.HIGH;
-            if (this.shouldPrioritize(worldIn, pos, state)) {
+            if (this.shouldPrioritize(level, pos, state)) {
                 tickpriority = TickPriority.EXTREMELY_HIGH;
             }
-            worldIn.scheduleTick(pos, this, this.getDelay(state), tickpriority);
+            level.scheduleTick(pos, this, this.getDelay(state), tickpriority);
         }
     }
 
@@ -48,9 +47,9 @@ public class SupergateBlock extends BaseDiodeBlock implements EntityBlock {
         Direction middle = state.getValue(FACING);
         Direction left = state.getValue(FACING).getClockWise();
         Direction right = state.getValue(FACING).getCounterClockWise();
-        boolean m = BaseDiodeBlock.getRedstonePowerForSide(level, pos, middle) > 0;
-        boolean l = BaseDiodeBlock.getRedstonePowerForSide(level, pos, left) > 0;
-        boolean r = BaseDiodeBlock.getRedstonePowerForSide(level, pos, right) > 0;
+        boolean m = BaseDiodeBlock.getRedstonePowerRelative(level, pos, middle) > 0;
+        boolean l = BaseDiodeBlock.getRedstonePowerRelative(level, pos, left) > 0;
+        boolean r = BaseDiodeBlock.getRedstonePowerRelative(level, pos, right) > 0;
         BlockEntity blockEntity = state.hasBlockEntity() ? level.getBlockEntity(pos) : null;
         if (blockEntity instanceof SuperGateBlockEntity) {
             return SuperGateBlockEntity.shouldBePowered((SuperGateBlockEntity) blockEntity, l, m, r);
@@ -59,20 +58,15 @@ public class SupergateBlock extends BaseDiodeBlock implements EntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        BlockEntity tile = worldIn.getBlockEntity(pos);
-        if ((tile instanceof SuperGateBlockEntity blockEntity) && worldIn.isClientSide) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        BlockEntity tile = level.getBlockEntity(pos);
+        if ((tile instanceof SuperGateBlockEntity blockEntity) && level.isClientSide) {
             byte config = blockEntity.getConfiguration();
             IPlatformHelper.INSTANCE.openSupergateScreen(config, pos);
         }
         return InteractionResult.SUCCESS;
     }
 
-    protected BlockState getDefaultDiodeState() {
-        return this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, Boolean.FALSE);
-    }
-
-    @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new SuperGateBlockEntity(pos, state);

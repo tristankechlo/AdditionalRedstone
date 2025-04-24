@@ -31,7 +31,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class CircuitMakerBlock extends HorizontalDirectionalBlock {
 
     private static Component CONTAINER_NAME = null;
-    private static final VoxelShape SHAPE = Shapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D), Block.box(2.5D, 2.0D, 2.5D, 13.5D, 12.0D, 13.5D));
+    private static final VoxelShape SHAPE = Shapes.or(CircuitBaseBlock.BASE, Block.box(2.5D, 2.0D, 2.5D, 13.5D, 12.0D, 13.5D));
 
     public CircuitMakerBlock() {
         super(Properties.of().mapColor(MapColor.COLOR_GRAY).sound(SoundType.METAL).strength(5F, 6F)
@@ -39,56 +39,56 @@ public class CircuitMakerBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
-        return canSupportRigidBlock(worldIn, pos.below());
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        return canSupportRigidBlock(level, pos.below());
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-        if (!state.canSurvive(worldIn, pos)) {
-            BlockEntity tileentity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
-            dropResources(state, worldIn, pos, tileentity);
-            worldIn.removeBlock(pos, false);
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+        if (!state.canSurvive(level, pos)) {
+            BlockEntity blockEntity = state.hasBlockEntity() ? level.getBlockEntity(pos) : null;
+            dropResources(state, level, pos, blockEntity);
+            level.removeBlock(pos, false);
             for (Direction direction : Direction.values()) {
-                worldIn.updateNeighborsAt(pos.relative(direction), this);
+                level.updateNeighborsAt(pos.relative(direction), this);
             }
         }
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 
     @Override
-    public VoxelShape getVisualShape(BlockState state, BlockGetter reader, BlockPos pos, CollisionContext context) {
+    public VoxelShape getVisualShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return Shapes.empty();
     }
 
     @Override
-    public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos) {
+    public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos) {
         return 1.0F;
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
+    public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
         return false;
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        if (worldIn.isClientSide) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+        if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
-            player.openMenu(state.getMenuProvider(worldIn, pos));
+            player.openMenu(state.getMenuProvider(level, pos));
             return InteractionResult.CONSUME;
         }
     }
 
     @Override
-    public MenuProvider getMenuProvider(BlockState state, Level worldIn, BlockPos pos) {
+    public MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
         return new SimpleMenuProvider((id, playerInv, player) -> {
-            return new CircuitMakerContainer(id, playerInv, ContainerLevelAccess.create(worldIn, pos));
+            return new CircuitMakerContainer(id, playerInv, ContainerLevelAccess.create(level, pos));
         }, getContainerName());
     }
 

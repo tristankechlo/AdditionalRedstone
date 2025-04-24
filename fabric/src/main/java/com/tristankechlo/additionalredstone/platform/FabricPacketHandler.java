@@ -15,11 +15,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 
 @AutoService(IPacketHandler.class)
-public class FabricPacketHandler implements IPacketHandler {
+public final class FabricPacketHandler implements IPacketHandler {
 
     private static final ResourceLocation CHANNEL_OSCILLATOR = new ResourceLocation(AdditionalRedstone.MOD_ID, "oscillator");
     private static final ResourceLocation CHANNEL_SEQUENCER = new ResourceLocation(AdditionalRedstone.MOD_ID, "sequencer");
@@ -45,7 +46,7 @@ public class FabricPacketHandler implements IPacketHandler {
             return;
         }
         SetOscillatorValues msg = SetOscillatorValues.decode(buf);
-        server.execute(() -> SetOscillatorValues.handle(msg, player.serverLevel()));
+        server.execute(() -> SetOscillatorValues.handle(msg, (ServerLevel) player.level()));
     }
 
     @Override
@@ -60,7 +61,7 @@ public class FabricPacketHandler implements IPacketHandler {
             return;
         }
         SetSequencerValues msg = SetSequencerValues.decode(buf);
-        server.execute(() -> SetSequencerValues.handle(msg, player.serverLevel()));
+        server.execute(() -> SetSequencerValues.handle(msg, (ServerLevel) player.level()));
     }
 
     @Override
@@ -75,7 +76,7 @@ public class FabricPacketHandler implements IPacketHandler {
             return;
         }
         SetTimerValues msg = SetTimerValues.decode(buf);
-        server.execute(() -> SetTimerValues.handle(msg, player.serverLevel()));
+        server.execute(() -> SetTimerValues.handle(msg, (ServerLevel) player.level()));
     }
 
     @Override
@@ -90,7 +91,7 @@ public class FabricPacketHandler implements IPacketHandler {
             return;
         }
         SetSupergateValues msg = SetSupergateValues.decode(buf);
-        server.execute(() -> SetSupergateValues.handle(msg, player.serverLevel()));
+        server.execute(() -> SetSupergateValues.handle(msg, (ServerLevel) player.level()));
     }
 
 }

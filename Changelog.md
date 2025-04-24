@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.20.1 - 1.2.2
+
+- port newest features from 1.18.2
+
 ### Version 1.20.1 - 1.2.1
 
 - update to dependencies

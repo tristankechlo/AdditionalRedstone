@@ -1,6 +1,7 @@
 package com.tristankechlo.additionalredstone.container;
 
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +17,12 @@ public class ConditionedSlot extends Slot {
 
     @Override
     public boolean mayPlace(ItemStack stack) {
-        return stack.getItem().equals(this.item);
+        return stack.is(this.item);
+    }
+
+    @Override
+    public boolean allowModification(Player player) {
+        return true;
     }
 
 }

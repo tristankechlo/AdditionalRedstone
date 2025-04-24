@@ -7,7 +7,6 @@ import com.tristankechlo.additionalredstone.client.util.OnOffButton;
 import com.tristankechlo.additionalredstone.client.util.TruthTableHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -16,10 +15,10 @@ public class TruthtableScreen extends CustomScreen {
 
     public static final ResourceLocation TEXTURE = new ResourceLocation(AdditionalRedstone.MOD_ID, "textures/gui/truthtable.png");
     private static final String START = "screen.additionalredstone.truthtable.";
-    public static final Component INPUT_A = Component.translatable(START + "input_a").withStyle(ChatFormatting.BLACK);
-    public static final Component INPUT_B = Component.translatable(START + "input_b").withStyle(ChatFormatting.BLACK);
-    public static final Component INPUT_C = Component.translatable(START + "input_c").withStyle(ChatFormatting.BLACK);
-    public static final Component OUTPUT = Component.translatable(START + "output").withStyle(ChatFormatting.BLACK);
+    public static final MutableComponent INPUT_A = Component.translatable(START + "input_a").withStyle(ChatFormatting.BLACK);
+    public static final MutableComponent INPUT_B = Component.translatable(START + "input_b").withStyle(ChatFormatting.BLACK);
+    public static final MutableComponent INPUT_C = Component.translatable(START + "input_c").withStyle(ChatFormatting.BLACK);
+    public static final MutableComponent OUTPUT = Component.translatable(START + "output").withStyle(ChatFormatting.BLACK);
     private final boolean[] outputStates = new boolean[AdditionalRedstone.INPUT_STATES.length];
     private int index;
 
@@ -39,11 +38,7 @@ public class TruthtableScreen extends CustomScreen {
     @Override
     protected void init() {
         super.init();
-
-        Button cancelButton = new Button.Builder(CustomScreen.TEXT_CLOSE, (b) -> this.onClose())
-                .bounds(this.leftPos + 9, this.topPos + 139, 174, 20)
-                .tooltip(CustomScreen.TOOLTIP_CLOSE.get()).build();
-        this.addRenderableWidget(cancelButton);
+        this.addCancelButton(this.leftPos + 9, this.topPos + 139, 174, 20);
     }
 
     @Override
@@ -85,6 +80,7 @@ public class TruthtableScreen extends CustomScreen {
                 break;
             }
         }
+        this.renderCustomButtonTooltips(graphics, mouseX, mouseY);
     }
 
     @Override
@@ -131,7 +127,7 @@ public class TruthtableScreen extends CustomScreen {
         return mouseX >= startX + index * 24 && mouseX < startX + (index + 1) * 24 && mouseY >= startY && mouseY < startY + 24;
     }
 
-    private static Component makeTitle(MutableComponent blockDescription) {
+    private static MutableComponent makeTitle(MutableComponent blockDescription) {
         blockDescription.withStyle(ChatFormatting.DARK_BLUE);
         return Component.translatable(START + "title", blockDescription);
     }

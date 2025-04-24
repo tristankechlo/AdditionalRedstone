@@ -1,6 +1,6 @@
 package com.tristankechlo.additionalredstone;
 
-import com.tristankechlo.additionalredstone.commands.ModCommand;
+import com.tristankechlo.additionalredstone.commands.ProjectLinks;
 import com.tristankechlo.additionalredstone.platform.ForgePacketHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -20,9 +20,8 @@ public class ForgeAdditionalRedstone {
         MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
     }
 
-    /* register commands */
-    private void registerCommands(final RegisterCommandsEvent event) {
-        ModCommand.register(event.getDispatcher());
+    private void registerCommands(RegisterCommandsEvent event) {
+        ProjectLinks.registerAsCommand(event.getDispatcher(), event.getBuildContext(), event.getCommandSelection());
     }
 
 }

@@ -1,5 +1,5 @@
 plugins {
-    id 'idea'
+    id 'java'
     id 'net.minecraftforge.gradle'
     id 'org.spongepowered.mixin'
 }
@@ -16,6 +16,9 @@ mixin {
 
 minecraft {
     mappings channel: 'official', version: minecraft_version
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    copyIdeResources = true
+
     runs {
         client {
             workingDirectory project.file('run')
@@ -30,6 +33,7 @@ minecraft {
                 }
             }
         }
+
         server {
             workingDirectory project.file('run')
             ideaModule "${rootProject.name}.${project.name}.main"
@@ -49,15 +53,9 @@ minecraft {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     compileOnly project(":common")
-
     implementation 'org.spongepowered:mixin:0.8.4:processor'
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 
-    // compile against the JEI API but do not include it at runtime
-    //compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
-    //compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
-    // at runtime, use the full JEI jar for Forge
-    //runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
     implementation(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
 
     compileOnly group: 'com.google.auto.service', name: 'auto-service', version: auto_service_version
@@ -70,6 +68,8 @@ tasks.withType(JavaCompile) {
 
 processResources {
     from project(":common").sourceSets.main.resources
+    // file only used in dev-common and fabric
+    exclude("${mod_id}.accesswidener")
 }
 
 jar.finalizedBy('reobfJar')

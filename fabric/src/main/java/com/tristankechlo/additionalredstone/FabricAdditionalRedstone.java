@@ -1,6 +1,6 @@
 package com.tristankechlo.additionalredstone;
 
-import com.tristankechlo.additionalredstone.commands.ModCommand;
+import com.tristankechlo.additionalredstone.commands.ProjectLinks;
 import com.tristankechlo.additionalredstone.platform.FabricPacketHandler;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -16,9 +16,7 @@ public class FabricAdditionalRedstone implements ModInitializer {
         FabricPacketHandler.registerPackets();
 
         //register mod command
-        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
-            ModCommand.register(dispatcher);
-        });
+        CommandRegistrationCallback.EVENT.register(ProjectLinks::registerAsCommand);
     }
 
 }

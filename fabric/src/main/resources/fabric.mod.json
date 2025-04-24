@@ -2,7 +2,7 @@
     "schemaVersion": 1,
     "id": "additionalredstone",
     "version": "${version}",
-    "name": "Additional Redstone",
+    "name": "AdditionalRedstone",
     "description": "additional redstone mechanics, like logic gates and more",
     "authors": [
         "Buecher_wurm"
@@ -29,6 +29,7 @@
     "mixins": [
         "additionalredstone.mixins.json"
     ],
+    "accessWidener": "additionalredstone.accesswidener",
     "depends": {
         "fabricloader": ">=${fabric_loader_min}",
         "fabric": "*",

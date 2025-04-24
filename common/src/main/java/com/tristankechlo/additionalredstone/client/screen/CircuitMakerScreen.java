@@ -1,5 +1,6 @@
 package com.tristankechlo.additionalredstone.client.screen;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.container.CircuitMakerContainer;
 import com.tristankechlo.additionalredstone.recipe.CircuitMakerRecipe;
@@ -72,6 +73,8 @@ public class CircuitMakerScreen extends AbstractContainerScreen<CircuitMakerCont
     @Override
     protected void renderTooltip(GuiGraphics graphics, int x, int y) {
         super.renderTooltip(graphics, x, y);
+
+        // render tooltips for items in the buttons
         if (this.displayRecipes) {
             int $$3 = this.leftPos + RECIPES_X;
             int $$4 = this.topPos + RECIPES_Y;
@@ -115,7 +118,6 @@ public class CircuitMakerScreen extends AbstractContainerScreen<CircuitMakerCont
             int $$9 = $$2 + $$8 * RECIPES_IMAGE_SIZE_HEIGHT + 1;
             graphics.renderItem(recipes.get(index).getResultItem(this.minecraft.level.registryAccess()), $$7, $$9);
         }
-
     }
 
     @Override

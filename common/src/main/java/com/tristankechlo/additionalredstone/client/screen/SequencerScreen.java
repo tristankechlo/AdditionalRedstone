@@ -36,14 +36,8 @@ public class SequencerScreen extends CustomScreen {
         this.intervalWidget.setValue(String.valueOf(this.initialInterval));
         this.addRenderableWidget(this.intervalWidget);
 
-        Button saveButton = new Button.Builder(TEXT_SAVE, this::save)
-                .pos(this.leftPos + 9, this.topPos + 57).size(116, 20)
-                .tooltip(TOOLTIP_SAVE.get()).build();
-        Button cancelButton = new Button.Builder(TEXT_CANCEL, (b) -> this.onClose())
-                .pos(this.leftPos + 131, this.topPos + 57).size(116, 20)
-                .tooltip(TOOLTIP_CANCEL.get()).build();
-        this.addRenderableWidget(saveButton);
-        this.addRenderableWidget(cancelButton);
+        this.addSaveButton(this.leftPos + 9, this.topPos + 57, this::save);
+        this.addCancelButton(this.leftPos + 131, this.topPos + 57);
     }
 
     private void save(Button button) {
@@ -76,6 +70,7 @@ public class SequencerScreen extends CustomScreen {
         if (this.intervalWidget.isMouseOver(mouseX, mouseY)) {
             graphics.renderTooltip(this.font, TICK_DESCRIPTION, mouseX, mouseY);
         }
+        this.renderCustomButtonTooltips(graphics, mouseX, mouseY);
     }
 
     @Override
@@ -91,4 +86,5 @@ public class SequencerScreen extends CustomScreen {
         }
         return super.keyPressed($$0, $$1, $$2);
     }
+
 }

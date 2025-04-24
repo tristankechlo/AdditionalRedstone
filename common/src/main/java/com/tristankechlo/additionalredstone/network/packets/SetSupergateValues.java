@@ -33,11 +33,12 @@ public class SetSupergateValues {
         }
         BlockEntity entity = world.getBlockEntity(msg.pos);
 
-        if ((entity instanceof SuperGateBlockEntity supergate)) {
+        if (entity instanceof SuperGateBlockEntity supergate) {
             supergate.setConfiguration(msg.configuration);
             world.sendBlockUpdated(msg.pos, world.getBlockState(msg.pos), world.getBlockState(msg.pos), 3);
             world.scheduleTick(msg.pos, supergate.getBlockState().getBlock(), 1); // force block update
             supergate.setChanged();
         }
     }
+
 }
