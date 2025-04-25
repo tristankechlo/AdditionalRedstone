@@ -2,7 +2,12 @@
 
 ## Version 1.20.4 - 1.2.2
 
-- port newest features from 1.20.1
+- port to 1.20.4
+- add neoforge support
+
+### Version 1.20.1 - 1.2.2
+
+- port newest features from 1.19.4
 
 ### Version 1.20.1 - 1.2.1
 

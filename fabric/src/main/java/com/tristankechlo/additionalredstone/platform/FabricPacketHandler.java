@@ -1,7 +1,6 @@
 package com.tristankechlo.additionalredstone.platform;
 
 import com.google.auto.service.AutoService;
-import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.network.IPacketHandler;
 import com.tristankechlo.additionalredstone.network.packets.SetOscillatorValues;
 import com.tristankechlo.additionalredstone.network.packets.SetSequencerValues;
@@ -13,7 +12,6 @@ import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,23 +20,18 @@ import net.minecraft.server.network.ServerGamePacketListenerImpl;
 @AutoService(IPacketHandler.class)
 public final class FabricPacketHandler implements IPacketHandler {
 
-    private static final ResourceLocation CHANNEL_OSCILLATOR = new ResourceLocation(AdditionalRedstone.MOD_ID, "oscillator");
-    private static final ResourceLocation CHANNEL_SEQUENCER = new ResourceLocation(AdditionalRedstone.MOD_ID, "sequencer");
-    private static final ResourceLocation CHANNEL_TIMER = new ResourceLocation(AdditionalRedstone.MOD_ID, "timer");
-    private static final ResourceLocation CHANNEL_SUPERGATE = new ResourceLocation(AdditionalRedstone.MOD_ID, "supergate");
-
     public static void registerPackets() {
-        ServerPlayNetworking.registerGlobalReceiver(CHANNEL_OSCILLATOR, FabricPacketHandler::handleSetOscillatorValues);
-        ServerPlayNetworking.registerGlobalReceiver(CHANNEL_SEQUENCER, FabricPacketHandler::handleSetSequencerValues);
-        ServerPlayNetworking.registerGlobalReceiver(CHANNEL_TIMER, FabricPacketHandler::handleSetTimerValues);
-        ServerPlayNetworking.registerGlobalReceiver(CHANNEL_SUPERGATE, FabricPacketHandler::handleSetSupergateValues);
+        ServerPlayNetworking.registerGlobalReceiver(SetOscillatorValues.CHANNEL_ID, FabricPacketHandler::handleSetOscillatorValues);
+        ServerPlayNetworking.registerGlobalReceiver(SetSequencerValues.CHANNEL_ID, FabricPacketHandler::handleSetSequencerValues);
+        ServerPlayNetworking.registerGlobalReceiver(SetTimerValues.CHANNEL_ID, FabricPacketHandler::handleSetTimerValues);
+        ServerPlayNetworking.registerGlobalReceiver(SetSupergateValues.CHANNEL_ID, FabricPacketHandler::handleSetSupergateValues);
     }
 
     @Override
     public void sendPacketSetOscillatorValues(int ticksOn, int ticksOff, BlockPos pos) {
         FriendlyByteBuf buf = PacketByteBufs.create();
         SetOscillatorValues.encode(new SetOscillatorValues(ticksOn, ticksOff, pos), buf);
-        ClientPlayNetworking.send(CHANNEL_OSCILLATOR, buf);
+        ClientPlayNetworking.send(SetOscillatorValues.CHANNEL_ID, buf);
     }
 
     static void handleSetOscillatorValues(MinecraftServer server, ServerPlayer player, ServerGamePacketListenerImpl handler, FriendlyByteBuf buf, PacketSender responseSender) {
@@ -53,7 +46,7 @@ public final class FabricPacketHandler implements IPacketHandler {
     public void sendPacketSetSequencerValues(int interval, BlockPos pos) {
         FriendlyByteBuf buf = PacketByteBufs.create();
         SetSequencerValues.encode(new SetSequencerValues(interval, pos), buf);
-        ClientPlayNetworking.send(CHANNEL_SEQUENCER, buf);
+        ClientPlayNetworking.send(SetSequencerValues.CHANNEL_ID, buf);
     }
 
     static void handleSetSequencerValues(MinecraftServer server, ServerPlayer player, ServerGamePacketListenerImpl handler, FriendlyByteBuf buf, PacketSender responseSender) {
@@ -68,7 +61,7 @@ public final class FabricPacketHandler implements IPacketHandler {
     public void sendPacketSetTimerValues(int powerUpTime, int powerDownTime, int interval, BlockPos pos) {
         FriendlyByteBuf buf = PacketByteBufs.create();
         SetTimerValues.encode(new SetTimerValues(powerUpTime, powerDownTime, interval, pos), buf);
-        ClientPlayNetworking.send(CHANNEL_TIMER, buf);
+        ClientPlayNetworking.send(SetTimerValues.CHANNEL_ID, buf);
     }
 
     static void handleSetTimerValues(MinecraftServer server, ServerPlayer player, ServerGamePacketListenerImpl handler, FriendlyByteBuf buf, PacketSender responseSender) {
@@ -83,7 +76,7 @@ public final class FabricPacketHandler implements IPacketHandler {
     public void sendPacketSetSupergateValues(byte configuration, BlockPos pos) {
         FriendlyByteBuf buf = PacketByteBufs.create();
         SetSupergateValues.encode(new SetSupergateValues(configuration, pos), buf);
-        ClientPlayNetworking.send(CHANNEL_SUPERGATE, buf);
+        ClientPlayNetworking.send(SetSupergateValues.CHANNEL_ID, buf);
     }
 
     static void handleSetSupergateValues(MinecraftServer server, ServerPlayer player, ServerGamePacketListenerImpl handler, FriendlyByteBuf buf, PacketSender responseSender) {
