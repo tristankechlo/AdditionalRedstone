@@ -81,9 +81,9 @@ public class CircuitMakerRecipe implements Recipe<Container> {
 
         public static final Codec<CircuitMakerRecipe> CODEC = RecordCodecBuilder.create(
                 builder -> builder.group(
-                        Ingredient.CODEC.fieldOf("input_1").forGetter(CircuitMakerRecipe::getInput1),
-                        Ingredient.CODEC.fieldOf("input_2").forGetter(CircuitMakerRecipe::getInput2),
-                        ItemStack.CODEC.fieldOf("result").forGetter(recipe -> recipe.result)
+                        Ingredient.CODEC_NONEMPTY.fieldOf("input_1").forGetter(CircuitMakerRecipe::getInput1),
+                        Ingredient.CODEC_NONEMPTY.fieldOf("input_2").forGetter(CircuitMakerRecipe::getInput2),
+                        ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result)
                 ).apply(builder, CircuitMakerRecipe::new)
         );
 
