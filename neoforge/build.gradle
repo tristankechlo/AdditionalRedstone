@@ -25,3 +25,8 @@ dependencies {
     compileOnly group: 'com.google.auto.service', name: 'auto-service', version: auto_service_version
     annotationProcessor group: 'com.google.auto.service', name: 'auto-service', version: auto_service_version
 }
+
+processResources {
+    // file only used in dev-common and fabric
+    exclude("${mod_id}.accesswidener")
+}
