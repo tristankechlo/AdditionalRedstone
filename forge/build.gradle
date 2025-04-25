@@ -1,18 +1,14 @@
 plugins {
-    id 'java'
-    id 'net.minecraftforge.gradle'
-    id 'org.spongepowered.mixin'
-}
-
-base {
-    version = "${minecraft_version}-${mod_version}"
-    archivesBaseName = "${mod_id}-forge"
+    id 'multiloader-loader'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'org.spongepowered.mixin' version '0.7-SNAPSHOT'
 }
 
 mixin {
     add sourceSets.main, "${mod_id}.refmap.json"
     config "${mod_id}.mixins.json"
 }
+jar.manifest.attributes.put("MixinConfigs", "${mod_id}.mixins.json")
 
 minecraft {
     mappings channel: 'official', version: minecraft_version
@@ -26,12 +22,7 @@ minecraft {
             taskName 'Client'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            mods {
-                modClientRun {
-                    source sourceSets.main
-                    source project(":common").sourceSets.main
-                }
-            }
+            mods { modClientRun { source sourceSets.main } }
         }
 
         server {
@@ -40,20 +31,13 @@ minecraft {
             taskName 'Server'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            mods {
-                modServerRun {
-                    source sourceSets.main
-                    source project(":common").sourceSets.main
-                }
-            }
+            mods { modServerRun { source sourceSets.main } }
         }
     }
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    compileOnly project(":common")
-    implementation 'org.spongepowered:mixin:0.8.4:processor'
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 
     implementation(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
@@ -62,14 +46,15 @@ dependencies {
     annotationProcessor group: 'com.google.auto.service', name: 'auto-service', version: auto_service_version
 }
 
-tasks.withType(JavaCompile) {
-    source(project(":common").sourceSets.main.allSource)
+jar.finalizedBy('reobfJar')
+
+sourceSets.each {
+    def dir = layout.buildDirectory.dir("sourcesSets/$it.name")
+    it.output.resourcesDir = dir
+    it.java.destinationDirectory = dir
 }
 
 processResources {
-    from project(":common").sourceSets.main.resources
     // file only used in dev-common and fabric
     exclude("${mod_id}.accesswidener")
 }
-
-jar.finalizedBy('reobfJar')

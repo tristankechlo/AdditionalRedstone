@@ -1,0 +1,32 @@
+plugins {
+    id 'multiloader-loader'
+    id 'net.neoforged.gradle.userdev' version '7.0.184'
+}
+
+def at = file('src/main/resources/META-INF/accesstransformer.cfg')
+if (at.exists()) {
+    minecraft.accessTransformers.file at
+}
+
+runs {
+    client {
+        modSource project.sourceSets.main
+    }
+    server {
+        modSource project.sourceSets.main
+        programArgument '--nogui'
+    }
+}
+
+dependencies {
+    implementation "net.neoforged:neoforge:${neoforge_version}"
+
+    // compile against the JEI API but do not include it at runtime
+    compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+    compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
+    // at runtime, use the full JEI jar for NeoForge
+    runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
+
+    compileOnly group: 'com.google.auto.service', name: 'auto-service', version: auto_service_version
+    annotationProcessor group: 'com.google.auto.service', name: 'auto-service', version: auto_service_version
+}

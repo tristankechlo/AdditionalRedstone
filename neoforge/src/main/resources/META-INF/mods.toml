@@ -1,0 +1,32 @@
+modLoader = "javafml"
+loaderVersion = "${neoforge_loader_range}"
+license = "CC BY-NC-ND 4.0"
+showAsResourcePack = false
+issueTrackerURL = "https://github.com/tristankechlo/AdditionalRedstone/issues"
+
+[[mods]]
+    modId = "additionalredstone"
+    version = "${version}"
+    displayName = "Additional Redstone"
+    displayURL = "https://www.curseforge.com/minecraft/mc-mods/additional-redstone"
+    logoFile = "pack.png"
+    #credits = "Thanks for this example mod goes to Java"
+    authors = "Buecher_wurm"
+    description = '''additional redstone mechanics, like logic gates and more'''
+
+[[mixins]]
+    config = "additionalredstone.mixins.json"
+
+[[dependencies.additionalredstone]]
+    modId = "neoforge"
+    type = "required"
+    versionRange = "${neoforge_range}"
+    ordering = "NONE"
+    side = "BOTH"
+
+[[dependencies.additionalredstone]]
+    modId = "minecraft"
+    type = "required"
+    versionRange = "${version_range}"
+    ordering = "NONE"
+    side = "BOTH"
