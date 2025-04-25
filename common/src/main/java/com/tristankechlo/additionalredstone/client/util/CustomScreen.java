@@ -1,7 +1,6 @@
 package com.tristankechlo.additionalredstone.client.util;
 
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
-import com.tristankechlo.additionalredstone.mixin.client.AbstractWidgetMixin;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
@@ -131,7 +130,7 @@ public abstract class CustomScreen extends Screen {
     public boolean mouseClicked(double x, double y, int key) {
         for (GuiEventListener child : children()) {
             if (!child.isMouseOver(x, y) && (child instanceof AbstractWidget widget)) {
-                ((AbstractWidgetMixin) widget).setFocused(false);
+                widget.setFocused(false);
             }
         }
         return super.mouseClicked(x, y, key);

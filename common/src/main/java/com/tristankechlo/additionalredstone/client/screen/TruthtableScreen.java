@@ -43,7 +43,7 @@ public class TruthtableScreen extends CustomScreen {
 
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(graphics); // render texture and transparent background
+        this.renderBackground(graphics, mouseX, mouseY, partialTicks); // render texture and transparent background
         super.render(graphics, mouseX, mouseY, partialTicks); // render buttons and labels
 
         // render title
@@ -84,8 +84,8 @@ public class TruthtableScreen extends CustomScreen {
     }
 
     @Override
-    public void renderBackground(GuiGraphics graphics) {
-        super.renderBackground(graphics);
+    public void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+        super.renderTransparentBackground(graphics);
 
         // render tabs
         int x = this.leftPos;

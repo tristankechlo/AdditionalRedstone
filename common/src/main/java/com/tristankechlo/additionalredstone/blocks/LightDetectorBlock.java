@@ -1,5 +1,6 @@
 package com.tristankechlo.additionalredstone.blocks;
 
+import com.mojang.serialization.MapCodec;
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.blockentity.LightDetectorBlockEntity;
 import com.tristankechlo.additionalredstone.init.ModBlockEntities;
@@ -27,10 +28,16 @@ public class LightDetectorBlock extends BaseEntityBlock {
 
     private static final IntegerProperty POWER = BlockStateProperties.POWER;
     private static final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 6.0, 16.0);
+    public static final MapCodec<LightDetectorBlock> CODEC = MapCodec.unit(LightDetectorBlock::new);
 
     public LightDetectorBlock() {
-        super(Properties.copy(Blocks.DAYLIGHT_DETECTOR));
+        super(Properties.ofFullCopy(Blocks.DAYLIGHT_DETECTOR));
         this.registerDefaultState(this.defaultBlockState().setValue(POWER, 0));
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
     }
 
     @Override

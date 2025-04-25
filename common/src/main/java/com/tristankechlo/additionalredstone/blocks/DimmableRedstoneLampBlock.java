@@ -17,7 +17,7 @@ public class DimmableRedstoneLampBlock extends Block {
     private static final IntegerProperty POWER = BlockStateProperties.POWER;
 
     public DimmableRedstoneLampBlock() {
-        super(Properties.copy(Blocks.REDSTONE_LAMP).lightLevel(DimmableRedstoneLampBlock::getLightLevel));
+        super(Properties.ofFullCopy(Blocks.REDSTONE_LAMP).lightLevel(DimmableRedstoneLampBlock::getLightLevel));
         this.registerDefaultState(this.defaultBlockState().setValue(POWER, 0));
     }
 

@@ -1,6 +1,5 @@
 package com.tristankechlo.additionalredstone.client.screen;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.container.CircuitMakerContainer;
 import com.tristankechlo.additionalredstone.recipe.CircuitMakerRecipe;
@@ -50,7 +49,7 @@ public class CircuitMakerScreen extends AbstractContainerScreen<CircuitMakerCont
 
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTicks, int x, int y) {
-        this.renderBackground(graphics);
+        this.renderTransparentBackground(graphics);
 
         //render background image
         graphics.blit(BG_LOCATION, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
@@ -164,7 +163,7 @@ public class CircuitMakerScreen extends AbstractContainerScreen<CircuitMakerCont
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double delta, double $$3) {
         if (this.isScrollBarActive()) {
             int offscreenRows = this.getOffscreenRows();
             float $$4 = (float) delta / (float) offscreenRows;

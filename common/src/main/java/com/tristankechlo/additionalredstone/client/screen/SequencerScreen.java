@@ -52,7 +52,7 @@ public class SequencerScreen extends CustomScreen {
 
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(graphics);
+        this.renderBackground(graphics, mouseX, mouseY, partialTicks);
         super.render(graphics, mouseX, mouseY, partialTicks);
 
         // render title
@@ -74,8 +74,8 @@ public class SequencerScreen extends CustomScreen {
     }
 
     @Override
-    public void renderBackground(GuiGraphics graphics) {
-        super.renderBackground(graphics);
+    public void renderBackground(GuiGraphics graphics, int $$1, int $$2, float $$3) {
+        super.renderTransparentBackground(graphics);
         this.renderTexture(graphics, TEXTURE);
     }
 

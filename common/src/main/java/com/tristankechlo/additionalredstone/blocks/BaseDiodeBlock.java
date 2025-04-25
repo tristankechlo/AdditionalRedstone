@@ -26,7 +26,7 @@ public abstract class BaseDiodeBlock extends DiodeBlock {
     private static final VoxelShape SHAPE_W = Shapes.join(CircuitBaseBlock.BASE, Block.box(3.0D, 2.0D, 4.0D, 11.0D, 4.0D, 12.0D), BooleanOp.OR);
 
     public BaseDiodeBlock() {
-        super(Properties.copy(Blocks.REPEATER));
+        super(Properties.ofFullCopy(Blocks.REPEATER));
         this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH).setValue(POWERED, Boolean.FALSE));
     }
 

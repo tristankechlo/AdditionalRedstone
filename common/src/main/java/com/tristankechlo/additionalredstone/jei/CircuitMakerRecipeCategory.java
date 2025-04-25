@@ -54,6 +54,11 @@ public class CircuitMakerRecipeCategory implements IRecipeCategory<CircuitMakerR
     }
 
     @Override
+    public IDrawable getBackground() {
+        return this.background;
+    }
+
+    @Override
     public IDrawable getIcon() {
         return icon;
     }

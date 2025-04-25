@@ -35,7 +35,7 @@ public class SequencerBlock extends Block implements EntityBlock {
     private static final IntegerProperty POWERED_SIDE = IntegerProperty.create("output", 0, 3);
 
     public SequencerBlock() {
-        super(Properties.copy(Blocks.REPEATER));
+        super(Properties.ofFullCopy(Blocks.REPEATER));
         this.registerDefaultState(this.defaultBlockState().setValue(POWERED_SIDE, 0));
     }
 

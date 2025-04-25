@@ -1,27 +1,27 @@
 package com.tristankechlo.additionalredstone.recipe;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.tristankechlo.additionalredstone.init.ModBlocks;
 import com.tristankechlo.additionalredstone.init.ModRecipes;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
 public class CircuitMakerRecipe implements Recipe<Container> {
 
-    private final ResourceLocation id;
     private final Ingredient input_1;
     private final Ingredient input_2;
     private final ItemStack result;
     private static ItemStack toastSymbol;
 
-    public CircuitMakerRecipe(ResourceLocation id, Ingredient input_1, Ingredient input_2, ItemStack result) {
-        this.id = id;
+    public CircuitMakerRecipe(Ingredient input_1, Ingredient input_2, ItemStack result) {
         this.input_1 = input_1;
         this.input_2 = input_2;
         this.result = result;
@@ -60,11 +60,6 @@ public class CircuitMakerRecipe implements Recipe<Container> {
     }
 
     @Override
-    public ResourceLocation getId() {
-        return id;
-    }
-
-    @Override
     public RecipeSerializer<?> getSerializer() {
         return ModRecipes.CIRCUIT_MAKER_RECIPE_SERIALIZER.get();
     }
@@ -84,20 +79,25 @@ public class CircuitMakerRecipe implements Recipe<Container> {
 
     public static class Serializer implements RecipeSerializer<CircuitMakerRecipe> {
 
+        public static final Codec<CircuitMakerRecipe> CODEC = RecordCodecBuilder.create(
+                builder -> builder.group(
+                        Ingredient.CODEC.fieldOf("input_1").forGetter(CircuitMakerRecipe::getInput1),
+                        Ingredient.CODEC.fieldOf("input_2").forGetter(CircuitMakerRecipe::getInput2),
+                        ItemStack.CODEC.fieldOf("result").forGetter(recipe -> recipe.result)
+                ).apply(builder, CircuitMakerRecipe::new)
+        );
+
         @Override
-        public CircuitMakerRecipe fromJson(ResourceLocation id, JsonObject json) {
-            Ingredient input_1 = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "input_1"), false);
-            Ingredient input_2 = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "input_2"), false);
-            ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
-            return new CircuitMakerRecipe(id, input_1, input_2, result);
+        public Codec<CircuitMakerRecipe> codec() {
+            return CODEC;
         }
 
         @Override
-        public CircuitMakerRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer) {
+        public CircuitMakerRecipe fromNetwork(FriendlyByteBuf buffer) {
             Ingredient input_1 = Ingredient.fromNetwork(buffer);
             Ingredient input_2 = Ingredient.fromNetwork(buffer);
             ItemStack result = buffer.readItem();
-            return new CircuitMakerRecipe(id, input_1, input_2, result);
+            return new CircuitMakerRecipe(input_1, input_2, result);
         }
 
         @Override

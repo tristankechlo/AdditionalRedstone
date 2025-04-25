@@ -1,8 +1,7 @@
 package com.tristankechlo.additionalredstone.client.util;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -58,18 +57,26 @@ public class OnOffButton extends AbstractButton {
 
     @Override
     public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+        super.renderWidget(graphics, mouseX, mouseY, partialTicks);
+        /*
         Minecraft minecraft = Minecraft.getInstance();
         graphics.setColor(1.0F, 1.0F, 1.0F, this.alpha);
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
-        int buttonType = this.getTextureY();
+        ResourceLocation texture = SPRITES.get(this.active, this.isHoveredOrFocused());
 
-        graphics.blit(WIDGETS_LOCATION, getX(), getY(), 0, buttonType, width / 2, height / 2); // top left
-        graphics.blit(WIDGETS_LOCATION, getX() + width / 2, getY(), 200 - width / 2, buttonType, width / 2, height / 2); // top right
-        graphics.blit(WIDGETS_LOCATION, getX(), getY() + (height / 2), 0, (20 - height / 2) + buttonType, width / 2, height / 2); // bottom left
-        graphics.blit(WIDGETS_LOCATION, getX() + width / 2, getY() + (height / 2), 200 - width / 2, (20 - height / 2) + buttonType, width / 2, height / 2); // bottom right
+        graphics.blitSprite(texture, getX(), getY(), 0, buttonType, width / 2, height / 2); // top left
+        graphics.blitSprite(texture, getX() + width / 2, getY(), 200 - width / 2, buttonType, width / 2, height / 2); // top right
+        graphics.blitSprite(texture, getX(), getY() + (height / 2), 0, (20 - height / 2) + buttonType, width / 2, height / 2); // bottom left
+        graphics.blitSprite(texture, getX() + width / 2, getY() + (height / 2), 200 - width / 2, (20 - height / 2) + buttonType, width / 2, height / 2); // bottom right
 
         graphics.drawCenteredString(minecraft.font, this.getMessage(), getX() + width / 2, getY() + (height - 8) / 2, 0);
+         */
+    }
+
+    @Override
+    public void renderString(GuiGraphics graphics, Font font, int alpha) {
+        graphics.drawCenteredString(font, this.getMessage(), getX() + width / 2, getY() + (height - 8) / 2, 0);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.tristankechlo.additionalredstone.blocks;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -30,10 +31,16 @@ public class LedBlock extends HorizontalDirectionalBlock {
     private static final int DELAY = 2;
     private static final IntegerProperty POWER = BlockStateProperties.POWER;
     private static final VoxelShape SHAPE = Shapes.join(CircuitBaseBlock.BASE, Block.box(4.0D, 2.0D, 4.0D, 12.0D, 6.0D, 12.0D), BooleanOp.OR);
+    public static final MapCodec<LedBlock> CODEC = MapCodec.unit(LedBlock::new);
 
     public LedBlock() {
-        super(Properties.copy(Blocks.REPEATER).lightLevel(LedBlock::getLightLevel));
+        super(Properties.ofFullCopy(Blocks.REPEATER).lightLevel(LedBlock::getLightLevel));
         this.registerDefaultState(this.defaultBlockState().setValue(POWER, 0).setValue(FACING, Direction.NORTH));
+    }
+
+    @Override
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+        return CODEC;
     }
 
     @Override

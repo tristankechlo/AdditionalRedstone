@@ -1,5 +1,6 @@
 package com.tristankechlo.additionalredstone.blocks;
 
+import com.mojang.serialization.MapCodec;
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.blockentity.OscillatorBlockEntity;
 import com.tristankechlo.additionalredstone.init.ModBlockEntities;
@@ -32,10 +33,16 @@ public class OscillatorBlock extends BaseEntityBlock {
 
     private static final VoxelShape SHAPE = Shapes.or(CircuitBaseBlock.BASE, Block.box(4.5D, 2.0D, 4.5D, 11.5D, 12.0D, 11.5D));
     private static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+    public static final MapCodec<OscillatorBlock> CODEC = MapCodec.unit(OscillatorBlock::new);
 
     public OscillatorBlock() {
-        super(Properties.copy(Blocks.REPEATER));
+        super(Properties.ofFullCopy(Blocks.REPEATER));
         this.registerDefaultState(this.defaultBlockState().setValue(POWERED, Boolean.FALSE));
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
     }
 
     @Override

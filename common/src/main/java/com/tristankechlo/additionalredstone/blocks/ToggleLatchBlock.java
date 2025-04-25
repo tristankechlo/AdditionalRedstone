@@ -1,5 +1,6 @@
 package com.tristankechlo.additionalredstone.blocks;
 
+import com.mojang.serialization.MapCodec;
 import com.tristankechlo.additionalredstone.blockentity.ToggleLatchBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -34,10 +35,16 @@ public class ToggleLatchBlock extends HorizontalDirectionalBlock implements Enti
 
     private static final int DELAY = 0;
     private static final EnumProperty<ToggleLatchSide> POWERED_SIDE = EnumProperty.create("outputside", ToggleLatchSide.class);
+    public static final MapCodec<ToggleLatchBlock> CODEC = MapCodec.unit(ToggleLatchBlock::new);
 
     public ToggleLatchBlock() {
-        super(Properties.copy(Blocks.REPEATER));
+        super(Properties.ofFullCopy(Blocks.REPEATER));
         this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH).setValue(POWERED_SIDE, ToggleLatchSide.LEFT));
+    }
+
+    @Override
+    protected MapCodec<ToggleLatchBlock> codec() {
+        return CODEC;
     }
 
     @Override

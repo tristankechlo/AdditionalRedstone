@@ -11,102 +11,104 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
-
-import java.util.function.Supplier;
+import net.minecraftforge.event.network.CustomPayloadEvent;
+import net.minecraftforge.network.*;
 
 @SuppressWarnings("removal") // ignore here, removed in 1.21.4+
 @AutoService(IPacketHandler.class)
 public final class ForgePacketHandler implements IPacketHandler {
 
-    private static final String PROTOCOL_VERSION = "1";
-    public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(AdditionalRedstone.MOD_ID, "main"),
-            () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
+    private static final SimpleChannel INSTANCE = ChannelBuilder.named(new ResourceLocation(AdditionalRedstone.MOD_ID, "main"))
+            .networkProtocolVersion(1)
+            .clientAcceptedVersions(Channel.VersionTest.exact(1))
+            .serverAcceptedVersions(Channel.VersionTest.exact(1))
+            .simpleChannel();
 
     public static void registerPackets() {
-        INSTANCE.registerMessage(0, SetOscillatorValues.class,
-                SetOscillatorValues::encode,
-                SetOscillatorValues::decode,
-                ForgePacketHandler::handleSetOscillatorValues);
-        INSTANCE.registerMessage(1, SetSequencerValues.class,
-                SetSequencerValues::encode,
-                SetSequencerValues::decode,
-                ForgePacketHandler::sendPacketSetSequencerValues);
-        INSTANCE.registerMessage(2, SetTimerValues.class,
-                SetTimerValues::encode,
-                SetTimerValues::decode,
-                ForgePacketHandler::handleSetTimerValues);
-        INSTANCE.registerMessage(3, SetSupergateValues.class,
-                SetSupergateValues::encode,
-                SetSupergateValues::decode,
-                ForgePacketHandler::handleSetSupergateValues);
+        INSTANCE.messageBuilder(SetOscillatorValues.class, 0, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(SetOscillatorValues::encode)
+                .decoder(SetOscillatorValues::decode)
+                .consumerMainThread(ForgePacketHandler::handleSetOscillatorValues)
+                .add();
+        INSTANCE.messageBuilder(SetSequencerValues.class, 1, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(SetSequencerValues::encode)
+                .decoder(SetSequencerValues::decode)
+                .consumerMainThread(ForgePacketHandler::sendPacketSetSequencerValues)
+                .add();
+        INSTANCE.messageBuilder(SetTimerValues.class, 2, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(SetTimerValues::encode)
+                .decoder(SetTimerValues::decode)
+                .consumerMainThread(ForgePacketHandler::handleSetTimerValues)
+                .add();
+        INSTANCE.messageBuilder(SetSupergateValues.class, 3, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(SetSupergateValues::encode)
+                .decoder(SetSupergateValues::decode)
+                .consumerMainThread(ForgePacketHandler::handleSetSupergateValues)
+                .add();
     }
 
     @Override
     public void sendPacketSetOscillatorValues(int ticksOn, int ticksOff, BlockPos pos) {
-        ForgePacketHandler.INSTANCE.sendToServer(new SetOscillatorValues(ticksOn, ticksOff, pos));
+        INSTANCE.send(new SetOscillatorValues(ticksOn, ticksOff, pos), PacketDistributor.SERVER.noArg());
     }
 
-    static void handleSetOscillatorValues(SetOscillatorValues msg, Supplier<NetworkEvent.Context> context) {
-        context.get().enqueueWork(() -> {
-            ServerPlayer player = context.get().getSender();
+    static void handleSetOscillatorValues(SetOscillatorValues msg, CustomPayloadEvent.Context context) {
+        context.enqueueWork(() -> {
+            ServerPlayer player = context.getSender();
             if (player == null) {
                 return;
             }
             SetOscillatorValues.handle(msg, (ServerLevel) player.level());
         });
-        context.get().setPacketHandled(true);
+        context.setPacketHandled(true);
     }
 
     @Override
     public void sendPacketSetSequencerValues(int interval, BlockPos pos) {
-        ForgePacketHandler.INSTANCE.sendToServer(new SetSequencerValues(interval, pos));
+        INSTANCE.send(new SetSequencerValues(interval, pos), PacketDistributor.SERVER.noArg());
     }
 
-    static void sendPacketSetSequencerValues(SetSequencerValues msg, Supplier<NetworkEvent.Context> context) {
-        context.get().enqueueWork(() -> {
-            ServerPlayer player = context.get().getSender();
+    static void sendPacketSetSequencerValues(SetSequencerValues msg, CustomPayloadEvent.Context context) {
+        context.enqueueWork(() -> {
+            ServerPlayer player = context.getSender();
             if (player == null) {
                 return;
             }
             SetSequencerValues.handle(msg, (ServerLevel) player.level());
         });
-        context.get().setPacketHandled(true);
+        context.setPacketHandled(true);
     }
 
     @Override
     public void sendPacketSetTimerValues(int powerUpTime, int powerDownTime, int interval, BlockPos pos) {
-        ForgePacketHandler.INSTANCE.sendToServer(new SetTimerValues(powerUpTime, powerDownTime, interval, pos));
+        INSTANCE.send(new SetTimerValues(powerUpTime, powerDownTime, interval, pos), PacketDistributor.SERVER.noArg());
     }
 
-    static void handleSetTimerValues(SetTimerValues msg, Supplier<NetworkEvent.Context> context) {
-        context.get().enqueueWork(() -> {
-            ServerPlayer player = context.get().getSender();
+    static void handleSetTimerValues(SetTimerValues msg, CustomPayloadEvent.Context context) {
+        context.enqueueWork(() -> {
+            ServerPlayer player = context.getSender();
             if (player == null) {
                 return;
             }
             SetTimerValues.handle(msg, (ServerLevel) player.level());
         });
-        context.get().setPacketHandled(true);
+        context.setPacketHandled(true);
     }
 
     @Override
     public void sendPacketSetSupergateValues(byte configuration, BlockPos pos) {
-        ForgePacketHandler.INSTANCE.sendToServer(new SetSupergateValues(configuration, pos));
+        INSTANCE.send(new SetSupergateValues(configuration, pos), PacketDistributor.SERVER.noArg());
     }
 
-    static void handleSetSupergateValues(SetSupergateValues msg, Supplier<NetworkEvent.Context> contextSupplier) {
-        contextSupplier.get().enqueueWork(() -> {
-            ServerPlayer player = contextSupplier.get().getSender();
+    static void handleSetSupergateValues(SetSupergateValues msg, CustomPayloadEvent.Context contextSupplier) {
+        contextSupplier.enqueueWork(() -> {
+            ServerPlayer player = contextSupplier.getSender();
             if (player == null) {
                 return;
             }
             SetSupergateValues.handle(msg, (ServerLevel) player.level());
         });
-        contextSupplier.get().setPacketHandled(true);
+        contextSupplier.setPacketHandled(true);
     }
 
 }

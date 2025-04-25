@@ -51,7 +51,7 @@ public class SupergateScreen extends CustomScreen {
 
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(graphics);
+        this.renderBackground(graphics, mouseX, mouseY, partialTicks);
         super.render(graphics, mouseX, mouseY, partialTicks);
 
         // render title
@@ -78,8 +78,8 @@ public class SupergateScreen extends CustomScreen {
     }
 
     @Override
-    public void renderBackground(GuiGraphics graphics) {
-        super.renderBackground(graphics);
+    public void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+        super.renderTransparentBackground(graphics);
         // special rendering of this texture to accommodate un-mirrored texture
         // basically skips a single pixel row of the texture
         // noticeable, because buttons can only have an even width of pixels

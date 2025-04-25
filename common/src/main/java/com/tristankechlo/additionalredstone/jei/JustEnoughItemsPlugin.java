@@ -19,6 +19,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 
 import java.util.List;
@@ -62,7 +63,7 @@ public class JustEnoughItemsPlugin implements IModPlugin {
     public void registerRecipes(IRecipeRegistration registration) {
         //register recipes for the circuit maker category
         Objects.requireNonNull(recipeCategory, "circuitMakerCategory");
-        List<CircuitMakerRecipe> recipes = getRecipes();
+        List<CircuitMakerRecipe> recipes = getRecipes().stream().map(RecipeHolder::value).toList();
         registration.addRecipes(RECIPE_TYPE, recipes);
     }
 
@@ -84,7 +85,7 @@ public class JustEnoughItemsPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.CIRCUIT_MAKER_BLOCK.get()), RECIPE_TYPE);
     }
 
-    public static List<CircuitMakerRecipe> getRecipes() {
+    public static List<RecipeHolder<CircuitMakerRecipe>> getRecipes() {
         Minecraft minecraft = Minecraft.getInstance();
         Objects.requireNonNull(minecraft, "minecraft");
         ClientLevel world = minecraft.level;

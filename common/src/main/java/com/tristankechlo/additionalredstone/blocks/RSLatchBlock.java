@@ -1,16 +1,23 @@
 package com.tristankechlo.additionalredstone.blocks;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.DiodeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.ticks.TickPriority;
 
-import java.util.Random;
-
 public class RSLatchBlock extends BaseDiodeBlock {
+
+    public static final MapCodec<RSLatchBlock> CODEC = MapCodec.unit(RSLatchBlock::new);
+
+    @Override
+    protected MapCodec<? extends DiodeBlock> codec() {
+        return CODEC;
+    }
 
     @Override
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {

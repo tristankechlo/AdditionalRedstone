@@ -1,5 +1,6 @@
 package com.tristankechlo.additionalredstone.blocks;
 
+import com.mojang.serialization.MapCodec;
 import com.tristankechlo.additionalredstone.container.CircuitMakerContainer;
 import com.tristankechlo.additionalredstone.init.ModBlocks;
 import net.minecraft.core.BlockPos;
@@ -32,10 +33,16 @@ public class CircuitMakerBlock extends HorizontalDirectionalBlock {
 
     private static Component CONTAINER_NAME = null;
     private static final VoxelShape SHAPE = Shapes.or(CircuitBaseBlock.BASE, Block.box(2.5D, 2.0D, 2.5D, 13.5D, 12.0D, 13.5D));
+    public static final MapCodec<CircuitMakerBlock> CODEC = MapCodec.unit(CircuitMakerBlock::new);
 
     public CircuitMakerBlock() {
         super(Properties.of().mapColor(MapColor.COLOR_GRAY).sound(SoundType.METAL).strength(5F, 6F)
                 .requiresCorrectToolForDrops().noOcclusion().pushReaction(PushReaction.DESTROY));
+    }
+
+    @Override
+    protected MapCodec<CircuitMakerBlock> codec() {
+        return CODEC;
     }
 
     @Override

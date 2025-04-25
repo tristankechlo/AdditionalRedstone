@@ -2,6 +2,3 @@ accessWidener v2 named
 
 # make interface accessible
 accessible class net/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier
-
-# used in OnOffButton
-accessible method net/minecraft/client/gui/components/AbstractButton getTextureY ()I

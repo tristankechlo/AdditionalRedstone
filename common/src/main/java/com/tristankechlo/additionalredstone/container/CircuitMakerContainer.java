@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class CircuitMakerContainer extends AbstractContainerMenu {
     private final DataSlot selectedRecipe = DataSlot.standalone();
     private final Level level;
     private Runnable changeListener = () -> {};
-    private List<CircuitMakerRecipe> recipes;
+    private List<RecipeHolder<CircuitMakerRecipe>> recipes;
     private final Slot inputSlot1;
     private final Slot inputSlot2;
     private final Slot inputSlotCircuitBase;
@@ -102,7 +103,7 @@ public class CircuitMakerContainer extends AbstractContainerMenu {
     }
 
     public List<CircuitMakerRecipe> getRecipes() {
-        return recipes;
+        return recipes.stream().map(RecipeHolder::value).toList();
     }
 
     public int getNumRecipes() {
@@ -167,8 +168,8 @@ public class CircuitMakerContainer extends AbstractContainerMenu {
 
     private void setupResultSlot() {
         if (!this.recipes.isEmpty() && this.isValidRecipeIndex(this.selectedRecipe.get())) {
-            CircuitMakerRecipe recipe = this.recipes.get(this.selectedRecipe.get());
-            ItemStack $$1 = recipe.assemble(this.container, this.level.registryAccess());
+            RecipeHolder<CircuitMakerRecipe> recipe = this.recipes.get(this.selectedRecipe.get());
+            ItemStack $$1 = recipe.value().assemble(this.container, this.level.registryAccess());
             if ($$1.isItemEnabled(this.level.enabledFeatures())) {
                 this.resultContainer.setRecipeUsed(recipe);
                 this.resultSlot.set($$1);
@@ -239,7 +240,7 @@ public class CircuitMakerContainer extends AbstractContainerMenu {
     private boolean hasRecipe(ItemStack stack) {
         return this.level.getRecipeManager().getAllRecipesFor(ModRecipes.CIRCUIT_MAKER_RECIPE_TYPE.get()).stream().anyMatch((recipe) -> {
             //check if stack is used in input1 or input2
-            return recipe.getInput1().test(stack) || recipe.getInput2().test(stack);
+            return recipe.value().getInput1().test(stack) || recipe.value().getInput2().test(stack);
         });
     }
 

@@ -1,5 +1,6 @@
 package com.tristankechlo.additionalredstone.blocks;
 
+import com.mojang.serialization.MapCodec;
 import com.tristankechlo.additionalredstone.blockentity.SuperGateBlockEntity;
 import com.tristankechlo.additionalredstone.platform.IPlatformHelper;
 import net.minecraft.core.BlockPos;
@@ -10,6 +11,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.DiodeBlock;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,6 +19,13 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.ticks.TickPriority;
 
 public class SupergateBlock extends BaseDiodeBlock implements EntityBlock {
+
+    public static final MapCodec<SupergateBlock> CODEC = MapCodec.unit(SupergateBlock::new);
+
+    @Override
+    protected MapCodec<? extends DiodeBlock> codec() {
+        return CODEC;
+    }
 
     @Override
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {

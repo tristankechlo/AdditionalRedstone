@@ -63,7 +63,7 @@ public class OscillatorScreen extends CustomScreen {
 
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(graphics); // render texture and transparent background
+        this.renderBackground(graphics, mouseX, mouseY, partialTicks); // render texture and transparent background
         super.render(graphics, mouseX, mouseY, partialTicks); // render buttons and labels
 
         // render title
@@ -89,8 +89,8 @@ public class OscillatorScreen extends CustomScreen {
     }
 
     @Override
-    public void renderBackground(GuiGraphics graphics) {
-        super.renderBackground(graphics); // transparent background
+    public void renderBackground(GuiGraphics graphics, int $$1, int $$2, float $$3) {
+        super.renderTransparentBackground(graphics); // transparent background
         this.renderTexture(graphics, TEXTURE);
     }
 
