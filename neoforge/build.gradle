@@ -3,11 +3,6 @@ plugins {
     id 'net.neoforged.gradle.userdev' version '7.0.184'
 }
 
-def at = file('src/main/resources/META-INF/accesstransformer.cfg')
-if (at.exists()) {
-    minecraft.accessTransformers.file at
-}
-
 runs {
     client {
         modSource project.sourceSets.main
