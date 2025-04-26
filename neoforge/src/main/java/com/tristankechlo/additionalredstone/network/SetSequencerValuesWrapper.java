@@ -1,4 +1,4 @@
-package com.tristankechlo.additionalredstone.platform.packetwrapper;
+package com.tristankechlo.additionalredstone.network;
 
 import com.tristankechlo.additionalredstone.network.packets.SetSequencerValues;
 import net.minecraft.core.BlockPos;
