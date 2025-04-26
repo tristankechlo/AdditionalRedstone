@@ -1,8 +1,8 @@
 package com.tristankechlo.additionalredstone.platform;
 
 import com.google.auto.service.AutoService;
-import com.tristankechlo.additionalredstone.network.IPacketHelper;
 import com.tristankechlo.additionalredstone.network.IPacketHandler;
+import com.tristankechlo.additionalredstone.network.IPacketHelper;
 import com.tristankechlo.additionalredstone.network.packets.SetOscillatorValuesPacket;
 import com.tristankechlo.additionalredstone.network.packets.SetSequencerValuesPacket;
 import com.tristankechlo.additionalredstone.network.packets.SetSupergateValuesPacket;
@@ -16,13 +16,13 @@ import net.minecraft.core.BlockPos;
 public final class FabricPacketHelper implements IPacketHelper {
 
     public static void registerPackets() {
-        PayloadTypeRegistry.playS2C().register(SetOscillatorValuesPacket.TYPE, SetOscillatorValuesPacket.CODEC);
+        PayloadTypeRegistry.playC2S().register(SetOscillatorValuesPacket.TYPE, SetOscillatorValuesPacket.CODEC);
         ServerPlayNetworking.registerGlobalReceiver(SetOscillatorValuesPacket.TYPE, FabricPacketHelper::handlePacket);
-        PayloadTypeRegistry.playS2C().register(SetSequencerValuesPacket.TYPE, SetSequencerValuesPacket.CODEC);
+        PayloadTypeRegistry.playC2S().register(SetSequencerValuesPacket.TYPE, SetSequencerValuesPacket.CODEC);
         ServerPlayNetworking.registerGlobalReceiver(SetSequencerValuesPacket.TYPE, FabricPacketHelper::handlePacket);
-        PayloadTypeRegistry.playS2C().register(SetTimerValuesPacket.TYPE, SetTimerValuesPacket.CODEC);
+        PayloadTypeRegistry.playC2S().register(SetTimerValuesPacket.TYPE, SetTimerValuesPacket.CODEC);
         ServerPlayNetworking.registerGlobalReceiver(SetTimerValuesPacket.TYPE, FabricPacketHelper::handlePacket);
-        PayloadTypeRegistry.playS2C().register(SetSupergateValuesPacket.TYPE, SetSupergateValuesPacket.CODEC);
+        PayloadTypeRegistry.playC2S().register(SetSupergateValuesPacket.TYPE, SetSupergateValuesPacket.CODEC);
         ServerPlayNetworking.registerGlobalReceiver(SetSupergateValuesPacket.TYPE, FabricPacketHelper::handlePacket);
     }
 
