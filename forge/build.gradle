@@ -54,8 +54,6 @@ dependencies {
     annotationProcessor group: 'com.google.auto.service', name: 'auto-service', version: auto_service_version
 }
 
-jar.finalizedBy('reobfJar')
-
 sourceSets.each {
     def dir = layout.buildDirectory.dir("sourcesSets/$it.name")
     it.output.resourcesDir = dir
