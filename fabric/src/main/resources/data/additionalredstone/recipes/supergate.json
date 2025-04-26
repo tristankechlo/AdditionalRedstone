@@ -4,9 +4,9 @@
         "item": "minecraft:comparator"
     },
     "input_2": {
-        "tag": "c:quartz"
+        "tag": "c:gems/quartz"
     },
     "result": {
-        "item": "additionalredstone:supergate"
+        "id": "additionalredstone:supergate"
     }
 }

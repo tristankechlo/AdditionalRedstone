@@ -4,9 +4,9 @@
         "item": "minecraft:redstone_torch"
     },
     "input_2": {
-        "tag": "c:quartz"
+        "tag": "c:gems/quartz"
     },
     "result": {
-        "item": "additionalredstone:toggle_latch"
+        "id": "additionalredstone:toggle_latch"
     }
 }

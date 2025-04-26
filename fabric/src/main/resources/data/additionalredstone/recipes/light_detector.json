@@ -7,10 +7,10 @@
     ],
     "key": {
         "Q": {
-            "tag": "c:quartz"
+            "tag": "c:gems/quartz"
         },
         "R": {
-            "tag": "c:redstone_dusts"
+            "tag": "c:dusts/redstone"
         },
         "G": {
             "tag": "c:glass_blocks"
@@ -20,6 +20,6 @@
         }
     },
     "result": {
-        "item": "additionalredstone:light_detector"
+        "id": "additionalredstone:light_detector"
     }
 }
