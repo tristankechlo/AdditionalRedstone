@@ -3,6 +3,7 @@ package com.tristankechlo.additionalredstone.blockentity;
 import com.tristankechlo.additionalredstone.blocks.TimerBlock;
 import com.tristankechlo.additionalredstone.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.util.Mth;
@@ -71,8 +72,8 @@ public class TimerBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void load(CompoundTag nbt) {
-        super.load(nbt);
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider) {
+        super.loadAdditional(nbt, provider);
         this.powerUpTime = nbt.getInt("PowerUpTime");
         this.powerDownTime = nbt.getInt("PowerDownTime");
         this.powered = nbt.getBoolean("Powered");
@@ -80,12 +81,12 @@ public class TimerBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag nbt) {
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider) {
         nbt.putInt("PowerUpTime", this.powerUpTime);
         nbt.putInt("PowerDownTime", this.powerDownTime);
         nbt.putBoolean("Powered", this.powered);
         nbt.putInt("Interval", this.interval);
-        super.saveAdditional(nbt);
+        super.saveAdditional(nbt, provider);
     }
 
     @Override
@@ -94,9 +95,9 @@ public class TimerBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
+    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
         CompoundTag nbt = new CompoundTag();
-        saveAdditional(nbt);
+        saveAdditional(nbt, provider);
         return nbt;
     }
 

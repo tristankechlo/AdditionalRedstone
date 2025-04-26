@@ -4,6 +4,7 @@ import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.init.ModBlockEntities;
 import com.tristankechlo.additionalredstone.util.ThreeInputLogic;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -38,17 +39,17 @@ public class SuperGateBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
-        byte temp = tag.getByte("Configuration");
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider) {
+        super.loadAdditional(nbt, provider);
+        byte temp = nbt.getByte("Configuration");
         this.configuration = byteToBooleans(temp);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider) {
+        super.saveAdditional(nbt, provider);
         byte temp = booleansToByte(configuration);
-        tag.putByte("Configuration", temp);
+        nbt.putByte("Configuration", temp);
     }
 
     public void setConfiguration(byte configuration) {
@@ -65,9 +66,9 @@ public class SuperGateBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
+    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
         CompoundTag nbt = new CompoundTag();
-        saveAdditional(nbt);
+        saveAdditional(nbt, provider);
         return nbt;
     }
 

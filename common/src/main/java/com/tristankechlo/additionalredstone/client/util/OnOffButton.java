@@ -56,25 +56,6 @@ public class OnOffButton extends AbstractButton {
     }
 
     @Override
-    public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-        super.renderWidget(graphics, mouseX, mouseY, partialTicks);
-        /*
-        Minecraft minecraft = Minecraft.getInstance();
-        graphics.setColor(1.0F, 1.0F, 1.0F, this.alpha);
-        RenderSystem.enableBlend();
-        RenderSystem.enableDepthTest();
-        ResourceLocation texture = SPRITES.get(this.active, this.isHoveredOrFocused());
-
-        graphics.blitSprite(texture, getX(), getY(), 0, buttonType, width / 2, height / 2); // top left
-        graphics.blitSprite(texture, getX() + width / 2, getY(), 200 - width / 2, buttonType, width / 2, height / 2); // top right
-        graphics.blitSprite(texture, getX(), getY() + (height / 2), 0, (20 - height / 2) + buttonType, width / 2, height / 2); // bottom left
-        graphics.blitSprite(texture, getX() + width / 2, getY() + (height / 2), 200 - width / 2, (20 - height / 2) + buttonType, width / 2, height / 2); // bottom right
-
-        graphics.drawCenteredString(minecraft.font, this.getMessage(), getX() + width / 2, getY() + (height - 8) / 2, 0);
-         */
-    }
-
-    @Override
     public void renderString(GuiGraphics graphics, Font font, int alpha) {
         graphics.drawCenteredString(font, this.getMessage(), getX() + width / 2, getY() + (height - 8) / 2, 0);
     }

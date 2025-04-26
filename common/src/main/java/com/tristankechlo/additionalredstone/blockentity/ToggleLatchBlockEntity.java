@@ -3,6 +3,7 @@ package com.tristankechlo.additionalredstone.blockentity;
 import com.tristankechlo.additionalredstone.blocks.ToggleLatchBlock;
 import com.tristankechlo.additionalredstone.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -30,15 +31,15 @@ public class ToggleLatchBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void load(CompoundTag nbt) {
-        super.load(nbt);
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider) {
+        super.loadAdditional(nbt, provider);
         this.previousInput = nbt.getBoolean("PreviousInput");
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound) {
-        compound.putBoolean("PreviousInput", this.previousInput);
-        super.saveAdditional(compound);
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider) {
+        nbt.putBoolean("PreviousInput", this.previousInput);
+        super.saveAdditional(nbt, provider);
     }
 
     @Override
@@ -47,9 +48,9 @@ public class ToggleLatchBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
+    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
         CompoundTag nbt = new CompoundTag();
-        saveAdditional(nbt);
+        saveAdditional(nbt, provider);
         return nbt;
     }
 

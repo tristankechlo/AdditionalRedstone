@@ -1,11 +1,12 @@
 package com.tristankechlo.additionalredstone.recipe;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.tristankechlo.additionalredstone.init.ModBlocks;
 import com.tristankechlo.additionalredstone.init.ModRecipes;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -37,7 +38,7 @@ public class CircuitMakerRecipe implements Recipe<Container> {
     }
 
     @Override
-    public ItemStack assemble(Container container, RegistryAccess registryAccess) {
+    public ItemStack assemble(Container container, HolderLookup.Provider provider) {
         return result.copy();
     }
 
@@ -47,7 +48,7 @@ public class CircuitMakerRecipe implements Recipe<Container> {
     }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess registryAccess) {
+    public ItemStack getResultItem(HolderLookup.Provider provider) {
         return result;
     }
 
@@ -79,32 +80,36 @@ public class CircuitMakerRecipe implements Recipe<Container> {
 
     public static class Serializer implements RecipeSerializer<CircuitMakerRecipe> {
 
-        public static final Codec<CircuitMakerRecipe> CODEC = RecordCodecBuilder.create(
+        public static final MapCodec<CircuitMakerRecipe> CODEC = RecordCodecBuilder.mapCodec(
                 builder -> builder.group(
                         Ingredient.CODEC_NONEMPTY.fieldOf("input_1").forGetter(CircuitMakerRecipe::getInput1),
                         Ingredient.CODEC_NONEMPTY.fieldOf("input_2").forGetter(CircuitMakerRecipe::getInput2),
-                        ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result)
+                        ItemStack.CODEC.fieldOf("result").forGetter(recipe -> recipe.result)
                 ).apply(builder, CircuitMakerRecipe::new)
         );
+        public static final StreamCodec<RegistryFriendlyByteBuf, CircuitMakerRecipe> STREAM_CODEC = StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork);
 
         @Override
-        public Codec<CircuitMakerRecipe> codec() {
+        public MapCodec<CircuitMakerRecipe> codec() {
             return CODEC;
         }
 
         @Override
-        public CircuitMakerRecipe fromNetwork(FriendlyByteBuf buffer) {
-            Ingredient input_1 = Ingredient.fromNetwork(buffer);
-            Ingredient input_2 = Ingredient.fromNetwork(buffer);
-            ItemStack result = buffer.readItem();
+        public StreamCodec<RegistryFriendlyByteBuf, CircuitMakerRecipe> streamCodec() {
+            return STREAM_CODEC;
+        }
+
+        public static CircuitMakerRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
+            Ingredient input_1 = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+            Ingredient input_2 = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+            ItemStack result = ItemStack.STREAM_CODEC.decode(buffer);
             return new CircuitMakerRecipe(input_1, input_2, result);
         }
 
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, CircuitMakerRecipe recipe) {
-            recipe.input_1.toNetwork(buffer);
-            recipe.input_2.toNetwork(buffer);
-            buffer.writeItem(recipe.result);
+        public static void toNetwork(RegistryFriendlyByteBuf buffer, CircuitMakerRecipe recipe) {
+            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.input_1);
+            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.input_2);
+            ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
         }
 
     }

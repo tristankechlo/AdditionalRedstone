@@ -3,6 +3,7 @@ package com.tristankechlo.additionalredstone.blockentity;
 import com.tristankechlo.additionalredstone.blocks.OscillatorBlock;
 import com.tristankechlo.additionalredstone.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.Level;
@@ -71,8 +72,8 @@ public class OscillatorBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void load(CompoundTag nbt) {
-        super.load(nbt);
+    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider) {
+        super.loadAdditional(nbt, provider);
         this.tickCounter = nbt.getInt("TickCounter");
         this.powered = nbt.getBoolean("Powered");
         this.ticksOn = nbt.getInt("TicksOn");
@@ -80,12 +81,12 @@ public class OscillatorBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt) {
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider) {
         nbt.putInt("TickCounter", this.tickCounter);
         nbt.putBoolean("Powered", this.powered);
         nbt.putInt("TicksOn", this.ticksOn);
         nbt.putInt("TicksOff", this.ticksOff);
-        super.saveAdditional(nbt);
+        super.saveAdditional(nbt, provider);
     }
 
     @Override
@@ -94,9 +95,9 @@ public class OscillatorBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
+    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
         CompoundTag nbt = new CompoundTag();
-        saveAdditional(nbt);
+        saveAdditional(nbt, provider);
         return nbt;
     }
 
