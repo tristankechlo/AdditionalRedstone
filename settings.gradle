@@ -17,6 +17,17 @@ pluginManagement {
         exclusiveContent {
             forRepository {
                 maven {
+                    name = 'Forge'
+                    url = uri("https://maven.minecraftforge.net")
+                }
+            }
+            filter {
+                includeGroup("net.minecraftforge.gradle")
+            }
+        }
+        exclusiveContent {
+            forRepository {
+                maven {
                     name = 'NeoForge'
                     url = uri("https://maven.neoforged.net/releases")
                 }
@@ -29,23 +40,13 @@ pluginManagement {
         exclusiveContent {
             forRepository {
                 maven {
-                    name = 'Forge'
-                    url = uri("https://maven.minecraftforge.net")
-                }
-            }
-            filter {
-                includeGroupAndSubgroups("net.minecraftforge")
-            }
-        }
-        exclusiveContent {
-            forRepository {
-                maven {
                     name = 'Sponge Snapshots'
                     url = uri("https://repo.spongepowered.org/repository/maven-public")
                 }
             }
             filter {
                 includeGroupAndSubgroups("org.spongepowered")
+                includeGroup("net.minecraftforge")
             }
         }
     }

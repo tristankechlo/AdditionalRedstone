@@ -13,24 +13,33 @@ jar.manifest.attributes.put("MixinConfigs", "${mod_id}.mixins.json")
 minecraft {
     mappings channel: 'official', version: minecraft_version
     copyIdeResources = true
+    reobf = false
 
     runs {
-        client {
+        configureEach {
             workingDirectory project.file('run')
             ideaModule "${rootProject.name}.${project.name}.main"
-            taskName 'Client'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            mods { modClientRun { source sourceSets.main } }
+        }
+        client {
+            taskName 'Client'
+            mods {
+                modClientRun {
+                    source sourceSets.main
+                    source project(":common").sourceSets.main
+                }
+            }
         }
 
         server {
-            workingDirectory project.file('run')
-            ideaModule "${rootProject.name}.${project.name}.main"
             taskName 'Server'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            mods { modServerRun { source sourceSets.main } }
+            mods {
+                modServerRun {
+                    source sourceSets.main
+                    source project(":common").sourceSets.main
+                }
+            }
         }
     }
 }
