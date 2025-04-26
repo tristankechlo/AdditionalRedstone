@@ -20,6 +20,6 @@
         }
     },
     "result": {
-        "item": "additionalredstone:light_detector"
+        "id": "additionalredstone:light_detector"
     }
 }

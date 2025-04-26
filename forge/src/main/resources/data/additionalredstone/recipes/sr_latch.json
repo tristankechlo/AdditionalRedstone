@@ -7,6 +7,6 @@
         "tag": "forge:gems/quartz"
     },
     "result": {
-        "item": "additionalredstone:sr_latch"
+        "id": "additionalredstone:sr_latch"
     }
 }

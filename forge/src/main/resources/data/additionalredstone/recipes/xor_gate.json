@@ -7,6 +7,6 @@
         "tag": "forge:gems/quartz"
     },
     "result": {
-        "item": "additionalredstone:xor_gate"
+        "id": "additionalredstone:xor_gate"
     }
 }

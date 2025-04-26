@@ -7,6 +7,6 @@
         "item": "minecraft:redstone_torch"
     },
     "result": {
-        "item": "additionalredstone:oscillator"
+        "id": "additionalredstone:oscillator"
     }
 }

@@ -7,6 +7,6 @@
         "tag": "forge:gems/quartz"
     },
     "result": {
-        "item": "additionalredstone:led"
+        "id": "additionalredstone:led"
     }
 }

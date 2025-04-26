@@ -7,6 +7,6 @@
         "tag": "forge:gems/quartz"
     },
     "result": {
-        "item": "additionalredstone:and_gate"
+        "id": "additionalredstone:and_gate"
     }
 }

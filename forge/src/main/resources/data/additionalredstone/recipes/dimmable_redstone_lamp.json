@@ -14,6 +14,6 @@
         }
     },
     "result": {
-        "item": "additionalredstone:dimmable_redstone_lamp"
+        "id": "additionalredstone:dimmable_redstone_lamp"
     }
 }
