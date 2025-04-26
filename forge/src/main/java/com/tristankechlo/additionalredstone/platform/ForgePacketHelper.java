@@ -2,8 +2,8 @@ package com.tristankechlo.additionalredstone.platform;
 
 import com.google.auto.service.AutoService;
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
+import com.tristankechlo.additionalredstone.network.IPacketHelper;
 import com.tristankechlo.additionalredstone.network.IPacketHandler;
-import com.tristankechlo.additionalredstone.network.PacketHandler;
 import com.tristankechlo.additionalredstone.network.packets.SetOscillatorValuesPacket;
 import com.tristankechlo.additionalredstone.network.packets.SetSequencerValuesPacket;
 import com.tristankechlo.additionalredstone.network.packets.SetSupergateValuesPacket;
@@ -15,8 +15,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.network.CustomPayloadEvent;
 import net.minecraftforge.network.*;
 
-@AutoService(IPacketHandler.class)
-public final class ForgePacketHandler implements IPacketHandler {
+@AutoService(IPacketHelper.class)
+public final class ForgePacketHelper implements IPacketHelper {
 
     @SuppressWarnings("removal") // suppress forge deprecation warnings
     private static final ResourceLocation CHANNEL_ID = new ResourceLocation(AdditionalRedstone.MOD_ID, "main");
@@ -30,22 +30,22 @@ public final class ForgePacketHandler implements IPacketHandler {
         INSTANCE.messageBuilder(SetOscillatorValuesPacket.class, 0, NetworkDirection.PLAY_TO_SERVER)
                 .encoder(SetOscillatorValuesPacket::encode)
                 .decoder(SetOscillatorValuesPacket::decode)
-                .consumerMainThread(ForgePacketHandler::handlePacket)
+                .consumerMainThread(ForgePacketHelper::handlePacket)
                 .add();
         INSTANCE.messageBuilder(SetSequencerValuesPacket.class, 1, NetworkDirection.PLAY_TO_SERVER)
                 .encoder(SetSequencerValuesPacket::encode)
                 .decoder(SetSequencerValuesPacket::decode)
-                .consumerMainThread(ForgePacketHandler::handlePacket)
+                .consumerMainThread(ForgePacketHelper::handlePacket)
                 .add();
         INSTANCE.messageBuilder(SetTimerValuesPacket.class, 2, NetworkDirection.PLAY_TO_SERVER)
                 .encoder(SetTimerValuesPacket::encode)
                 .decoder(SetTimerValuesPacket::decode)
-                .consumerMainThread(ForgePacketHandler::handlePacket)
+                .consumerMainThread(ForgePacketHelper::handlePacket)
                 .add();
         INSTANCE.messageBuilder(SetSupergateValuesPacket.class, 3, NetworkDirection.PLAY_TO_SERVER)
                 .encoder(SetSupergateValuesPacket::encode)
                 .decoder(SetSupergateValuesPacket::decode)
-                .consumerMainThread(ForgePacketHandler::handlePacket)
+                .consumerMainThread(ForgePacketHelper::handlePacket)
                 .add();
     }
 
@@ -69,7 +69,7 @@ public final class ForgePacketHandler implements IPacketHandler {
         INSTANCE.send(new SetSupergateValuesPacket(configuration, pos), PacketDistributor.SERVER.noArg());
     }
 
-    private static <P extends PacketHandler> void handlePacket(P packet, CustomPayloadEvent.Context context) {
+    private static <P extends IPacketHandler> void handlePacket(P packet, CustomPayloadEvent.Context context) {
         context.enqueueWork(() -> {
             ServerPlayer player = context.getSender();
             if (player == null) {

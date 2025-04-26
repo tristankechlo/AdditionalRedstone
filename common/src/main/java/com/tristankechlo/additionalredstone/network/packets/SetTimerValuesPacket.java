@@ -2,7 +2,7 @@ package com.tristankechlo.additionalredstone.network.packets;
 
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.blockentity.TimerBlockEntity;
-import com.tristankechlo.additionalredstone.network.PacketHandler;
+import com.tristankechlo.additionalredstone.network.IPacketHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public record SetTimerValuesPacket(int powerUpTime, int powerDownTime, int interval, BlockPos pos) implements CustomPacketPayload, PacketHandler {
+public record SetTimerValuesPacket(int powerUpTime, int powerDownTime, int interval, BlockPos pos) implements CustomPacketPayload, IPacketHandler {
 
     @SuppressWarnings("removal") // suppress forge deprecation warnings
     public static final ResourceLocation CHANNEL_ID = new ResourceLocation(AdditionalRedstone.MOD_ID, "timer");

@@ -3,7 +3,7 @@ package com.tristankechlo.additionalredstone.client.screen;
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.client.util.CustomScreen;
 import com.tristankechlo.additionalredstone.init.ModBlocks;
-import com.tristankechlo.additionalredstone.network.IPacketHandler;
+import com.tristankechlo.additionalredstone.network.IPacketHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -47,7 +47,7 @@ public class SequencerScreen extends CustomScreen {
         if (this.intervalError) {
             return;
         }
-        IPacketHandler.INSTANCE.sendPacketSetSequencerValues(interval, pos);
+        IPacketHelper.INSTANCE.sendPacketSetSequencerValues(interval, pos);
         this.onClose();
     }
 

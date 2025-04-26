@@ -1,7 +1,7 @@
 package com.tristankechlo.additionalredstone;
 
 import com.tristankechlo.additionalredstone.commands.ProjectLinks;
-import com.tristankechlo.additionalredstone.platform.NeoForgePacketHandler;
+import com.tristankechlo.additionalredstone.platform.NeoForgePacketHelper;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
@@ -15,7 +15,7 @@ public class NeoForgeAdditionalRedstone {
         AdditionalRedstone.registerContent();
 
         //register packets
-        modEventBus.addListener(NeoForgePacketHandler::registerPackets);
+        modEventBus.addListener(NeoForgePacketHelper::registerPackets);
 
         //register listener
         NeoForge.EVENT_BUS.addListener(this::registerCommands);

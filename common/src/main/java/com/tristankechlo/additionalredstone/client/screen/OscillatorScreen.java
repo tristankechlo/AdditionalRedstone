@@ -3,7 +3,7 @@ package com.tristankechlo.additionalredstone.client.screen;
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.client.util.CustomScreen;
 import com.tristankechlo.additionalredstone.init.ModBlocks;
-import com.tristankechlo.additionalredstone.network.IPacketHandler;
+import com.tristankechlo.additionalredstone.network.IPacketHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -58,7 +58,7 @@ public class OscillatorScreen extends CustomScreen {
         if (this.ticksOnError || this.ticksOffError) {
             return;
         }
-        IPacketHandler.INSTANCE.sendPacketSetOscillatorValues(ticks_on, ticks_off, this.pos);
+        IPacketHelper.INSTANCE.sendPacketSetOscillatorValues(ticks_on, ticks_off, this.pos);
         this.onClose();
     }
 

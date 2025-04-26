@@ -1,7 +1,7 @@
 package com.tristankechlo.additionalredstone;
 
 import com.tristankechlo.additionalredstone.commands.ProjectLinks;
-import com.tristankechlo.additionalredstone.platform.ForgePacketHandler;
+import com.tristankechlo.additionalredstone.platform.ForgePacketHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -14,7 +14,7 @@ public class ForgeAdditionalRedstone {
         AdditionalRedstone.registerContent();
 
         //register packets
-        ForgePacketHandler.registerPackets();
+        ForgePacketHelper.registerPackets();
 
         //register listener
         MinecraftForge.EVENT_BUS.addListener(this::registerCommands);

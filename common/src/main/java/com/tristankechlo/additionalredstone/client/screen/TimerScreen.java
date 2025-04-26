@@ -4,7 +4,7 @@ import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.blockentity.TimerBlockEntity;
 import com.tristankechlo.additionalredstone.client.util.CustomScreen;
 import com.tristankechlo.additionalredstone.init.ModBlocks;
-import com.tristankechlo.additionalredstone.network.IPacketHandler;
+import com.tristankechlo.additionalredstone.network.IPacketHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -73,7 +73,7 @@ public class TimerScreen extends CustomScreen {
         if (this.powerUpError || this.powerDownError || this.intervalError) {
             return;
         }
-        IPacketHandler.INSTANCE.sendPacketSetTimerValues(powerUp, powerDown, interval, pos);
+        IPacketHelper.INSTANCE.sendPacketSetTimerValues(powerUp, powerDown, interval, pos);
         this.onClose();
     }
 

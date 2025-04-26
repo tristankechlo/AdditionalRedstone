@@ -2,8 +2,8 @@ package com.tristankechlo.additionalredstone.platform;
 
 import com.google.auto.service.AutoService;
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
+import com.tristankechlo.additionalredstone.network.IPacketHelper;
 import com.tristankechlo.additionalredstone.network.IPacketHandler;
-import com.tristankechlo.additionalredstone.network.PacketHandler;
 import com.tristankechlo.additionalredstone.network.packets.SetOscillatorValuesPacket;
 import com.tristankechlo.additionalredstone.network.packets.SetSequencerValuesPacket;
 import com.tristankechlo.additionalredstone.network.packets.SetSupergateValuesPacket;
@@ -15,15 +15,15 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
-@AutoService(IPacketHandler.class)
-public class NeoForgePacketHandler implements IPacketHandler {
+@AutoService(IPacketHelper.class)
+public class NeoForgePacketHelper implements IPacketHelper {
 
     public static void registerPackets(RegisterPayloadHandlersEvent event) {
         final PayloadRegistrar registrar = event.registrar(AdditionalRedstone.MOD_ID).versioned("1.0").optional();
-        registrar.playToServer(SetOscillatorValuesPacket.TYPE, SetOscillatorValuesPacket.CODEC, NeoForgePacketHandler::handlePacket);
-        registrar.playToServer(SetSequencerValuesPacket.TYPE, SetSequencerValuesPacket.CODEC, NeoForgePacketHandler::handlePacket);
-        registrar.playToServer(SetTimerValuesPacket.TYPE, SetTimerValuesPacket.CODEC, NeoForgePacketHandler::handlePacket);
-        registrar.playToServer(SetSupergateValuesPacket.TYPE, SetSupergateValuesPacket.CODEC, NeoForgePacketHandler::handlePacket);
+        registrar.playToServer(SetOscillatorValuesPacket.TYPE, SetOscillatorValuesPacket.CODEC, NeoForgePacketHelper::handlePacket);
+        registrar.playToServer(SetSequencerValuesPacket.TYPE, SetSequencerValuesPacket.CODEC, NeoForgePacketHelper::handlePacket);
+        registrar.playToServer(SetTimerValuesPacket.TYPE, SetTimerValuesPacket.CODEC, NeoForgePacketHelper::handlePacket);
+        registrar.playToServer(SetSupergateValuesPacket.TYPE, SetSupergateValuesPacket.CODEC, NeoForgePacketHelper::handlePacket);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class NeoForgePacketHandler implements IPacketHandler {
         PacketDistributor.sendToServer(new SetSupergateValuesPacket(configuration, pos));
     }
 
-    private static <P extends PacketHandler> void handlePacket(P packet, IPayloadContext context) {
+    private static <P extends IPacketHandler> void handlePacket(P packet, IPayloadContext context) {
         context.enqueueWork(() -> {
             packet.handle((ServerLevel) context.player().level());
         });

@@ -1,8 +1,8 @@
 package com.tristankechlo.additionalredstone.platform;
 
 import com.google.auto.service.AutoService;
+import com.tristankechlo.additionalredstone.network.IPacketHelper;
 import com.tristankechlo.additionalredstone.network.IPacketHandler;
-import com.tristankechlo.additionalredstone.network.PacketHandler;
 import com.tristankechlo.additionalredstone.network.packets.SetOscillatorValuesPacket;
 import com.tristankechlo.additionalredstone.network.packets.SetSequencerValuesPacket;
 import com.tristankechlo.additionalredstone.network.packets.SetSupergateValuesPacket;
@@ -12,18 +12,18 @@ import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 
-@AutoService(IPacketHandler.class)
-public final class FabricPacketHandler implements IPacketHandler {
+@AutoService(IPacketHelper.class)
+public final class FabricPacketHelper implements IPacketHelper {
 
     public static void registerPackets() {
         PayloadTypeRegistry.playS2C().register(SetOscillatorValuesPacket.TYPE, SetOscillatorValuesPacket.CODEC);
-        ServerPlayNetworking.registerGlobalReceiver(SetOscillatorValuesPacket.TYPE, FabricPacketHandler::handlePacket);
+        ServerPlayNetworking.registerGlobalReceiver(SetOscillatorValuesPacket.TYPE, FabricPacketHelper::handlePacket);
         PayloadTypeRegistry.playS2C().register(SetSequencerValuesPacket.TYPE, SetSequencerValuesPacket.CODEC);
-        ServerPlayNetworking.registerGlobalReceiver(SetSequencerValuesPacket.TYPE, FabricPacketHandler::handlePacket);
+        ServerPlayNetworking.registerGlobalReceiver(SetSequencerValuesPacket.TYPE, FabricPacketHelper::handlePacket);
         PayloadTypeRegistry.playS2C().register(SetTimerValuesPacket.TYPE, SetTimerValuesPacket.CODEC);
-        ServerPlayNetworking.registerGlobalReceiver(SetTimerValuesPacket.TYPE, FabricPacketHandler::handlePacket);
+        ServerPlayNetworking.registerGlobalReceiver(SetTimerValuesPacket.TYPE, FabricPacketHelper::handlePacket);
         PayloadTypeRegistry.playS2C().register(SetSupergateValuesPacket.TYPE, SetSupergateValuesPacket.CODEC);
-        ServerPlayNetworking.registerGlobalReceiver(SetSupergateValuesPacket.TYPE, FabricPacketHandler::handlePacket);
+        ServerPlayNetworking.registerGlobalReceiver(SetSupergateValuesPacket.TYPE, FabricPacketHelper::handlePacket);
     }
 
     @Override
@@ -46,7 +46,7 @@ public final class FabricPacketHandler implements IPacketHandler {
         ClientPlayNetworking.send(new SetSupergateValuesPacket(configuration, pos));
     }
 
-    private static <P extends PacketHandler> void handlePacket(P packet, ServerPlayNetworking.Context context) {
+    private static <P extends IPacketHandler> void handlePacket(P packet, ServerPlayNetworking.Context context) {
         context.server().execute(() -> packet.handle(context.player().serverLevel()));
     }
 

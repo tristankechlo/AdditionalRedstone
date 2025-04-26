@@ -5,7 +5,7 @@ import com.tristankechlo.additionalredstone.blockentity.SuperGateBlockEntity;
 import com.tristankechlo.additionalredstone.client.util.CustomScreen;
 import com.tristankechlo.additionalredstone.client.util.OnOffButton;
 import com.tristankechlo.additionalredstone.init.ModBlocks;
-import com.tristankechlo.additionalredstone.network.IPacketHandler;
+import com.tristankechlo.additionalredstone.network.IPacketHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.core.BlockPos;
@@ -45,7 +45,7 @@ public class SupergateScreen extends CustomScreen {
 
     private void save(Button b) {
         byte data = SuperGateBlockEntity.booleansToByte(this.configuration);
-        IPacketHandler.INSTANCE.sendPacketSetSupergateValues(data, this.pos);
+        IPacketHelper.INSTANCE.sendPacketSetSupergateValues(data, this.pos);
         this.onClose();
     }
 
