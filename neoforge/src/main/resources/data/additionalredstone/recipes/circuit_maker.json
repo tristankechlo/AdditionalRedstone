@@ -10,7 +10,7 @@
             "tag": "minecraft:planks"
         },
         "G": {
-            "tag": "forge:glass"
+            "tag": "c:glass_blocks"
         },
         "R": {
             "item": "minecraft:redstone_block"
@@ -20,7 +20,6 @@
         }
     },
     "result": {
-        "item": "additionalredstone:circuit_maker",
-        "count": 1
+        "id": "additionalredstone:circuit_maker"
     }
 }

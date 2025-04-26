@@ -7,19 +7,19 @@
     ],
     "key": {
         "Q": {
-            "tag": "forge:gems/quartz"
+            "tag": "c:gems/quartz"
         },
         "R": {
-            "tag": "forge:dusts/redstone"
+            "tag": "c:dusts/redstone"
         },
         "G": {
-            "tag": "forge:glass"
+            "tag": "c:glass_blocks"
         },
         "W": {
             "tag": "minecraft:wooden_slabs"
         }
     },
     "result": {
-        "item": "additionalredstone:light_detector"
+        "id": "additionalredstone:light_detector"
     }
 }

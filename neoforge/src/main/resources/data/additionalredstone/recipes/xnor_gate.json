@@ -4,9 +4,9 @@
         "item": "minecraft:redstone_torch"
     },
     "input_2": {
-        "tag": "forge:gems/quartz"
+        "tag": "c:gems/quartz"
     },
     "result": {
-        "item": "additionalredstone:xnor_gate"
+        "id": "additionalredstone:xnor_gate"
     }
 }

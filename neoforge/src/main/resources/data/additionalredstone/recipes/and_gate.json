@@ -4,9 +4,9 @@
         "item": "minecraft:redstone_torch"
     },
     "input_2": {
-        "tag": "forge:gems/quartz"
+        "tag": "c:gems/quartz"
     },
     "result": {
-        "item": "additionalredstone:and_gate"
+        "id": "additionalredstone:and_gate"
     }
 }

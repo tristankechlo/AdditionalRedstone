@@ -4,9 +4,9 @@
         "item": "additionalredstone:dimmable_redstone_lamp"
     },
     "input_2": {
-        "tag": "forge:gems/quartz"
+        "tag": "c:gems/quartz"
     },
     "result": {
-        "item": "additionalredstone:led"
+        "id": "additionalredstone:led"
     }
 }

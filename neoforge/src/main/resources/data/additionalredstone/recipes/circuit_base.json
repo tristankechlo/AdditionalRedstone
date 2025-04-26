@@ -6,14 +6,13 @@
     ],
     "key": {
         "#": {
-            "tag": "forge:dusts/redstone"
+            "tag": "c:dusts/redstone"
         },
         "S": {
             "item": "minecraft:stone_slab"
         }
     },
     "result": {
-        "item": "additionalredstone:circuit_base",
-        "count": 1
+        "id": "additionalredstone:circuit_base"
     }
 }

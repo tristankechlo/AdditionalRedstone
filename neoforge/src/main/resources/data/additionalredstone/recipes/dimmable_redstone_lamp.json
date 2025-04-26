@@ -7,13 +7,13 @@
     ],
     "key": {
         "R": {
-            "tag": "forge:dusts/redstone"
+            "tag": "c:dusts/redstone"
         },
         "G": {
             "item": "minecraft:glowstone"
         }
     },
     "result": {
-        "item": "additionalredstone:dimmable_redstone_lamp"
+        "id": "additionalredstone:dimmable_redstone_lamp"
     }
 }
