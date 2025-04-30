@@ -5,6 +5,7 @@ import com.tristankechlo.additionalredstone.platform.RegistrationProvider;
 import com.tristankechlo.additionalredstone.platform.RegistryObject;
 import net.minecraft.core.Registry;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.level.block.Block;
@@ -39,7 +40,7 @@ public final class ModItems {
     public static final RegistryObject<Item> SUPERGATE_BLOCK_ITEM = create("supergate", ModBlocks.SUPERGATE_BLOCK);
 
     private static RegistryObject<Item> create(String name, Supplier<Block> block) {
-        return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Properties()));
+        return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Properties().tab(CreativeModeTab.TAB_SEARCH)));
     }
 
     public static void load() {}

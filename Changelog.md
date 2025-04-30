@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.18.2 - 1.2.3
+
+- fix mod items not showing in creative search
+
 ## Version 1.18.2 - 1.2.2
 
 - remove logging from SupergateScreen
