@@ -4,7 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.blockentity.OscillatorBlockEntity;
 import com.tristankechlo.additionalredstone.init.ModBlockEntities;
-import com.tristankechlo.additionalredstone.platform.IPlatformHelper;
+import com.tristankechlo.additionalredstone.util.LocalPlayerAddon;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
@@ -77,7 +77,7 @@ public class OscillatorBlock extends BaseEntityBlock {
         if ((tile instanceof OscillatorBlockEntity oscillator) && level.isClientSide) {
             int ticksOn = oscillator.getTicksOn();
             int ticksOff = oscillator.getTicksOff();
-            IPlatformHelper.INSTANCE.openOscillatorScreen(ticksOn, ticksOff, pos);
+            ((LocalPlayerAddon) player).openOscillatorScreen$AdditionalRedstone(ticksOn, ticksOff, pos);
         }
         return InteractionResult.SUCCESS;
     }

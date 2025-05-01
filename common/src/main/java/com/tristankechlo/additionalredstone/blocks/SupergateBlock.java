@@ -2,7 +2,7 @@ package com.tristankechlo.additionalredstone.blocks;
 
 import com.mojang.serialization.MapCodec;
 import com.tristankechlo.additionalredstone.blockentity.SuperGateBlockEntity;
-import com.tristankechlo.additionalredstone.platform.IPlatformHelper;
+import com.tristankechlo.additionalredstone.util.LocalPlayerAddon;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -70,7 +70,7 @@ public class SupergateBlock extends BaseDiodeBlock implements EntityBlock {
         BlockEntity tile = level.getBlockEntity(pos);
         if ((tile instanceof SuperGateBlockEntity blockEntity) && level.isClientSide) {
             byte config = blockEntity.getConfiguration();
-            IPlatformHelper.INSTANCE.openSupergateScreen(config, pos);
+            ((LocalPlayerAddon) player).openSupergateScreen$AdditionalRedstone(config, pos);
         }
         return InteractionResult.SUCCESS;
     }

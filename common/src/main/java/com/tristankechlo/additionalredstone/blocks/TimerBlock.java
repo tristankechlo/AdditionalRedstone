@@ -4,7 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.blockentity.TimerBlockEntity;
 import com.tristankechlo.additionalredstone.init.ModBlockEntities;
-import com.tristankechlo.additionalredstone.platform.IPlatformHelper;
+import com.tristankechlo.additionalredstone.util.LocalPlayerAddon;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
@@ -78,7 +78,7 @@ public class TimerBlock extends BaseEntityBlock {
             int powerUp = timer.getPowerUpTime();
             int powerDown = timer.getPowerDownTime();
             int interval = timer.getInterval();
-            IPlatformHelper.INSTANCE.openTimerScreen(powerUp, powerDown, interval, pos);
+            ((LocalPlayerAddon) player).openTimerScreen$AdditionalRedstone(powerUp, powerDown, interval, pos);
         }
         return InteractionResult.SUCCESS;
     }

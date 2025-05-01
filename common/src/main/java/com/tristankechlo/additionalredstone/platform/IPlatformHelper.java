@@ -22,14 +22,4 @@ public interface IPlatformHelper {
 
     Supplier<MenuType<CircuitMakerContainer>> buildContainerCircuitMaker();
 
-    void openOscillatorScreen(int ticksOn, int ticksOff, BlockPos pos);
-
-    void openTimerScreen(int powerUp, int powerDown, int interval, BlockPos pos);
-
-    void openSequencerScreen(int interval, BlockPos pos);
-
-    void openTruthtableScreen(ThreeInputLogicGate block);
-
-    void openSupergateScreen(byte configuration, BlockPos pos);
-
 }

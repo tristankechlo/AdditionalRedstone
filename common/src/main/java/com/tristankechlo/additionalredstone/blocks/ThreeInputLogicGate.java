@@ -2,8 +2,8 @@ package com.tristankechlo.additionalredstone.blocks;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.tristankechlo.additionalredstone.platform.IPlatformHelper;
 import com.tristankechlo.additionalredstone.util.GateLogic;
+import com.tristankechlo.additionalredstone.util.LocalPlayerAddon;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -46,7 +46,7 @@ public class ThreeInputLogicGate extends BaseDiodeBlock {
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (level.isClientSide() && player.getItemInHand(hand).isEmpty()) {
-            IPlatformHelper.INSTANCE.openTruthtableScreen(this);
+            ((LocalPlayerAddon) player).openTruthtableScreen$AdditionalRedstone(this);
             return ItemInteractionResult.SUCCESS;
         }
         return super.useItemOn(stack, state, level, pos, player, hand, hit);

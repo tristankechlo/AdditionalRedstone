@@ -3,7 +3,7 @@ package com.tristankechlo.additionalredstone.blocks;
 import com.tristankechlo.additionalredstone.AdditionalRedstone;
 import com.tristankechlo.additionalredstone.blockentity.SequencerBlockEntity;
 import com.tristankechlo.additionalredstone.init.ModBlockEntities;
-import com.tristankechlo.additionalredstone.platform.IPlatformHelper;
+import com.tristankechlo.additionalredstone.util.LocalPlayerAddon;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -52,7 +52,7 @@ public class SequencerBlock extends Block implements EntityBlock {
         BlockEntity tile = level.getBlockEntity(pos);
         if ((tile instanceof SequencerBlockEntity sequencer) && level.isClientSide) {
             int interval = sequencer.getInterval();
-            IPlatformHelper.INSTANCE.openSequencerScreen(interval, pos);
+            ((LocalPlayerAddon) player).openSequencerScreen$AdditionalRedstone(interval, pos);
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
