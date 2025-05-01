@@ -2,7 +2,7 @@
 
 ## Version 1.20.4 - 1.2.3
 
-- fix light detector being recognized as fuel in the furnace
+- fix light detector not being recognized as fuel in the furnace
 
 ## Version 1.20.4 - 1.2.2
 
