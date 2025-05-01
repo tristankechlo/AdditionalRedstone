@@ -16,7 +16,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 @AutoService(IPacketHelper.class)
-public class NeoForgePacketHelper implements IPacketHelper {
+public final class NeoForgePacketHelper implements IPacketHelper {
 
     public static void registerPackets(RegisterPayloadHandlersEvent event) {
         final PayloadRegistrar registrar = event.registrar(AdditionalRedstone.MOD_ID).versioned("1.0").optional();

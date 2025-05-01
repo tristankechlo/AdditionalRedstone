@@ -15,7 +15,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 @AutoService(RegistrationProvider.Factory.class)
-public class NeoForgeRegistrationFactory implements RegistrationProvider.Factory {
+public final class NeoForgeRegistrationFactory implements RegistrationProvider.Factory {
 
     @Override
     public <T> RegistrationProvider<T> create(ResourceKey<? extends Registry<T>> resourceKey, String modId) {

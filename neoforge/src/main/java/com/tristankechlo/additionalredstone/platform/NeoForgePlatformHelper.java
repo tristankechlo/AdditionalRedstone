@@ -18,7 +18,7 @@ import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import java.util.function.Supplier;
 
 @AutoService(IPlatformHelper.class)
-public class NeoForgePlatformHelper implements IPlatformHelper {
+public final class NeoForgePlatformHelper implements IPlatformHelper {
 
     @Override
     public CreativeModeTab.Builder buildCreativeModeTab() {
