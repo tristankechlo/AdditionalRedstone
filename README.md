@@ -35,6 +35,6 @@
 
 | Language  | up to modversion | Translator                                                 | since version |
 |:---------:|:----------------:|:-----------------------------------------------------------|:--------------|
-| **en_us** |      1.2.2       | tristankechlo ([Github](https://github.com/tristankechlo)) | always        |
-| **de_de** |      1.2.2       | tristankechlo ([Github](https://github.com/tristankechlo)) | always        |
+| **en_us** |      1.2.3       | tristankechlo ([Github](https://github.com/tristankechlo)) | always        |
+| **de_de** |      1.2.3       | tristankechlo ([Github](https://github.com/tristankechlo)) | always        |
 | **zh_cn** |      1.1.0       | HfSr          ([Github](https://github.com/HfSrJun))       | 1.1.0         |

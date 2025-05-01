@@ -1,8 +1,9 @@
 # Changelog
 
-## Version 1.20.6 - 1.2.2
+## Version 1.20.6 - 1.2.3
 
 - port to 1.20.6
+- fix light detector not being recognized as fuel in the furnace
 
 ## Version 1.20.4 - 1.2.2
 
