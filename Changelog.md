@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 1.21.1 - 1.2.3
+
+- port to 1.21.1
+- use common tags for forge recipes
+
 ## Version 1.20.6 - 1.2.3
 
 - port to 1.20.6
