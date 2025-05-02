@@ -6,6 +6,7 @@ import com.tristankechlo.additionalredstone.init.ModContainer;
 import com.tristankechlo.additionalredstone.init.ModItems;
 import com.tristankechlo.additionalredstone.init.ModRecipes;
 import com.tristankechlo.additionalredstone.recipe.CircuitMakerRecipe;
+import com.tristankechlo.additionalredstone.recipe.CircuitMakerRecipeInput;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
@@ -153,23 +154,25 @@ public class CircuitMakerContainer extends AbstractContainerMenu {
             this.inputs.set(0, $$1.copy());
             this.inputs.set(1, $$2.copy());
             this.inputs.set(2, $$3.copy());
-            this.setupRecipeList(container, $$1, $$2, $$3);
+            this.setupRecipeList($$1, $$2, $$3);
         }
     }
 
-    private void setupRecipeList(Container container, ItemStack stack1, ItemStack stack2, ItemStack stack3) {
+    private void setupRecipeList(ItemStack stack1, ItemStack stack2, ItemStack stack3) {
         this.recipes.clear();
         this.selectedRecipe.set(-1);
         this.resultSlot.set(ItemStack.EMPTY);
         if (!stack1.isEmpty() && !stack2.isEmpty() && !stack3.isEmpty()) {
-            this.recipes = this.level.getRecipeManager().getRecipesFor(ModRecipes.CIRCUIT_MAKER_RECIPE_TYPE.get(), container, this.level);
+            CircuitMakerRecipeInput recipeInput = new CircuitMakerRecipeInput(stack1, stack2);
+            this.recipes = this.level.getRecipeManager().getRecipesFor(ModRecipes.CIRCUIT_MAKER_RECIPE_TYPE.get(), recipeInput, this.level);
         }
     }
 
     private void setupResultSlot() {
         if (!this.recipes.isEmpty() && this.isValidRecipeIndex(this.selectedRecipe.get())) {
             RecipeHolder<CircuitMakerRecipe> recipe = this.recipes.get(this.selectedRecipe.get());
-            ItemStack $$1 = recipe.value().assemble(this.container, this.level.registryAccess());
+            CircuitMakerRecipeInput recipeInput = new CircuitMakerRecipeInput(this.inputSlot1.getItem(), this.inputSlot2.getItem());
+            ItemStack $$1 = recipe.value().assemble(recipeInput, this.level.registryAccess());
             if ($$1.isItemEnabled(this.level.enabledFeatures())) {
                 this.resultContainer.setRecipeUsed(recipe);
                 this.resultSlot.set($$1);

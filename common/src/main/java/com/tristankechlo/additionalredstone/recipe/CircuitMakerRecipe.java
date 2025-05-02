@@ -7,7 +7,6 @@ import com.tristankechlo.additionalredstone.init.ModRecipes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -15,30 +14,18 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
-public class CircuitMakerRecipe implements Recipe<Container> {
+public record CircuitMakerRecipe(Ingredient input_1, Ingredient input_2, ItemStack result) implements Recipe<CircuitMakerRecipeInput> {
 
-    private final Ingredient input_1;
-    private final Ingredient input_2;
-    private final ItemStack result;
     private static ItemStack toastSymbol;
 
-    public CircuitMakerRecipe(Ingredient input_1, Ingredient input_2, ItemStack result) {
-        this.input_1 = input_1;
-        this.input_2 = input_2;
-        this.result = result;
-    }
-
     @Override
-    public boolean matches(Container container, Level level) {
-        if (container.getContainerSize() < 2) {
-            return false;
-        }
+    public boolean matches(CircuitMakerRecipeInput container, Level level) {
         return (input_1.test(container.getItem(0)) && input_2.test(container.getItem(1)))
                 || (input_1.test(container.getItem(1)) && input_2.test(container.getItem(0)));
     }
 
     @Override
-    public ItemStack assemble(Container container, HolderLookup.Provider provider) {
+    public ItemStack assemble(CircuitMakerRecipeInput container, HolderLookup.Provider provider) {
         return result.copy();
     }
 

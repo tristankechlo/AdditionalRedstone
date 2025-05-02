@@ -54,6 +54,7 @@ public class CircuitMakerRecipeCategory implements IRecipeCategory<CircuitMakerR
     }
 
     @Override
+    @SuppressWarnings("removal")
     public IDrawable getBackground() {
         return this.background;
     }
