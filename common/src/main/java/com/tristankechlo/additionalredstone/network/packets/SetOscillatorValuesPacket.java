@@ -13,8 +13,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 public record SetOscillatorValuesPacket(int ticksOn, int ticksOff, BlockPos pos) implements CustomPacketPayload, IPacketHandler {
 
-    @SuppressWarnings("removal") // suppress forge deprecation warnings
-    public static final ResourceLocation CHANNEL_ID = new ResourceLocation(AdditionalRedstone.MOD_ID, "oscillator");
+    public static final ResourceLocation CHANNEL_ID = ResourceLocation.fromNamespaceAndPath(AdditionalRedstone.MOD_ID, "oscillator");
     public static final StreamCodec<RegistryFriendlyByteBuf, SetOscillatorValuesPacket> CODEC = StreamCodec.of(SetOscillatorValuesPacket::encode, SetOscillatorValuesPacket::decode);
     public static final Type<SetOscillatorValuesPacket> TYPE = new Type<>(CHANNEL_ID);
 

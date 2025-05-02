@@ -23,8 +23,7 @@ public abstract class CustomScreen extends Screen {
     private static final MutableComponent TOOLTIP_CANCEL = Component.translatable("screen.additionalredstone.cancel.tooltip");
     public static final int TEXT_COLOR_SCREEN = 4210752; // #404040
     protected static final MutableComponent TICK_DESCRIPTION = Component.translatable("screen.additionalredstone.tick.description");
-    @SuppressWarnings("removal") // suppress forge deprecation warnings
-    private static final ResourceLocation ERROR_ICON = new ResourceLocation(AdditionalRedstone.MOD_ID, "textures/gui/icons.png");
+    private static final ResourceLocation ERROR_ICON = ResourceLocation.fromNamespaceAndPath(AdditionalRedstone.MOD_ID, "textures/gui/icons.png");
     private Component customTitle;
     protected final int imageWidth;
     protected final int imageHeight;

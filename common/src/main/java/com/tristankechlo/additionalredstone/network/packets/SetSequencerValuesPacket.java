@@ -13,8 +13,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 public record SetSequencerValuesPacket(int interval, BlockPos pos) implements CustomPacketPayload, IPacketHandler {
 
-    @SuppressWarnings("removal") // suppress forge deprecation warnings
-    public static final ResourceLocation CHANNEL_ID = new ResourceLocation(AdditionalRedstone.MOD_ID, "sequencer");
+    public static final ResourceLocation CHANNEL_ID = ResourceLocation.fromNamespaceAndPath(AdditionalRedstone.MOD_ID, "sequencer");
     public static final StreamCodec<RegistryFriendlyByteBuf, SetSequencerValuesPacket> CODEC = StreamCodec.of(SetSequencerValuesPacket::encode, SetSequencerValuesPacket::decode);
     public static final Type<SetSequencerValuesPacket> TYPE = new Type<>(CHANNEL_ID);
 

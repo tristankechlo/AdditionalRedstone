@@ -22,8 +22,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class CircuitMakerRecipeCategory implements IRecipeCategory<CircuitMakerRecipe> {
 
-    @SuppressWarnings("removal") // suppress forge deprecation warnings
-    private static final ResourceLocation LOCATION = new ResourceLocation(AdditionalRedstone.MOD_ID, "textures/gui/container/circuit_maker.png");
+    private static final ResourceLocation LOCATION = ResourceLocation.fromNamespaceAndPath(AdditionalRedstone.MOD_ID, "textures/gui/container/circuit_maker.png");
     private final IDrawable background;
     private final IDrawable icon;
     private final Component localizedName;

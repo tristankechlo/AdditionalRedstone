@@ -13,8 +13,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 public record SetSupergateValuesPacket(byte configuration, BlockPos pos) implements CustomPacketPayload, IPacketHandler {
 
-    @SuppressWarnings("removal") // suppress forge deprecation warnings
-    public static final ResourceLocation CHANNEL_ID = new ResourceLocation(AdditionalRedstone.MOD_ID, "supergate");
+    public static final ResourceLocation CHANNEL_ID = ResourceLocation.fromNamespaceAndPath(AdditionalRedstone.MOD_ID, "supergate");
     public static final StreamCodec<RegistryFriendlyByteBuf, SetSupergateValuesPacket> CODEC = StreamCodec.of(SetSupergateValuesPacket::encode, SetSupergateValuesPacket::decode);
     public static final Type<SetSupergateValuesPacket> TYPE = new Type<>(CHANNEL_ID);
 

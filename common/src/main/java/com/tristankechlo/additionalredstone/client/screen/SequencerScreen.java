@@ -16,8 +16,7 @@ public class SequencerScreen extends CustomScreen {
 
     private static final Component TITLE = ModBlocks.SEQUENCER_BLOCK.get().getName().withStyle(ChatFormatting.BOLD);
     private static final Component INTERVAL = Component.translatable("screen.additionalredstone.sequencer.interval");
-    @SuppressWarnings("removal") // suppress forge deprecation warnings
-    private static final ResourceLocation TEXTURE = new ResourceLocation(AdditionalRedstone.MOD_ID, "textures/gui/sequencer_screen.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(AdditionalRedstone.MOD_ID, "textures/gui/sequencer_screen.png");
     private final BlockPos pos;
     private EditBox intervalWidget;
     private final int initialInterval;

@@ -28,8 +28,7 @@ import java.util.Objects;
 @JeiPlugin
 public class JustEnoughItemsPlugin implements IModPlugin {
 
-    @SuppressWarnings("removal") // suppress forge deprecation warnings
-    private static final ResourceLocation UID = new ResourceLocation(AdditionalRedstone.MOD_ID, "jei_plugin");
+    private static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(AdditionalRedstone.MOD_ID, "jei_plugin");
     public static final RecipeType<CircuitMakerRecipe> RECIPE_TYPE = RecipeType.create(AdditionalRedstone.MOD_ID, "circuit_maker", CircuitMakerRecipe.class);
     private IRecipeCategory<CircuitMakerRecipe> recipeCategory;
 

@@ -13,8 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class TruthtableScreen extends CustomScreen {
 
-    @SuppressWarnings("removal") // suppress forge deprecation warnings
-    public static final ResourceLocation TEXTURE = new ResourceLocation(AdditionalRedstone.MOD_ID, "textures/gui/truthtable.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(AdditionalRedstone.MOD_ID, "textures/gui/truthtable.png");
     private static final String START = "screen.additionalredstone.truthtable.";
     public static final MutableComponent INPUT_A = Component.translatable(START + "input_a").withStyle(ChatFormatting.BLACK);
     public static final MutableComponent INPUT_B = Component.translatable(START + "input_b").withStyle(ChatFormatting.BLACK);

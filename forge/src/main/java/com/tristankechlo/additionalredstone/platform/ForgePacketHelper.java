@@ -18,8 +18,7 @@ import net.minecraftforge.network.*;
 @AutoService(IPacketHelper.class)
 public final class ForgePacketHelper implements IPacketHelper {
 
-    @SuppressWarnings("removal") // suppress forge deprecation warnings
-    private static final ResourceLocation CHANNEL_ID = new ResourceLocation(AdditionalRedstone.MOD_ID, "main");
+    private static final ResourceLocation CHANNEL_ID = ResourceLocation.fromNamespaceAndPath(AdditionalRedstone.MOD_ID, "main");
     private static final SimpleChannel INSTANCE = ChannelBuilder.named(CHANNEL_ID)
             .networkProtocolVersion(1)
             .clientAcceptedVersions(Channel.VersionTest.exact(1))

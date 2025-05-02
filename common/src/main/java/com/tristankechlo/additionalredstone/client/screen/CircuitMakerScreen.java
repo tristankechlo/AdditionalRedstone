@@ -17,8 +17,7 @@ import java.util.List;
 
 public class CircuitMakerScreen extends AbstractContainerScreen<CircuitMakerContainer> {
 
-    @SuppressWarnings("removal") // suppress forge deprecation warnings
-    private static final ResourceLocation BG_LOCATION = new ResourceLocation(AdditionalRedstone.MOD_ID, "textures/gui/container/circuit_maker.png");
+    private static final ResourceLocation BG_LOCATION = ResourceLocation.fromNamespaceAndPath(AdditionalRedstone.MOD_ID, "textures/gui/container/circuit_maker.png");
     private static final int SCROLLER_WIDTH = 12;
     private static final int SCROLLER_HEIGHT = 15;
     private static final int RECIPES_IMAGE_SIZE_WIDTH = 18;

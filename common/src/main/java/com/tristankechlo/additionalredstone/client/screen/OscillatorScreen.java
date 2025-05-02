@@ -18,8 +18,7 @@ public class OscillatorScreen extends CustomScreen {
     private static final MutableComponent TITLE = ModBlocks.OSCILLATOR_BLOCK.get().getName().withStyle(ChatFormatting.BOLD);
     private static final MutableComponent TICKS_ON = Component.translatable("screen.additionalredstone.oscillator.ticks.on");
     private static final MutableComponent TICKS_OFF = Component.translatable("screen.additionalredstone.oscillator.ticks.off");
-    @SuppressWarnings("removal") // suppress forge deprecation warnings
-    private static final ResourceLocation TEXTURE = new ResourceLocation(AdditionalRedstone.MOD_ID, "textures/gui/oscillator_screen.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(AdditionalRedstone.MOD_ID, "textures/gui/oscillator_screen.png");
     private final BlockPos pos;
     private EditBox ticksOnWidget;
     private EditBox ticksOffWidget;

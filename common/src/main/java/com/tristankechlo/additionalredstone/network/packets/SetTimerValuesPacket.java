@@ -13,8 +13,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 public record SetTimerValuesPacket(int powerUpTime, int powerDownTime, int interval, BlockPos pos) implements CustomPacketPayload, IPacketHandler {
 
-    @SuppressWarnings("removal") // suppress forge deprecation warnings
-    public static final ResourceLocation CHANNEL_ID = new ResourceLocation(AdditionalRedstone.MOD_ID, "timer");
+    public static final ResourceLocation CHANNEL_ID = ResourceLocation.fromNamespaceAndPath(AdditionalRedstone.MOD_ID, "timer");
     public static final StreamCodec<RegistryFriendlyByteBuf, SetTimerValuesPacket> CODEC = StreamCodec.of(SetTimerValuesPacket::encode, SetTimerValuesPacket::decode);
     public static final Type<SetTimerValuesPacket> TYPE = new Type<>(CHANNEL_ID);
 
